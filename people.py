@@ -4,7 +4,7 @@ from pygame.locals import *
 from engine import Game, Scene
 
 class SampleScene(Scene):
-    def init(self, nombre):
+    def init(self, nombre, wardrobe):
         self.nombre = nombre
         self.goscene=False
         self.finalizar = False
@@ -28,8 +28,10 @@ class SampleScene(Scene):
             self.end( self.nombre )
                     
     def update(self):
-        self.background = Surface( (800,600) )
-    
+        self.background = pygame.Surface( (800,600) )
+        some = Individual()
+        some.random()
+        self.background = some.render()
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -37,7 +39,7 @@ class SampleScene(Scene):
 
 
 class Individual:
-    def __init__(self, wardrobe):
+    def __init__(self, wardrobe=Wardrobe):
         self.wardrobe=wardrobe
         self.layers={}
     
@@ -220,6 +222,8 @@ if __name__=="__main__":
             wget(path + e[ImageName])
 
 if __name__ == "__main__":
+    layers, ilayers = parseConfig()
+    Wardrobe, fset= parseArticles()
     g = Game(800, 600, framerate = 200)
     g.run( SampleScene(g, "Scene1") )
     
