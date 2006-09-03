@@ -3,6 +3,7 @@ from pygame.locals import *
 from engine import Game, Scene
 from people import *
 import random
+import motor
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
@@ -59,6 +60,8 @@ class Audiencia:
 
 class AudienciaScene(Scene):
     def init(self):
+        import sounds
+        self.sounds = sounds
         self.finalizar = False
         self.audiencia = Audiencia()
         self.calor = 0
@@ -69,14 +72,20 @@ class AudienciaScene(Scene):
                 self.end()
             elif evt.key == K_RETURN:
                 self.finalizar = True
+                
     def gameEvent(self, evt):
-        pass
+        if evt == motor.Eventos.PALOK:
+            self.sounds.bravo.play()
+        elif evt == motor.Eventos.PALMAL:
+            self.sounds.abucheo.play()
         
     def setCalor(self, calor):
         self.calor = calor
     
     def loop(self):
         # aca updateamos el mundo cada paso
+        
+        
         if self.finalizar:
             self.end( )
                     

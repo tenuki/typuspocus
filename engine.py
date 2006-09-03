@@ -3,9 +3,11 @@ import pygame
 from pygame.locals import *
 DEBUG = 1
 
+
 class Game:
     def __init__(self, x_size, y_size, framerate=30):
         pygame.init()
+        pygame.mixer.init()
         self.screen_size = x_size, y_size
         self.x_size = x_size
         self.y_size = y_size

@@ -5,6 +5,10 @@ from audiencia import AudienciaScene
 
 from motor import MainMotor, Estados
 
+
+
+CLOCK_TICK = pygame.USEREVENT
+
 class LineManager:
     def __init__(self, hechizo, font_size = 30, font = "VeraMono.ttf", width=600):
         self.font = font =  pygame.font.Font(font,font_size)
@@ -51,6 +55,8 @@ class LineManager:
         
 class Level(Scene):
     def init(self):
+        import sounds
+        self.sounds = sounds
         self.motor = MainMotor(20)
         self.line_manager = LineManager(self.motor.hechizo)
         self.offset_cache = [None]*len(self.motor.hechizo)
@@ -64,6 +70,8 @@ class Level(Scene):
         self.audiencia = AudienciaScene(self.game)
         self.subscenes.append( self.audiencia )
         
+        pygame.time.set_timer(CLOCK_TICK, 1000)
+        
         
         
     def event(self, evt):
@@ -76,12 +84,16 @@ class Level(Scene):
             if letra.isalpha() or (letra and letra in " ,.<>:;"):
                 res, event = self.motor.hitLetra( letra )
             if evt.key == K_BACKSPACE:
-                res, event = self.motor.hitBackspace()
+                self.motor.hitBackspace()
             if evt.key == K_RETURN:
                 res, event = self.motor.hitLetra(" ")
                 
             if res:
                 self.audiencia.gameEvent( event )
+                
+        elif evt.type == CLOCK_TICK:
+            print "tick"
+            self.sounds.reloj.play()
     
     def loop(self):
         # aca updateamos el mundo cada paso
@@ -90,7 +102,6 @@ class Level(Scene):
         
         if evt:
             self.audiencia.gameEvent( evt )
-        print self.motor.calor
            
     def update(self):
         #self.game.screen.blit(self.background, (0,0))
