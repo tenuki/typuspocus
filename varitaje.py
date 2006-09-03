@@ -1,4 +1,5 @@
 import interpol
+import pygame
 
 class Varitaje:
     def nextpos(self):
