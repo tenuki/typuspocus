@@ -33,10 +33,10 @@ HCDataSetFile_fields
 "7" "waldrobe"
 
 HCDataSetFile_data
-"9" "boy_body_01.gif" "body" "body" "26" "28" "-1"
+#"9" "boy_body_01.gif" "body" "body" "26" "28" "-1"
 "10" "boy_body_02.gif" "body" "body" "26" "28" "-1"
 "11" "boy_body_03.gif" "body" "body" "26" "28" "-1"
-"111" "skeletor.gif" "body" "body" "26" "28" "-1"
+"111" "skeletor.gif" "body" "body" "26" "28" "0.05"
 "15" "boy_jeans_01.gif" "bottoms" "tops n bottoms" "39" "94" "-1"
 "16" "boy_trousers_02.gif" "bottoms" "tops n bottoms" "39" "98" "-1"
 "17" "boy_trousers_03.gif" "bottoms" "tops n bottoms" "38" "94" "-1"
@@ -81,7 +81,7 @@ HCDataSetFile_data
 "50227" "boy_shoes_06.gif" "shoes" "tops n bottoms" "35" "128" "-1"
 "50226" "boy_shoes_11.gif" "shoes" "tops n bottoms" "37" "97" "-1"
 "50225" "boy_shoes_10.gif" "shoes" "tops n bottoms" "37" "119" "-1"
-"77" "alien.gif" "body" "body" "27" "28" "-1"
+"77" "alien.gif" "body" "body" "27" "28" "0.05"
 "78" "boy_bondage_01.gif" "extras" "tops n bottoms" "32" "26" "-1"
 "79" "boy_facialhair_03.gif" "hair" "hair" "35" "56" "-1"
 "50224" "boy_shoes_09.gif" "shoes" "tops n bottoms" "36" "125" "-1"

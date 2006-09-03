@@ -20,7 +20,7 @@ class SampleScene(Scene):
             some.random()
             self.pool.append(some)
         
-        self.background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA)
+        self.background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
@@ -31,7 +31,6 @@ class SampleScene(Scene):
         sx,sy = PPLSIZE
         dx = (y%2) * sx/2 - sx/2
         img = individual.render()
-        #img.fill((255,0,0,10))
         self.background.blit(img,(sx*x+dx, sy/2*y)) 
     
     def event(self, evt):
@@ -86,13 +85,16 @@ class Individual:
         if not 'body' in sl:
             sl=Individual.LayerProb.keys()
             sl.remove('body')
-        
         for layer in sl:
-            try:
-                self.layers[layer] = random.sample(
-                    self.wardrobe.articles[layer], 1)
-            except:
-                pass
+            if not self.wardrobe.articles.has_key(layer):
+                continue
+            r = random.random()
+            s = 0
+            for art in self.wardrobe.articles[layer]:
+                s += art.peso
+                if r<=s:
+                    self.layers[layer]=art
+                    break
                 
     def __repr__(self):
         return repr(self.layers)
@@ -106,7 +108,7 @@ class Individual:
             layername=layerorder[k]
             if layername in self.layers.keys():
                 #we use that layer!
-                article = self.layers[layername][0]
+                article = self.layers[layername]
                 if img==None:
                     img = pygame.image.load('escenario/sinbutaca.png')
                     img.convert_alpha()
@@ -158,8 +160,16 @@ class Article:
         return self.data[getattr(self.fieldset,some)]
     def getLayer(self):
         return self.getSome('layer')
+        
     def getName(self):
         return self.getSome('imagename')
+        
+    def getWeight(self):
+        try:
+            return int(self.getSome('wearing'))
+        except:
+            return float(self.getSome('wearing'))
+        
     def getImage(self):
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
@@ -169,6 +179,7 @@ class Article:
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
     layer=property(getLayer)
     name=property(getName)
+    weight=property(getWeight)
     
     def wget (self, fname):
         """fetch image"""
@@ -177,15 +188,38 @@ class Article:
 class Wardrobe:
     def __init__(self, path):
         self.articles={}
+        self.weights={}
         self.parseConfig(path)
         self.parseArticles(path)
+        self.setWeights()
         
     def add(self, article):
         layer = article.layer
+
+        weight = article.weight
+        weights = self.weights.setdefault(layer, (0,0))
+        normales, especiales = weights
+        if weight==-1:
+            normales+=1
+        else:
+            especiales+=especiales
+        self.weights[layer]= (normales,especiales)
+        
         artlist = self.articles.setdefault(layer, [])
         artlist.append(article)
         self.articles[layer]=artlist
 
+    def setWeights(self):
+        for layer in self.weights.keys():
+            normales, especiales = self.weights[layer]
+            pnormal = (1.0-especiales)/normales
+            #print 'layer %spnormal is:'%layer,pnormal
+            for article in self.articles[layer]:
+                if article.weight==-1:
+                    article.peso=pnormal
+                else:
+                    article.peso=article.weight
+            
     def getLayers(self):
         return self.articles.keys()
     
@@ -241,6 +275,7 @@ class Wardrobe:
 
     
 def getAllWardrobes():
+    return [Wardrobe('audiencia/boy/')]
     return [Wardrobe('audiencia/fashion_boy/'),
                     Wardrobe('audiencia/fashion_girl/'),
                     Wardrobe('audiencia/girl/'),
