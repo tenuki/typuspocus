@@ -27,7 +27,8 @@ class MainMotor(object):
         self.puntajeMax = self._getScore()
         self.score = 0
         self.estado = [Estados.VIRGEN] * self.largohech
-
+        self.calor = 0
+        
     def hitLetra(self, letra):
         '''Recibe la letra que apretó el usuario y devuelve...
 
