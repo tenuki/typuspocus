@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from engine import Game, Scene
+from audiencia import AudienciaScene
 
 from motor import MainMotor, Estados
 
@@ -60,6 +61,8 @@ class Level(Scene):
         self.line = None
         self.motor.start()
         
+        self.subscenes.append( AudienciaScene(self.game) )
+        
         
         
     def event(self, evt):
@@ -79,7 +82,7 @@ class Level(Scene):
         # aca updateamos el mundo cada paso
         pass          
     def update(self):
-        self.game.screen.blit(self.background, (0,0))
+        #self.game.screen.blit(self.background, (0,0))
         font = pygame.font.Font("VeraMono.ttf",30)
         
         cursor = self.motor.cursor
@@ -87,7 +90,7 @@ class Level(Scene):
         
         rectlist = []
         
-        ypos = 500
+        ypos = 540
         xpos = (800-sum([ self.line_manager.get(l,0).get_width() for l in line ]))/2
         cursor_xpos = xpos
         for position, letter in enumerate(line):
@@ -101,17 +104,11 @@ class Level(Scene):
             self.game.screen.blit( i, (xpos, ypos) )
             xpos += i.get_width()
             
-        position = Rect(self.last_cursor,30,20,20)
         cursor_img = font.render("^", True, (255,255,255))
-        self.game.screen.blit(self.background, position, position)
         self.game.screen.blit(cursor_img, (cursor_xpos,ypos+self.line_manager.height))
-        self.last_cursor = cursor_xpos
         
-        position = Rect(0,550,800,600)
-        self.game.screen.blit(self.background, position, position)
-       
-        s = font.render("Score: %i / Calor: %.2f /TimeLeft: %f"%(self.motor.score, self.motor.calor, self.motor.getTimeLeft()), True, (255,255,255))
-        self.game.screen.blit(s, (0,550))
+        #s = font.render("Score: %i / Calor: %.2f /TimeLeft: %f"%(self.motor.score, self.motor.calor, self.motor.getTimeLeft()), True, (255,255,255))
+        #self.game.screen.blit(s, (0,550))
         
         pygame.display.update(rectlist)
                 

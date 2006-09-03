@@ -38,6 +38,7 @@ class Scene:
     def __init__(self, game, *args, **kwargs):
         self.game = game
         self._background = None
+        self.subscenes = []
         self.init(*args, **kwargs)
         
     def init(self): pass
@@ -55,6 +56,7 @@ class Scene:
     def run(self):
         if DEBUG: print "Entering Scene:", str(self)
         self.game.screen.blit(self.background, (0,0))
+        for s in self.subscenes: s.paint()
         self.paint()
         pygame.display.flip()
         while 1:
@@ -69,8 +71,10 @@ class Scene:
                     
             try:
                 self.loop()
+                for s in self.subscenes: s.loop()
             except SceneExit:
                 return self.return_value
+            for s in self.subscenes: s.update()
             self.update()
             pygame.display.flip()
         

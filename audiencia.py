@@ -52,9 +52,8 @@ class Audiencia:
             fila.render(surface, (dx,dy) )
         surface.blit(self.fg, (0,0))
 
-class SampleScene2(Scene):
-    def init(self, nombre):
-        self.nombre = nombre
+class AudienciaScene(Scene):
+    def init(self):
         self.finalizar = False
         self.audiencia = Audiencia()
 
@@ -75,16 +74,13 @@ class SampleScene2(Scene):
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.finalizar:
-            self.end( self.nombre )
+            self.end( )
                     
     def update(self):
         global iLayers
         self.game.screen.fill((0,0,0))
         self.audiencia.render(self.game.screen)
-        font = pygame.font.SysFont("Times New Roman",30)
-        s = font.render(self.nombre,True,(0,255,255))
-        self.game.screen.blit(s, (0,0))
-
+        
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
-    g.run( SampleScene2(g, "Scene1") )
+    g.run( AudienciaScene(g, "Scene1") )
