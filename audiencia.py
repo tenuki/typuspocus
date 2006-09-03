@@ -52,11 +52,23 @@ class Audiencia:
     def __init__(self):
         self.filas = [ Fila() for y in range(filasy) ]
 
+
+    def getRandomPersonPosition(self):
+        fila = random.randrange(filasy)
+        dx = (fila%2) * peoplex/2 - peoplex/2 + 6
+        dx += random.randrange(filasx)* peoplex
+        dy = peopley/2 * fila
+        return (dx+peoplex/2, dy+20)
+
     def render(self, surface, porcentaje):
         for y,fila in enumerate(self.filas):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
             fila.render(surface, (dx,dy), porcentaje)
+        r=pygame.Rect(0,0,20,20)
+        r.center=self.getRandomPersonPosition()
+        r.clamp_ip(surface.get_rect())
+        surface.subsurface(r).fill((255,0,0))
 
 class AudienciaScene(Scene):
     def init(self):
