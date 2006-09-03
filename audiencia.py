@@ -5,6 +5,8 @@ from people import *
 import random
 import varitaje
 import motor
+import interpol
+
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 

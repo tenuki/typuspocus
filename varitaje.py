@@ -28,7 +28,6 @@ class Varitaje:
         if len(self.points)<=0: 
             self.generatePoint()
         if self.step%self.max==0:
-            print '-'*10
             self.step=0
             self.inter = interpol.MadamBezier( 
                             self.pos, self.points.pop(0), self.inter )
