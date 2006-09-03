@@ -122,12 +122,15 @@ class MainMotor(object):
         '''
         # algoritmo para el calor del público:
         #   Es una suma algebraica de los siguientes floats entre 0 y 1:
-        #     - porcentaje de puntos logrados sobre el total posible (a favor)
+        #     - porcentaje de puntos logrados sobre el total posible a ese momento, y le restamos 3 para que
+        #       se balancee penalizando los errores (por letra, el rango de puntos es de -2 a 1)
         #     - tiempo pasado sobre el total de tiempo posible (en contra)
         #     - cantidad de backspaces sobre el total de letras (en contra, ojo que puede dar >1)
         calor = 0
-        calor += self.score / self.puntajeMax
-        calor -= (time.time() - self.startTime) / self.tiempoJuego
+        porc_tiempopasado = (time.time() - self.startTime) / self.tiempoJuego
+        punt_almomento = self.puntajeMax * porc_tiempopasado
+        calor += ((self.score / punt_almomento) * 3) - 3 
+        calor -= porc_tiempopasado
         calor -= self.cant_bs / self.largohech
 
         # sanity check
