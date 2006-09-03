@@ -14,26 +14,28 @@ class Auditorio:
 class SampleScene(Scene):
     def init(self, nombre, wardrobes):
         self.nombre = nombre
-        self.goscene=False
+        self.goscene = False
         self.finalizar = False
         self.wardrobes = wardrobes
-        self.pool=[]
-        sx,sy = PPLSIZE
+        self.pool = []
         
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
             some.random()
-            img = some.render()
-            self.pool.append(img)
+            self.pool.append(some)
         
         self.background = pygame.Surface((800,600))
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
                 some.random()
-                dx = (y%2) * sx/2 - sx/2
-                self.background.blit(some.render(),(sx*x+dx, sy/2*y)) 
-        
+                self.putIndividualAt(some, x, y)
+                
+    def putIndividualAt(self, individual, x, y):
+        sx,sy = PPLSIZE
+        dx = (y%2) * sx/2 - sx/2
+        self.background.blit(individual.render(),(sx*x+dx, sy/2*y)) 
+    
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
@@ -46,7 +48,8 @@ class SampleScene(Scene):
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.goscene:
-            retorno = self.runScene( SampleScene(self.game, self.nombre + " hijo ") )
+            retorno = self.runScene( 
+                        SampleScene(self.game, self.nombre+" hijo ") )
             self.goscene = False
         if self.finalizar:
             self.end( self.nombre )
@@ -55,8 +58,9 @@ class SampleScene(Scene):
         global iLayers
         sx,sy = PPLSIZE
 
-        #x,y = random.randint(0,6), random.randint(0,5)
+        x,y = random.randint(0,filasx-1), random.randint(0,filasy-1)
         #self.background.blit(self.pool[random.randint(0,29)],(sx*x, sy*y)) 
+        self.putIndividualAt(self.pool[random.randint(0,29)], x,y)
         
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
