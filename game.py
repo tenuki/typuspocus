@@ -9,6 +9,24 @@ from motor import MainMotor, Estados
 
 CLOCK_TICK = pygame.USEREVENT
 
+class Timer:
+    def __init__(self, total_time):
+        self.total_time = total_time
+        self.time_left = total_time
+        
+    def setTimeLeft(self, time):
+        self.time_left = time
+        
+    def blit(self, surface, (x, y)):
+        full = 300
+        width = 20
+        current = (self.time_left*full)/self.total_time
+        pygame.draw.rect(surface, (0,0,0), Rect(x-1,y-1,width+3,full+2))
+        pygame.draw.rect(surface, (30,255,30), Rect(x,y+full-current,width,
+                current
+                ))
+        
+        
 class LineManager:
     def __init__(self, hechizo, font_size = 30, font = "VeraMono.ttf", width=600):
         self.font = font =  pygame.font.Font(font,font_size)
@@ -52,7 +70,7 @@ class LineManager:
         
 
 PERDIO, GANO = range(2)
-PLAYING, WINNING, WON, TIMEOUT, TOMATE, LOSING, LOST, DONE = range(8)
+PLAYING, WINNING, WON, TIMEOUT, TOMATO, LOSING, LOST, DONE = range(8)
 
 class Level(Scene):
     def init(self):
@@ -66,8 +84,6 @@ class Level(Scene):
         
         self.line_group = pygame.sprite.OrderedUpdates()
         self.line = None
-        self.motor.start()
-        
         self.audiencia = AudienciaScene(self.game)
         self.subscenes.append( self.audiencia )
         
@@ -75,6 +91,12 @@ class Level(Scene):
         
         self.voluntario = cosas.reloj
         self.state = PLAYING
+
+        self.level_timer = Timer(self.motor.getTimeLeft())
+       
+        self.motor.start()
+        
+               
         
         
         
@@ -107,7 +129,7 @@ class Level(Scene):
                 self.wintime = pygame.time.get_ticks()
                     
           
-        elif self.state in [WINNING, WON, LOSING, LOST ]:
+        elif self.state in [WINNING, WON, LOSING, LOST, TOMATO ]:
             if evt.type == KEYDOWN:
                 if evt.key == K_ESCAPE:
                     self.end()
@@ -119,6 +141,8 @@ class Level(Scene):
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
                 self.end( PERDIO )
+                
+            self.level_timer.setTimeLeft( self.motor.getTimeLeft() )
                 
                 
             evt = self.motor.tick()
@@ -157,6 +181,7 @@ class Level(Scene):
                 self.game.screen.blit( i, (xpos, ypos) )
                 xpos += i.get_width()
                 
+            self.level_timer.blit( self.game.screen, (770, 50))
             cursor_img = font.render("^", True, (255,255,255))
             self.game.screen.blit(cursor_img, 
                 (cursor_xpos,ypos+self.line_manager.height)
@@ -172,6 +197,11 @@ class Level(Scene):
                     400-self.voluntario.get_height() ) 
                     )
         elif self.state == LOSING:
+            self.game.screen.blit(self.voluntario, 
+                    ( 800/2 - self.voluntario.get_width()/2, 
+                    400-self.voluntario.get_height() ) 
+                    )
+        elif self.state == TOMATO:
             self.game.screen.blit(self.voluntario, 
                     ( 800/2 - self.voluntario.get_width()/2, 
                     400-self.voluntario.get_height() ) 
