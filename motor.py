@@ -23,7 +23,12 @@ class MainMotor(object):
     Se lo arranca con el start().
     Cuando el usr presiona una tecla, hitLetra(), cuando hace backspace, hitBackspace()
     '''
+
+    porcentajeRequerido = 0.50
+    tiempoExtra = 10
+
     def __init__(self, cant):
+        self.LPS = 3.0
         (self.hechizo, self.indpals) = self._armaHechizo(cant)
         self.largohech = len(self.hechizo)
         self.cursor = 0
@@ -160,7 +165,16 @@ class MainMotor(object):
     def _getTiempoJuego(self):
         '''Devuelve el tiempo que tiene el usuario para completar el hechizo.'''
         # la hacemos fácil, un segundo por letra
-        return self.largohech
+        return self.largohech/self.LPS + self.tiempoExtra
+
+    def tuvoExito(self):
+        acertados = 0
+        for st in self.estado:
+            if st == Estados.OK_DEUNA or st == Estados.OK_CORRG:
+                acertados += 1
+        porcentaje = float(acertados)/len(self.estado)
+        print acertados, "/", len(self.estado)
+        return porcentaje >= self.porcentajeRequerido
 
     def _getCalor(self):
         '''Devuelve cuan activo está el público.
@@ -176,9 +190,10 @@ class MainMotor(object):
         calor = 0
         porc_tiempopasado = (time.time() - self.startTime) / self.tiempoJuego
         punt_almomento = self.puntajeMax * porc_tiempopasado
-        calor += ((self.score / punt_almomento) * 3) - 3 
-        calor -= porc_tiempopasado
+        valor1 = ((self.score / punt_almomento) * 3) - 3 
+        calor += valor1
         calor -= self.cant_bs / self.largohech
+        calor *= porc_tiempopasado
 
         # sanity check
         if calor > 1:
@@ -186,4 +201,5 @@ class MainMotor(object):
         if calor < -1:
             calor = -1
         self.calor = calor
+        print "Hace Calor...", porc_tiempopasado, punt_almomento, valor1, calor, self.tuvoExito()
         return calor
