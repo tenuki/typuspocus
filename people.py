@@ -70,15 +70,15 @@ class Individual:
                 if img==None:
                     nx,ny = article.SnapPos()
                     img = article.getImage()
-                    x,y=img.size
+                    x,y=img.get_size()
                     
                 elif 0:
                     nimg = article.getImage()
                     print dir(article)
                     x, y = article.SnapPos()
-                    xsize, ysize = img.size
+                    xsize, ysize = img.get_size()
                     img.paste(nimg, (x,y,xsize, ysize))
-        base.show()
+        return img
         
 
 
