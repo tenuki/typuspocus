@@ -2,13 +2,9 @@ import os, re, random
 import pygame
 from pygame.locals import *
 from engine import Game, Scene
-import random
-Layers = None
-iLayers = None
+SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
-
-
 
 
 class SampleScene(Scene):
@@ -24,7 +20,7 @@ class SampleScene(Scene):
             some.random()
             self.pool.append(some)
         
-        self.background = pygame.Surface((800,600), pygame.SRCALPHA)
+        self.background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA)
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
@@ -71,9 +67,9 @@ class Individual:
         "body":0.9, 
         "hair":0.7,
         "underware":0.8,
-        "tops n bottoms":0.7,
+        "tops n bottoms":0.9,
         "shoes":0.8,
-        "jackets":0.6,
+        "jackets":0.7,
         "hats":0.5,
         "infront":0.3}
 
@@ -250,17 +246,10 @@ def getAllWardrobes():
                     Wardrobe('audiencia/girl/'),
                     Wardrobe('audiencia/goth/'),
                     Wardrobe('audiencia/boy/')]
-
     
 if __name__ == "__main__":
-    #Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
-    #Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
-    #Wardrobe1 = Wardrobe('audiencia/girl/')
-    #Wardrobe1 = Wardrobe('audiencia/goth/')
-    #Wardrobe1 = Wardrobe('audiencia/boy/')
-    wardrobes = getAllWardrobes()
-
-    g = Game(800, 600, framerate = 200)
+    wardrobes = getAllWardrobes() # x,y
+    g = Game(*SCREEN_SIZE, **{'framerate': 200})
     g.run( SampleScene(g, "Scene1", wardrobes) )
     
     
