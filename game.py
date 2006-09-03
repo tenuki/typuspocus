@@ -10,9 +10,9 @@ class LineManager:
         text = set([ t for t in hechizo ])
         self.cache = {}
         for t in text:
-            self.cache[t] = (font.render(t,True,(200,200,200)),
+            self.cache[t] = (font.render(t,True,(130,130,170)),
                 font.render(t,True,(255,255,255)),
-                font.render(t,True,(170,170,170)),
+                font.render(t,True,(170,170,100)),
                 font.render(t,True,(255,0,0)),
                 )
             self.height = self.cache[t][0].get_height()
