@@ -5,10 +5,11 @@ from engine import Game, Scene
 SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
-
+background = None
 
 class SampleScene(Scene):
     def init(self, nombre, wardrobes):
+        global background
         self.nombre = nombre
         self.goscene = False
         self.finalizar = False
@@ -20,7 +21,8 @@ class SampleScene(Scene):
             some.random()
             self.pool.append(some)
         
-        self.background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
+        background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
+        self.background = background
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
@@ -100,6 +102,7 @@ class Individual:
         return repr(self.layers)
 
     def render(self ):
+        global background
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
@@ -111,7 +114,7 @@ class Individual:
                 article = self.layers[layername]
                 if img==None:
                     img = pygame.image.load('escenario/sinbutaca.png')
-                    img.convert_alpha()
+                    img.convert_alpha(background)
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
@@ -171,9 +174,10 @@ class Article:
             return float(self.getSome('wearing'))
         
     def getImage(self):
+        global background
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
-            self.image.convert_alpha()
+            self.image.convert_alpha(background)
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
@@ -275,7 +279,6 @@ class Wardrobe:
 
     
 def getAllWardrobes():
-    return [Wardrobe('audiencia/boy/')]
     return [Wardrobe('audiencia/fashion_boy/'),
                     Wardrobe('audiencia/fashion_girl/'),
                     Wardrobe('audiencia/girl/'),
