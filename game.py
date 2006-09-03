@@ -93,7 +93,7 @@ class Level(Scene):
         self.state = PLAYING
 
         self.level_timer = Timer(self.motor.getTimeLeft())
-       
+        self.audiencia.setVoluntario(self.motor.voluntario, False)
         self.motor.start()
         
                
@@ -144,6 +144,8 @@ class Level(Scene):
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
+                self.sounds.abucheo.play()
+                self.audiencia.tomateame()
                 self.wintime = pygame.time.get_ticks()
                 
             self.level_timer.setTimeLeft( self.motor.getTimeLeft() )
@@ -165,7 +167,7 @@ class Level(Scene):
         elif self.state == TOMATOING:
             if pygame.time.get_ticks() -self.wintime > 5000:
                 self.state = TOMATO
-                self.sounds.abucheo.play()
+
                 
                          
     def update(self):
@@ -196,38 +198,10 @@ class Level(Scene):
                 (cursor_xpos,ypos+self.line_manager.height)
                 )
                 
-            self.game.screen.blit(self.voluntario, 
-                    ( 800/2 - self.voluntario.get_width()/2, 
-                    400-self.voluntario.get_height() ) 
-                    )
-        elif self.state == WINNING:
-            self.game.screen.blit(self.voluntario, 
-                    ( 800/2 - self.voluntario.get_width()/2, 
-                    400-self.voluntario.get_height() ) 
-                    )
-        elif self.state == LOSING:
-            self.game.screen.blit(self.voluntario, 
-                    ( 800/2 - self.voluntario.get_width()/2, 
-                    400-self.voluntario.get_height() ) 
-                    )
-        elif self.state == TOMATO:
-            self.game.screen.blit(self.voluntario, 
-                    ( 800/2 - self.voluntario.get_width()/2, 
-                    400-self.voluntario.get_height() ) 
-                    )
-        elif self.state == TOMATOING:
-            self.game.screen.blit(self.voluntario, 
-                    ( 800/2 - self.voluntario.get_width()/2, 
-                    400-self.voluntario.get_height() ) 
-                    )
         elif self.state == WON:
-            pass 
+            self.audiencia.setVoluntario(None, True)        
         elif self.state == LOST:
-            self.game.screen.blit(cosas.hongo, 
-                    ( 800/2 - cosas.hongo.get_width()/2, 
-                    400-cosas.hongo.get_height() ) 
-                    )
-        
+            self.audiencia.setVoluntario(self.motor.voluntario_error, True)
            
 class LevelIntro(Scene):
     def init(self, level_name):

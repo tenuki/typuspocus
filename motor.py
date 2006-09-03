@@ -2,7 +2,7 @@
 
 from __future__ import division
 import random, time
-
+import cosas
 PALABRAS = "Nuestro objetivo es nuclear a los usuarios de Python, de manera de centralizar la comunicacion a nivel nacional. Pretendemos llegar a usuarios y empresas, promover el uso de Python, intercambiar informacion, compartir experiencias y en general, ser el marco de referencia local en el uso y difusion de esta tecnologia.".split()
 
 class Estados:
@@ -26,7 +26,9 @@ class MainMotor(object):
 
     porcentajeRequerido = 0.50
     tiempoExtra = 10
-
+    voluntario = cosas.reloj
+    voluntario_error = cosas.hongo
+    
     def __init__(self, cant):
         self.LPS = 3.0
         (self.hechizo, self.indpals) = self._armaHechizo(cant)
