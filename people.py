@@ -36,7 +36,7 @@ class SampleScene(Scene):
         self.background = pygame.Surface( (800,600) )
         some = Individual(self.wardrobe)
         some.random()
-        self.background = some.render(iLayers)
+        self.background = some.render() #(iLayers)
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -49,7 +49,7 @@ class Individual:
         self.layers={}
     
     def random(self):
-        layers = self.wardrobe.layers()
+        layers = self.wardrobe.getLayers()
         s = random.randint(0, len(layers))
         sl = random.sample(layers, s)
         #sl.append('body') #skip this for invisible ppl!
@@ -64,10 +64,10 @@ class Individual:
     def __repr__(self):
         return repr(self.layers)
 
-    def render(self, layerorder):
+    def render(self ): # , layerorder):
+        layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
-        #print order
         img = None
         for k in order:
             layername=layerorder[k]
@@ -155,8 +155,11 @@ class Wardrobe:
         artlist.append(article)
         self.articles[layer]=artlist
 
-    def layers(self):
+    def getLayers(self):
         return self.articles.keys()
+    
+    def getLayerorder(self):
+        return self.ordered
         
     def parseConfig(self,path):
         """get layers"""
@@ -169,8 +172,8 @@ class Wardrobe:
             m = R.match(l)
             if m:
                 k,v = m.groups()
-                layers[v]=int(k)
-                ordered[int(k)]=v
+                self.layers[v]=int(k)
+                self.ordered[int(k)]=v
         f.close()
     
     def parseArticles(self, path):
@@ -183,21 +186,21 @@ class Wardrobe:
         for l in f:
             l = l.strip('\n')
             if status==buscando:
-                fieldset = FieldSet() #basic default fieldset
+                self.fieldset = FieldSet() #basic default fieldset
                 if l.startswith('HCDataSetFile_fields'):
                     status=leyendoFields
                     
             elif status==leyendoFields:
                 if l.startswith('HCDataSetFile_data'):
-                    fieldset = FieldSet(fieldlist)
+                    self.fieldset = FieldSet(self.fieldlist)
                     status=leyendoArticles
                 elif l.startswith('#'): pass
                 elif l.startswith('"'):
-                    fieldlist.append(l)
+                    self.fieldlist.append(l)
                     
             elif status==leyendoArticles:
                 if l.startswith('"'):
-                    self.add(Article(l, fieldset, path))
+                    self.add(Article(l, self.fieldset, path+'/data/'))
                 elif l.startswith('#'):
                     pass
                 else: status=listo
@@ -207,20 +210,9 @@ class Wardrobe:
 
     
     
-if 0: #__name__=="__main__":
-    layers, ilayers = parseConfig()
-    wardrobe, fset= parseArticles()
-    print wardrobe.articles
-    i = Individual(wardrobe)
-    i.random()
-    print i
-    i.render(ilayers)
-    
 if __name__ == "__main__":
-    global Layers, iLayers
-    #Layers, iLayers = parseConfig()
-    #wardrobe, fset= parseArticles()
-    Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
+    Wardrobe2 = Wardrobe('audiencia/fashion_boy/')
+    Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
     g = Game(800, 600, framerate = 200)
     g.run( SampleScene(g, "Scene1", Wardrobe1) )
     
