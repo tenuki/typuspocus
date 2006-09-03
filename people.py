@@ -3,11 +3,15 @@ import pygame
 from pygame.locals import *
 from engine import Game, Scene
 
+Layers = None
+iLayers = None
+
 class SampleScene(Scene):
     def init(self, nombre, wardrobe):
         self.nombre = nombre
         self.goscene=False
         self.finalizar = False
+        self.wardrobe = wardrobe
         
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -28,10 +32,11 @@ class SampleScene(Scene):
             self.end( self.nombre )
                     
     def update(self):
+        global iLayers
         self.background = pygame.Surface( (800,600) )
-        some = Individual()
+        some = Individual(self.wardrobe)
         some.random()
-        self.background = some.render()
+        self.background = some.render(iLayers)
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -39,7 +44,7 @@ class SampleScene(Scene):
 
 
 class Individual:
-    def __init__(self, wardrobe=Wardrobe):
+    def __init__(self, wardrobe):
         self.wardrobe=wardrobe
         self.layers={}
     
@@ -222,9 +227,10 @@ if __name__=="__main__":
             wget(path + e[ImageName])
 
 if __name__ == "__main__":
-    layers, ilayers = parseConfig()
+    global Layers, iLayers
+    Layers, iLayers = parseConfig()
     Wardrobe, fset= parseArticles()
     g = Game(800, 600, framerate = 200)
-    g.run( SampleScene(g, "Scene1") )
+    g.run( SampleScene(g, "Scene1", Wardrobe) )
     
     
