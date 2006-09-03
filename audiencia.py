@@ -70,6 +70,8 @@ class AudienciaScene(Scene):
                 self.end()
             elif evt.key == K_RETURN:
                 self.finalizar = True
+    def gameEvent(self):
+        pass
     
     def loop(self):
         # aca updateamos el mundo cada paso
