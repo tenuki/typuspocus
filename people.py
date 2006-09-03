@@ -108,8 +108,7 @@ class Individual:
                 #we use that layer!
                 article = self.layers[layername][0]
                 if img==None:
-                    #img = pygame.image.load('escenario/butaca.png')
-                    img = pygame.Surface((91,139), SRCALPHA)
+                    img = pygame.image.load('escenario/sinbutaca.png')
                     img.convert_alpha()
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
