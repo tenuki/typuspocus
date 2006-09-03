@@ -13,19 +13,28 @@ class SampleScene(Scene):
         self.goscene=False
         self.finalizar = False
         self.wardrobe = wardrobe
-
         self.pool=[]
+        sx,sy = PPLSIZE
+        
         for i in range(30):
+            silla = pygame.image.load('escenario/butaca.gif')
+            silla.convert()
             some = Individual(self.wardrobe)
             some.random()
-            self.pool.append(some.render())
+            img = some.render()
+            silla.blit(img,(0,0))
+            self.pool.append(silla)
         
-        sx,sy = PPLSIZE
+        silla = pygame.image.load('escenario/butaca.gif')
+        silla.convert()
+        
         self.background = pygame.Surface((sx*6,sy*5))
+        self.background.fill( (255,0,0) )
         for x in range(6):
             for y in range(5):
                 some = Individual(self.wardrobe)
                 some.random()
+                self.background.blit(silla,(sx*x, sy*y)) 
                 self.background.blit(some.render(),(sx*x, sy*y)) 
                 
         
@@ -51,8 +60,8 @@ class SampleScene(Scene):
         global iLayers
         sx,sy = PPLSIZE
 
-        x,y = random.randint(0,6), random.randint(0,5)
-        self.background.blit(self.pool[random.randint(0,29)],(sx*x, sy*y)) 
+        #x,y = random.randint(0,6), random.randint(0,5)
+        #self.background.blit(self.pool[random.randint(0,29)],(sx*x, sy*y)) 
         
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
@@ -146,6 +155,7 @@ class Article:
     def getImage(self):
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
+            self.image.convert()
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
