@@ -69,11 +69,11 @@ class Individual:
         order = layerorder.keys()
         order.sort()
         img = None
-        print order
-        print layerorder
+        #print order
+        #print layerorder
         for k in order:
             layername=layerorder[k]
-            print layername
+            #print layername
             if layername in self.layers.keys():
                 #we use that layer!
                 article = self.layers[layername][0]
@@ -177,13 +177,13 @@ class Wardrobe:
                 k,v = m.groups()
                 self.layers[v]=int(k)
                 self.ordered[int(k)]=v
-            print m
-            print self.layers
-            print self.ordered
+            #print m
+            #print self.layers
+            #print self.ordered
         f.close()
-        print '-----------------'
-        print self.layers
-        print self.ordered
+        #print '-----------------'
+        #print self.layers
+        #print self.ordered
     
     def parseArticles(self, path):
         articlelist=[]
