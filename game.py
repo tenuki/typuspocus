@@ -80,7 +80,7 @@ class Level(Scene):
         pass          
     def update(self):
         self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.SysFont("Times New Roman",30)
+        font = pygame.font.Font("VeraMono.ttf",30)
         
         cursor = self.motor.cursor
         offset, line = self.line_manager.getLineFromCursor( cursor )
