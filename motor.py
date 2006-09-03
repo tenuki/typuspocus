@@ -9,7 +9,7 @@ class Estados:
     (VIRGEN, OK_DEUNA, OK_CORRG, MAL) = range(4)
 
 class Eventos:
-    (PALOK, PALMAL, INACT5, INACT10) = range(4)
+    (VIRGEN, OK_DEUNA, OK_CORRG, MAL, PALOK, PALMAL, INACT5, INACT10) = range(8)
     descrip = {PALOK:   "Se escribio una palabra completamente correcta",
                PALMAL:  "Se escribio una palabra completamente mal",
                INACT5:  "Hace 5 segundos que no se escribe nada",
@@ -92,6 +92,8 @@ class MainMotor(object):
                 evento = Eventos.PALOK
             if self.estado[ini:fin] == [Estados.MAL]*(fin-ini):
                 evento = Eventos.PALMAL
+        else:
+            evento = self.estado[self.cursor]
 
         # actualizamos las variables
         self._getScore()

@@ -79,6 +79,10 @@ class AudienciaScene(Scene):
             self.sounds.bravo.play()
         elif evt == motor.Eventos.PALMAL:
             self.sounds.abucheo.play()
+        elif evt == motor.Eventos.OK_DEUNA:
+            self.sounds.bravo2.play()
+        elif evt == motor.Eventos.MAL:
+            self.sounds.abucheo2.play()
         
     def setCalor(self, calor):
         self.calor = calor
