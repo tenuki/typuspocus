@@ -12,16 +12,16 @@ class Auditorio:
     pass
 
 class SampleScene(Scene):
-    def init(self, nombre, wardrobe):
+    def init(self, nombre, wardrobes):
         self.nombre = nombre
         self.goscene=False
         self.finalizar = False
-        self.wardrobe = wardrobe
+        self.wardrobes = wardrobes
         self.pool=[]
         sx,sy = PPLSIZE
         
         for i in range(30):
-            some = Individual(self.wardrobe)
+            some = Individual(random.choice(self.wardrobes))
             some.random()
             img = some.render()
             self.pool.append(img)
@@ -29,7 +29,7 @@ class SampleScene(Scene):
         self.background = pygame.Surface((800,600))
         for y in range(filasy):
             for x in range(filasx):
-                some = Individual(self.wardrobe)
+                some = Individual(random.choice(self.wardrobes))
                 some.random()
                 dx = (y%2) * sx/2 - sx/2
                 self.background.blit(some.render(),(sx*x+dx, sy/2*y)) 
@@ -48,7 +48,6 @@ class SampleScene(Scene):
         if self.goscene:
             retorno = self.runScene( SampleScene(self.game, self.nombre + " hijo ") )
             self.goscene = False
-            #print "devolvio", retorno
         if self.finalizar:
             self.end( self.nombre )
                     
@@ -86,7 +85,7 @@ class Individual:
     def __repr__(self):
         return repr(self.layers)
 
-    def render(self ): # , layerorder):
+    def render(self ):
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
@@ -194,13 +193,7 @@ class Wardrobe:
                 k,v = m.groups()
                 self.layers[v]=int(k)
                 self.ordered[int(k)]=v
-            #print m
-            #print self.layers
-            #print self.ordered
         f.close()
-        #print '-----------------'
-        #print self.layers
-        #print self.ordered
     
     def parseArticles(self, path):
         articlelist=[]
@@ -238,11 +231,17 @@ class Wardrobe:
     
 if __name__ == "__main__":
     #Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
-    Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
+    #Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
     #Wardrobe1 = Wardrobe('audiencia/girl/')
     #Wardrobe1 = Wardrobe('audiencia/goth/')
     #Wardrobe1 = Wardrobe('audiencia/boy/')
+    wardrobes = [Wardrobe('audiencia/fashion_boy/'),
+                    Wardrobe('audiencia/fashion_girl/'),
+                    Wardrobe('audiencia/girl/'),
+                    Wardrobe('audiencia/goth/'),
+                    Wardrobe('audiencia/boy/')]
+
     g = Game(800, 600, framerate = 200)
-    g.run( SampleScene(g, "Scene1", Wardrobe1) )
+    g.run( SampleScene(g, "Scene1", wardrobes) )
     
     
