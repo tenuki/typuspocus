@@ -33,10 +33,10 @@ HCDataSetFile_fields
 "7" "waldrobe"
 
 HCDataSetFile_data
-"1" "girl_body_01.gif" "body" "body" "27" "28" "-1"
 "2" "girl_body_02.gif" "body" "body" "27" "28" "-1"
 "3" "girl_body_03.gif" "body" "body" "27" "28" "-1"
 "4" "girl_body_04.gif" "body" "body" "27" "28" "-1"
+"1" "skeletor.gif" "body" "body" "27" "28" "-1"
 "5" "alien.gif" "body" "body" "27" "28" "-1"
 "6" "girl_skirt_01.gif" "bottoms" "tops n bottoms" "36" "96" "-1"
 "7" "girl_skirt_02.gif" "bottoms" "tops n bottoms" "36" "94" "-1"
