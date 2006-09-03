@@ -138,7 +138,7 @@ HCDataSetFile_data
 "141" "boy_jacket_03.gif" "tops" "jackets" "25" "68" "-1"
 "142" "boy_jumper_04.gif" "tops" "tops n bottoms" "25" "65" "-1"
 "143" "boy_jumper_03.gif" "tops" "tops n bottoms" "25" "69" "-1"
-"144" "boy_hat_03.gif" "hats" "hats" "27" "18" "-1"
+"144" "boy_hat_03.gif" "hats" "hats" "27" "18" "0.05"
 "145" "boy_shoes_05.gif" "shoes" "tops n bottoms" "35" "128" "-1"
 "146" "boy_trousers_01.gif" "bottoms" "tops n bottoms" "39" "98" "-1"
 "147" "boy_facialhair_04.gif" "hair" "hair" "35" "54" "-1"
@@ -167,5 +167,5 @@ HCDataSetFile_data
 "50180" "boy_tee_09.gif" "tops" "tops n bottoms" "31" "70" "-1"
 "50185" "boy_trooper_01.gif" "extras" "tops n bottoms" "24" "64" "-1"
 "50182" "boy_body_04.gif" "body" "body" "26" "28" "-1"
-"50184" "boy_hat_05.gif" "hats" "hats" "26" "27" "-1"
+"50184" "boy_hat_05.gif" "hats" "hats" "26" "27" "0.05"
 
