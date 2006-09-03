@@ -8,8 +8,8 @@ iLayers = None
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
 
-class Auditorio:
-    pass
+
+
 
 class SampleScene(Scene):
     def init(self, nombre, wardrobes):
@@ -67,23 +67,37 @@ class SampleScene(Scene):
 
 
 class Individual:
+    LayerProb = {"behind":0.5, 
+        "body":0.9, 
+        "hair":0.7,
+        "underware":0.8,
+        "tops n bottoms":0.7,
+        "shoes":0.8,
+        "jackets":0.6,
+        "hats":0.5,
+        "infront":0.3}
+
     def __init__(self, wardrobe):
         self.wardrobe=wardrobe
         self.layers={}
     
     def random(self):
+        sl=[]
         layers = self.wardrobe.getLayers()
-        s = random.randint(0, len(layers))
-        sl = random.sample(layers, s)
-        #sl.append('body') #skip this for invisible ppl!
-        sl+=['jackets']
+        for layer in layers:
+            if random.random()<Individual.LayerProb[layer]:
+                sl.append(layer)
         if not 'body' in sl:
-            sl=layers
+            sl=Individual.LayerProb.keys()
             sl.remove('body')
         
         for layer in sl:
-            self.layers[layer] = random.sample(self.wardrobe.articles[layer], 1)
-    
+            try:
+                self.layers[layer] = random.sample(
+                    self.wardrobe.articles[layer], 1)
+            except:
+                pass
+                
     def __repr__(self):
         return repr(self.layers)
 
