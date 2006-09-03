@@ -6,14 +6,11 @@ class PInterpolator:
         self.fin = complex(pfin[0],pfin[1])
         
 class MadamBezier(PInterpolator):
-    def __init__(self, *args):
+    def __init__(self, *args, prev=None):
         PInterpolador.__init__(*args)
-        #ix, iy = self.inicio
-        #fx, fy = self.fin
-        #self.m1 = ix+ (fx-ix)/4, iy+(fy-iy)/4 #random here please 
-        #self.m2 = fx- (fx-ix)/4, fy-(fy-iy)/4 #random here please 
         d = self.fin-self.inicio
-        self.m1 = self.inicio + d/4        
+        self.m1 = self.inicio + d/4    
+        self.m2 = self.fin-d/4 #random here please 
         
     def getAt(self, t):
         c = ((1-t)**3)*self.inicio + \
