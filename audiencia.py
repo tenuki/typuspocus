@@ -143,7 +143,8 @@ class AudienciaScene(Scene):
                 scale = math.sqrt(1.0/(1+float(self.tomateando)))**3
                 imagen = pygame.transform.rotozoom(self.tomate,rotacion,scale)
 
-                surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
+                p = self.tomateMB.getAt( 1.0-0.1*self.tomateando )
+                surface.blit(imagen, imagen.get_rect(center=p))
 
         surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
         if self.tomateando == 0:
@@ -159,6 +160,8 @@ class AudienciaScene(Scene):
 
     def tomateame(self):
         self.tomateando = MAXTOMATEANDO
+        self.tomateMB = interpol.MadamBezier(
+                            self.audiencia.getRandomPersonPosition(),(400,300)) 
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
