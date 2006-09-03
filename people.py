@@ -75,16 +75,17 @@ class Individual:
                 print self.layers
                 article = self.layers[layername][0]
                 if img==None:
+                    img = pygame.Surface( (91, 139) )
                     nx,ny = article.SnapPos()
-                    img = article.getImage()
+                    img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
                     
-                elif 0:
+                else:
                     nimg = article.getImage()
-                    print dir(article)
                     x, y = article.SnapPos()
                     xsize, ysize = img.get_size()
-                    img.paste(nimg, (x,y,xsize, ysize))
+                    #img.paste(nimg, (x,y,xsize, ysize))
+                    img.blit(nimg, (x,y))
         return img
         
 
