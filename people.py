@@ -27,7 +27,7 @@ class SampleScene(Scene):
         if self.goscene:
             retorno = self.runScene( SampleScene(self.game, self.nombre + " hijo ") )
             self.goscene = False
-            print "devolvio", retorno
+            #print "devolvio", retorno
         if self.finalizar:
             self.end( self.nombre )
                     
@@ -53,7 +53,6 @@ class Individual:
         s = random.randint(0, len(layers))
         sl = random.sample(layers, s)
         #sl.append('body') #skip this for invisible ppl!
-        #sl+=['bottoms', 'tops'] #skip this for invisible ppl!
         sl+=['jackets']
         if not 'body' in sl:
             sl=layers
@@ -68,18 +67,15 @@ class Individual:
     def render(self, layerorder):
         order = layerorder.keys()
         order.sort()
-        print order
+        #print order
         img = None
         for k in order:
             layername=layerorder[k]
-            print layername
             if layername in self.layers.keys():
                 #we use that layer!
-                print layername
-                print self.layers
                 article = self.layers[layername][0]
                 if img==None:
-                    img = pygame.Surface( (91, 139) )
+                    img = pygame.Surface( (91, 139) ) #full size
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
@@ -88,7 +84,6 @@ class Individual:
                     nimg = article.getImage()
                     x, y = article.SnapPos()
                     xsize, ysize = img.get_size()
-                    #img.paste(nimg, (x,y,xsize, ysize))
                     img.blit(nimg, (x,y))
         return img
         
@@ -149,8 +144,10 @@ class Article:
         os.spawnlp(os.P_WAIT, '/sw/bin/wget', 'wget', fname)
 
 class Wardrobe:
-    def __init__(self):
+    def __init__(self, path):
         self.articles={}
+        self.parseConfig(path)
+        self.parseArticles(path)
         
     def add(self, article):
         layer = article.layer
@@ -161,59 +158,56 @@ class Wardrobe:
     def layers(self):
         return self.articles.keys()
         
-        
-def parseConfig():
-    """get layers"""
-    R = re.compile(r'"layer(.*)" *"(.*)".*')
-    layers={}
-    ordered = {}
-    f = open('config.txt')
-    for l in f:
-        if l[0]=='#': continue
-        m = R.match(l)
-        if m:
-            k,v = m.groups()
-            layers[v]=int(k)
-            ordered[int(k)]=v
-    f.close()
-    return layers, ordered
+    def parseConfig(self,path):
+        """get layers"""
+        R = re.compile(r'"layer(.*)" *"(.*)".*')
+        self.layers={}
+        self.ordered = {}
+        f = open(path+'config.txt')
+        for l in f:
+            if l[0]=='#': continue
+            m = R.match(l)
+            if m:
+                k,v = m.groups()
+                layers[v]=int(k)
+                ordered[int(k)]=v
+        f.close()
+    
+    def parseArticles(self, path):
+        articlelist=[]
+        self.fieldlist=[]
+        buscando, leyendoFields, leyendoArticles, listo = range(4)
+        status = buscando
+        fpath=path+r'/data/'
+        f = open(path+'/articles.txt')
+        for l in f:
+            l = l.strip('\n')
+            if status==buscando:
+                fieldset = FieldSet() #basic default fieldset
+                if l.startswith('HCDataSetFile_fields'):
+                    status=leyendoFields
+                    
+            elif status==leyendoFields:
+                if l.startswith('HCDataSetFile_data'):
+                    fieldset = FieldSet(fieldlist)
+                    status=leyendoArticles
+                elif l.startswith('#'): pass
+                elif l.startswith('"'):
+                    fieldlist.append(l)
+                    
+            elif status==leyendoArticles:
+                if l.startswith('"'):
+                    self.add(Article(l, fieldset, path))
+                elif l.startswith('#'):
+                    pass
+                else: status=listo
+            elif status==listo:
+                break
+        f.close()
 
-def parseArticles():
-    articlelist=[]
-    fieldlist=[]
-    wardrobe=Wardrobe()
-    buscando, leyendoFields, leyendoArticles, listo = range(4)
-    status = buscando
-    path=r'data/'
-    f = open('articles.php')
-    for l in f:
-        l = l.strip('\n')
-        if status==buscando:
-            fieldset = FieldSet() #basic default fieldset
-            if l.startswith('HCDataSetFile_fields'):
-                status=leyendoFields
-                
-        elif status==leyendoFields:
-            if l.startswith('HCDataSetFile_data'):
-                fieldset = FieldSet(fieldlist)
-                status=leyendoArticles
-            elif l.startswith('#'): pass
-            elif l.startswith('"'):
-                fieldlist.append(l)
-                
-        elif status==leyendoArticles:
-            if l.startswith('"'):
-                wardrobe.add(Article(l, fieldset, path))
-            elif l.startswith('#'):
-                pass
-            else: status=listo
-        elif status==listo:
-            break
-    f.close()
-    return wardrobe, fieldset
     
     
-if __name__=="__main__":
+if 0: #__name__=="__main__":
     layers, ilayers = parseConfig()
     wardrobe, fset= parseArticles()
     print wardrobe.articles
@@ -221,21 +215,13 @@ if __name__=="__main__":
     i.random()
     print i
     i.render(ilayers)
-
     
-    
-    if 0:    
-        path=r'http://www.stortroopers.com/fashion_boy/data/images/articles/'
-        elements = getDataSet()
-        for e in elements:
-            print e[ImageName]
-            wget(path + e[ImageName])
-
 if __name__ == "__main__":
     global Layers, iLayers
-    Layers, iLayers = parseConfig()
-    Wardrobe, fset= parseArticles()
+    #Layers, iLayers = parseConfig()
+    #wardrobe, fset= parseArticles()
+    Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
     g = Game(800, 600, framerate = 200)
-    g.run( SampleScene(g, "Scene1", Wardrobe) )
+    g.run( SampleScene(g, "Scene1", Wardrobe1) )
     
     
