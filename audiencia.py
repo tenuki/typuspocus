@@ -31,20 +31,26 @@ class Fila:
     def render(self, surface, (dx,dy) ):
         surface.blit(Fila.sillas, (dx,dy))
         for x, persona in enumerate(self.personas):
-            gx = random.choice([-1,0,1])
-            gy = random.choice([-1,-2,0])
+            if random.randint(0,90)==0:
+                gx = random.choice([-1,0,1])
+                gy = random.choice([-1,-2,0])
+            else:
+                gx, gy = 0,0
             surface.blit(persona, ((x*peoplex)+dx+gx, dy+gy))
 
 
 class Audiencia:
     def __init__(self):
         self.filas = [ Fila() for y in range(filasy) ]
+        self.fg = pygame.image.load("escenario/foreground.png")
+        self.fg.convert()
 
     def render(self, surface):
         for y,fila in enumerate(self.filas):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
             fila.render(surface, (dx,dy) )
+        surface.blit(self.fg, (0,0))
 
 class SampleScene2(Scene):
     def init(self, nombre):
