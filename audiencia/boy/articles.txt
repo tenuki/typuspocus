@@ -36,6 +36,7 @@ HCDataSetFile_data
 "9" "boy_body_01.gif" "body" "body" "26" "28" "-1"
 "10" "boy_body_02.gif" "body" "body" "26" "28" "-1"
 "11" "boy_body_03.gif" "body" "body" "26" "28" "-1"
+"111" "skeletor.gif" "body" "body" "26" "28" "-1"
 "15" "boy_jeans_01.gif" "bottoms" "tops n bottoms" "39" "94" "-1"
 "16" "boy_trousers_02.gif" "bottoms" "tops n bottoms" "39" "98" "-1"
 "17" "boy_trousers_03.gif" "bottoms" "tops n bottoms" "38" "94" "-1"
