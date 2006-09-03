@@ -12,7 +12,7 @@ peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
 MAXPUFFING = 30
-MAXTOMATEANDO = 10
+MAXTOMATEANDO = 20
 
 wardrobes = getAllWardrobes()
 def buildIndividual():
@@ -128,7 +128,7 @@ class AudienciaScene(Scene):
                 self.tomateando -= 1
 
                 rotacion = (float(self.tomateando)/MAXTOMATEANDO)*180
-                scale = 1-float(self.tomateando)/MAXTOMATEANDO
+                scale = math.sqrt(1.0/(1+float(self.tomateando)))**3
                 imagen = pygame.transform.rotozoom(self.tomate,rotacion,scale)
 
                 surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
