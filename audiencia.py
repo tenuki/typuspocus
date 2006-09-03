@@ -31,7 +31,9 @@ class Fila:
     def render(self, surface, (dx,dy) ):
         surface.blit(Fila.sillas, (dx,dy))
         for x, persona in enumerate(self.personas):
-            surface.blit(persona, ((x*peoplex)+dx, dy))
+            gx = random.choice([-1,0,1])
+            gy = random.choice([-1,-2,0])
+            surface.blit(persona, ((x*peoplex)+dx+gx, dy+gy))
 
 
 class Audiencia:
