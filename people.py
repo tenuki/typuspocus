@@ -114,7 +114,8 @@ class Individual:
                 article = self.layers[layername]
                 if img==None:
                     img = pygame.image.load('escenario/sinbutaca.png')
-                    img.convert_alpha(background)
+                    #img.convert_alpha(background)
+                    img.convert_alpha()
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
@@ -177,7 +178,8 @@ class Article:
         global background
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
-            self.image.convert_alpha(background)
+            #self.image.convert_alpha(background)
+            self.image.convert_alpha()
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
