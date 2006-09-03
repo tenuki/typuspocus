@@ -7,6 +7,14 @@ PALABRAS = "Nuestro objetivo es nuclear a los usuarios de Python, de manera de c
 
 class Estados:
     (VIRGEN, OK_DEUNA, OK_CORRG, MAL) = range(4)
+
+class Eventos:
+    (PALOK, PALMAL, INACT5, INACT10) = range(4)
+    descrip = {PALOK:   "Se escribio una palabra completamente correcta",
+               PALMAL:  "Se escribio una palabra completamente mal",
+               INACT5:  "Hace 5 segundos que no se escribe nada",
+               INACT10: "Hace 10 segundos que no se escribe nada",
+              }
     
 
 class MainMotor(object):
@@ -16,7 +24,7 @@ class MainMotor(object):
     Cuando el usr presiona una tecla, hitLetra(), cuando hace backspace, hitBackspace()
     '''
     def __init__(self, cant):
-        self.hechizo = " ".join([random.choice(PALABRAS) for x in range(cant)])
+        (self.hechizo, self.indpals) = self._armaHechizo(cant)
         self.largohech = len(self.hechizo)
         self.cursor = 0
         self.cant_bs = 0
@@ -28,6 +36,23 @@ class MainMotor(object):
         self.score = 0
         self.estado = [Estados.VIRGEN] * self.largohech
         self.calor = 0
+        self.tiempoUltTecla = 0
+
+    def _armaHechizo(self, cant):
+        '''Arma el hechizo y un indice que es un dict, donde la clave es la
+        posicion de la ultima letra de cada palabra y el valor es una tupla
+        con los dos extremos de la palabra.
+        '''
+        base = 0
+        palabras = []
+        indice = {}
+        for i in range(cant):
+            pal = random.choice(PALABRAS)
+            largo = len(pal)
+            palabras.append(pal)
+            indice[base+largo-1] = (base, base+largo)
+            base += largo + 1
+        return (" ".join(palabras), indice)
         
     def hitLetra(self, letra):
         '''Recibe la letra que apretó el usuario y devuelve...
@@ -51,21 +76,31 @@ class MainMotor(object):
                 res = Estados.OK_CORRG
         else:
             res = Estados.MAL
-
         self.estado[self.cursor] = res
-        self.cursor += 1
 #        print "Estado nuevo", self.estado
 
+        # evento? nos fijamos si completamos una palabra
+        evento = None
+        if self.cursor in self.indpals:
+            (ini, fin) = self.indpals[self.cursor]
+            if self.estado[ini:fin] == [Estados.OK_DEUNA]*(fin-ini):
+                evento = Eventos.PALOK
+            if self.estado[ini:fin] == [Estados.MAL]*(fin-ini):
+                evento = Eventos.PALMAL
+
+        # actualizamos las variables
         self._getScore()
         self._getCalor()
-        eventos = self._getEventos()
-        return (res, eventos)
+        self.tiempoUltTecla = time.time()
+        self.cursor += 1
+        return (res, evento)
 
     def hitBackspace(self):
         '''El usuario apretó el backspace.'''
         if self.cursor > 0:
             self.cursor -= 1
         self.cant_bs = +1
+        self.tiempoUltTecla = time.time()
         return
 
     def _getScore(self):
@@ -99,6 +134,18 @@ class MainMotor(object):
 
     def start(self):
         self.startTime = time.time()
+        return
+
+    def tick(self):
+        # actualizamos el calor del publico
+        self._getCalor()
+
+        # evento? vemos si hace rato que no tocamos una tecla
+        inactivo = time.time() - self.tiempoUltTecla
+        if inactivo > 10:
+            return Eventos.INACT10
+        if inactivo > 5:
+            return Eventos.INACT5
         return
 
     def getTimeLeft(self):
@@ -140,7 +187,3 @@ class MainMotor(object):
             calor = -1
         self.calor = calor
         return calor
-
-    def _getEventos(self):
-        # FIXME
-        return None
