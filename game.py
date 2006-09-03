@@ -73,10 +73,10 @@ PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
 class Level(Scene):
-    def init(self):
+    def init(self, cant_palabras):
         import sounds
         self.sounds = sounds
-        self.motor = MainMotor(5)
+        self.motor = MainMotor(cant_palabras)
         self.line_manager = LineManager(self.motor.hechizo)
         self.offset_cache = [None]*len(self.motor.hechizo)
         self.style_cache = [None]*len(self.motor.hechizo)
@@ -121,6 +121,7 @@ class Level(Scene):
                 self.sounds.reloj.play()
               
             if self.motor.cursor >= len(self.motor.hechizo):
+                self.sounds.suspenso.play()
                 if self.motor.tuvoExito():
                     self.state = WINNING
                 else:
@@ -172,9 +173,10 @@ class Level(Scene):
                 
                          
     def update(self):
+        font = pygame.font.Font("VeraMono.ttf",30)
+            
         if self.state == PLAYING:
             #self.game.screen.blit(self.background, (0,0))
-            font = pygame.font.Font("VeraMono.ttf",30)
             
             cursor = self.motor.cursor
             offset, line = self.line_manager.getLineFromCursor( cursor )
@@ -198,6 +200,13 @@ class Level(Scene):
             self.game.screen.blit(cursor_img, 
                 (cursor_xpos,ypos+self.line_manager.height)
                 )
+        if self.state in [WON, LOST, TOMATO]:
+            im = font.render("[press any key]", True, (30,30,200))
+            ypos = 540
+            xpos = (800-im.get_width())/2
+            
+            self.game.screen.blit( im, (xpos, ypos) )
+            
                 
         
                        
@@ -215,6 +224,21 @@ class LevelIntro(Scene):
         if evt.type == KEYDOWN:
                 self.end()
 
+class GameOver(Scene):
+    def init(self, score):
+        self.score = score
+        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        
+    def paint(self):
+        s = self.font.render("Game Over: Score "+str(self.score), True, (255,255,255))
+        self.background.blit(s, (100,100))
+        self.game.screen.blit(self.background, (0,0))
+    
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+                self.end()
+                
+                
 class MainMenu(Scene):
     def init(self):
         self.font = font =  pygame.font.Font("VeraMono.ttf",50)
@@ -232,11 +256,14 @@ class MainMenu(Scene):
             else:
                 result = GANO
                 count = 0
+                score = 0
                 while result == GANO:
                     count += 1
                     self.runScene( LevelIntro( self.game, str(count) ) )
-                    result = self.runScene( Level(self.game) )
-    
+                    l =  Level(self.game, count*10) 
+                    result = self.runScene( l )
+                    score += l.motor.score
+                self.runScene( GameOver( self.game, score ) )
 
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)

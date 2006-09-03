@@ -3,6 +3,7 @@
 from __future__ import division
 import random, time
 import cosas
+import phrases
 PALABRAS = "Nuestro objetivo es nuclear a los usuarios de Python, de manera de centralizar la comunicacion a nivel nacional. Pretendemos llegar a usuarios y empresas, promover el uso de Python, intercambiar informacion, compartir experiencias y en general, ser el marco de referencia local en el uso y difusion de esta tecnologia.".split()
 
 class Estados:
@@ -53,8 +54,8 @@ class MainMotor(object):
         base = 0
         palabras = []
         indice = {}
-        for i in range(cant):
-            pal = random.choice(PALABRAS)
+        for pal in phrases.PhraseLen(cant).getPhrase().split(" "):
+            #pal = random.choice(PALABRAS)
             largo = len(pal)
             palabras.append(pal)
             indice[base+largo-1] = (base, base+largo)
@@ -197,7 +198,8 @@ class MainMotor(object):
         valor1 = ((self.score / punt_almomento) * 3) - 3 
         calor += valor1
         calor -= self.cant_bs / self.largohech
-        calor *= porc_tiempopasado
+        print "precalor", calor,  (self.cursor/float(self.largohech))
+        calor *= max( (self.cursor/float(self.largohech)), porc_tiempopasado)
 
         # sanity check
         if calor > 1:
@@ -205,5 +207,5 @@ class MainMotor(object):
         if calor < -1:
             calor = -1
         self.calor = calor
-        #print "Hace Calor...", porc_tiempopasado, punt_almomento, valor1, calor, self.tuvoExito()
+        print "Hace Calor...", calor, self.tuvoExito()
         return calor
