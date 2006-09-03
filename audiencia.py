@@ -98,22 +98,32 @@ class AudienciaScene(Scene):
                 self.finalizar = True
                 
     def gameEvent(self, evt):
+        Threshold=0.20
+        aLittleProb = 0.1 
+        channel=None
+        
         if evt == motor.Eventos.PALOK:
-            self.sounds.bravo.play()
+            channel = self.sounds.bravo.play()
         elif evt == motor.Eventos.PALMAL:
-            self.sounds.abucheo.play()
+            channel = self.sounds.abucheo.play()
         elif evt == motor.Eventos.OK_DEUNA:
-            self.sounds.bravo2.play()
+            channel = self.sounds.bravo2.play()
         elif evt == motor.Eventos.MAL:
-            self.sounds.abucheo2.play()
+            channel = self.sounds.abucheo2.play()
+        
+        if channel:
+            cabs = abs(self.calor)
+            r = random.random()
+            if (cabs>Threshold) or (r<aLittleProb): 
+                channel.set_volume(cabs,cabs)
+            else:
+                channel.stop()
         
     def setCalor(self, calor):
         self.calor = calor
     
     def loop(self):
         # aca updateamos el mundo cada paso
-        
-        
         if self.finalizar:
             self.end( )
                     
