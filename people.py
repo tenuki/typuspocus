@@ -17,24 +17,16 @@ class SampleScene(Scene):
         sx,sy = PPLSIZE
         
         for i in range(30):
-            silla = pygame.image.load('escenario/butaca.gif')
-            silla.convert()
             some = Individual(self.wardrobe)
             some.random()
             img = some.render()
-            silla.blit(img,(0,0))
-            self.pool.append(silla)
-        
-        silla = pygame.image.load('escenario/butaca.gif')
-        silla.convert()
+            self.pool.append(img)
         
         self.background = pygame.Surface((sx*6,sy*5))
-        self.background.fill( (255,0,0) )
         for x in range(6):
             for y in range(5):
                 some = Individual(self.wardrobe)
                 some.random()
-                self.background.blit(silla,(sx*x, sy*y)) 
                 self.background.blit(some.render(),(sx*x, sy*y)) 
                 
         
@@ -101,7 +93,8 @@ class Individual:
                 #we use that layer!
                 article = self.layers[layername][0]
                 if img==None:
-                    img = pygame.Surface( PPLSIZE ) #full size
+                    img = pygame.image.load('escenario/butaca.png')
+                    img.convert()
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
