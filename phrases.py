@@ -8,15 +8,41 @@ from string import Template
 
 grammar = {
 'intro' : ["hocus pocus", "abracadabra"],
+
 'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","mid","minus","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","re","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
-'verb' : ["expeleriamus", "habemus", "engorgio", "reducio", "crucio", "levitatio", "disparatum", "cogito","sunt","enlargio"],
-'adjetive': ["bizarre", "horribilis","perfectis"],
+
+'verb' : ["expeleriamus", "habemus", "engorgio", "reducio", "crucio", "levitatio", "disparatum", "cogito","sunt","enlargio","disappearum"],
+
+'adjective': ["insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
+
 'animal': ["alligator","alpaca","ant","anteater","antelope","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
+
 'noun': ["$animal"],
+
+'direct_object' : ['$animal','I','you','she','he','we','they'],
+
 'funny_phrase' : ["bizarre fragances expeleriamus","horribilis fungus habemus","pythonus idolotrus"],
-'phrase' :  ["$intro, $verb $preposition $noun","$funny_phrase"]
+
+'phrase1' : ["abracadabra", "god", "devil"],
+
+'phrase2' : ["hocus pocus","my god","holy python", "odius perl", "holy guido", "greatest guido"],
+
+'phrase3' : ["$verb $preposition $noun"],
+
+'phrase4' : ["$verb $preposition $adjective $noun"],
+
+'phrase5' : ["$direct_object $verb $preposition $adjective $noun"],
+
+'phrase6' : ["the $animal $verb $preposition $adjective $noun", "the $adjective $animal $verb $preposition $noun"],
+
+'phrase7' : ["the $adjective $animal $verb $preposition $adjective $noun"],
+
+'phrase8' : ["the $adjective $preposition $animal $verb $preposition $adjective $noun"],
+
+'phrase' :  ["$intro, $phrase3", "$intro, $phrase4","$intro, $phrase5", "$funny_phrase"]
 }
 
+MAXPHRASE = 8
 
 class Phrase:
     def __init__(self):
@@ -53,8 +79,41 @@ class Phrase:
         ret = self.replace( self.__phrase ) 
         return string.join(ret)
 
-if __name__ == "__main__":
 
-    for i in range(0,10):
+class PhraseLen( Phrase ):
+    """returns a phrase of a fixed len of words."""
+    def __init__( self, l ):
+        Phrase.__init__(self)
+        self.__len = l
+        self.findPhrase()
+
+    def findPhrase( self ):
+        i = self.__len
+
+        comma = ""
+        phrase = ""
+        while i > 0:
+            # hardcoded, if you want to support more, just add to grammar
+            if i > MAXPHRASE:
+                d = int( random.random() * MAXPHRASE + 1 )
+            else:
+                d = i
+
+            name = "$phrase%d" % d
+            phrase += comma + name
+            comma = ", "
+            i -= d
+
+        self.setPhrase( phrase )
+
+class FunnyPhrase( Phrase ):
+    """returns a phrase that should be funny."""
+    def init( self ):
+        self.Phrase.__init__(self)
+        self.setPhrase( random.choice( grammar["funny_phrase"] ) )
+
+if __name__ == "__main__":
+    for i in range(1,40):
         print '---------------------'
-        print Phrase().getPhrase()
+#        print Phrase().getPhrase()
+        print "Len(%d): %s" % (i, PhraseLen(i).getPhrase() )
