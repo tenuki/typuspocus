@@ -89,7 +89,6 @@ class Level(Scene):
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
         
-        self.voluntario = cosas.reloj
         self.state = PLAYING
 
         self.level_timer = Timer(self.motor.getTimeLeft())
@@ -159,10 +158,12 @@ class Level(Scene):
         elif self.state == WINNING:
             if pygame.time.get_ticks() -self.wintime > 5000:
                 self.state = WON
+                self.audiencia.setVoluntario(None, True) 
                 self.sounds.bravo.play()
         elif self.state == LOSING:
             if pygame.time.get_ticks() -self.wintime > 5000:
                 self.state = LOST
+                self.audiencia.setVoluntario(self.motor.voluntario_error, True)
                 self.sounds.abucheo.play()   
         elif self.state == TOMATOING:
             if pygame.time.get_ticks() -self.wintime > 5000:
@@ -198,11 +199,8 @@ class Level(Scene):
                 (cursor_xpos,ypos+self.line_manager.height)
                 )
                 
-        elif self.state == WON:
-            self.audiencia.setVoluntario(None, True)        
-        elif self.state == LOST:
-            self.audiencia.setVoluntario(self.motor.voluntario_error, True)
-           
+        
+                       
 class LevelIntro(Scene):
     def init(self, level_name):
         self.level_name = level_name
