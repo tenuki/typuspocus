@@ -52,11 +52,15 @@ class Individual:
         layers = self.wardrobe.layers()
         s = random.randint(0, len(layers))
         sl = random.sample(layers, s)
-        sl.append('body') #skip this for invisible ppl!
+        #sl.append('body') #skip this for invisible ppl!
+        #sl+=['bottoms', 'tops'] #skip this for invisible ppl!
+        sl+=['jackets']
+        if not 'body' in sl:
+            sl=layers
+            sl.remove('body')
         
         for layer in sl:
-            self.layers[layer] = \
-                random.sample(self.wardrobe.articles[layer], 1)
+            self.layers[layer] = random.sample(self.wardrobe.articles[layer], 1)
     
     def __repr__(self):
         return repr(self.layers)
