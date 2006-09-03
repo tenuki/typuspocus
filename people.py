@@ -36,7 +36,7 @@ class SampleScene(Scene):
         self.background = pygame.Surface( (800,600) )
         some = Individual(self.wardrobe)
         some.random()
-        self.background = some.render() #(iLayers)
+        self.background = some.render()
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -69,8 +69,11 @@ class Individual:
         order = layerorder.keys()
         order.sort()
         img = None
+        print order
+        print layerorder
         for k in order:
             layername=layerorder[k]
+            print layername
             if layername in self.layers.keys():
                 #we use that layer!
                 article = self.layers[layername][0]
@@ -174,7 +177,13 @@ class Wardrobe:
                 k,v = m.groups()
                 self.layers[v]=int(k)
                 self.ordered[int(k)]=v
+            print m
+            print self.layers
+            print self.ordered
         f.close()
+        print '-----------------'
+        print self.layers
+        print self.ordered
     
     def parseArticles(self, path):
         articlelist=[]
@@ -211,8 +220,11 @@ class Wardrobe:
     
     
 if __name__ == "__main__":
-    Wardrobe2 = Wardrobe('audiencia/fashion_boy/')
-    Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
+    #Wardrobe2 = Wardrobe('audiencia/fashion_boy/')
+    #Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
+    #Wardrobe1 = Wardrobe('audiencia/girl/')
+    #Wardrobe1 = Wardrobe('audiencia/goth/')
+    Wardrobe1 = Wardrobe('audiencia/boy/')
     g = Game(800, 600, framerate = 200)
     g.run( SampleScene(g, "Scene1", Wardrobe1) )
     
