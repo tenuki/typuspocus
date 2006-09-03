@@ -32,8 +32,9 @@ class Fila:
 
     def render(self, surface, (dx,dy), porcentaje ):
         surface.blit(Fila.sillas, (dx,dy))
+        print porcentaje
         for x, persona in enumerate(self.personas):
-            if random.randint(0,100)<porcentaje:
+            if random.randint(0,1000)<porcentaje:
                 gx = random.choice([-1,0,1])
                 gy = random.choice([-1,-2,0])
             else:
@@ -98,6 +99,13 @@ class AudienciaScene(Scene):
         global iLayers
         self.game.screen.fill((0,0,0))
         self.audiencia.render(self.game.screen, abs(self.calor)*100)
+
+    def setVoluntario(self, voluntario, hacerPuff):
+        """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
+        self.voluntario = voluntario
+
+    def tomateame(self):
+        pass
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
