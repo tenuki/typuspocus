@@ -230,6 +230,13 @@ class Wardrobe:
         f.close()
 
     
+def getAllWardrobes():
+    return [Wardrobe('audiencia/fashion_boy/'),
+                    Wardrobe('audiencia/fashion_girl/'),
+                    Wardrobe('audiencia/girl/'),
+                    Wardrobe('audiencia/goth/'),
+                    Wardrobe('audiencia/boy/')]
+
     
 if __name__ == "__main__":
     #Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
@@ -237,11 +244,7 @@ if __name__ == "__main__":
     #Wardrobe1 = Wardrobe('audiencia/girl/')
     #Wardrobe1 = Wardrobe('audiencia/goth/')
     #Wardrobe1 = Wardrobe('audiencia/boy/')
-    wardrobes = [Wardrobe('audiencia/fashion_boy/'),
-                    Wardrobe('audiencia/fashion_girl/'),
-                    Wardrobe('audiencia/girl/'),
-                    Wardrobe('audiencia/goth/'),
-                    Wardrobe('audiencia/boy/')]
+    wardrobes = getAllWardrobes()
 
     g = Game(800, 600, framerate = 200)
     g.run( SampleScene(g, "Scene1", wardrobes) )
