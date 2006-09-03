@@ -178,7 +178,7 @@ HCDataSetFile_data
 "159" "boy_kilt_01.gif" "bottoms" "tops n bottoms" "36" "96" "-1"
 "160" "boy_kilt_02.gif" "bottoms" "tops n bottoms" "36" "92" "-1"
 "162" "boy_scarf_02.gif" "extras" "infront" "32" "63" "-1"
-"163" "computer.gif" "extras" "infront" "3" "100" "-1"
+#"163" "computer.gif" "extras" "infront" "3" "100" "-1"
 #"164" "football.gif" "extras" "infront" "15" "116" "-1"
 "165" "boy_hair_42.gif" "hair" "hair" "24" "23" "-1"
 "166" "boy_hair_43.gif" "hair" "hair" "30" "12" "-1"

@@ -229,7 +229,7 @@ HCDataSetFile_data
 "195" "girl_bag_06.gif" "extras" "infront" "20" "83" "-1"
 "196" "girl_bag_07.gif" "extras" "infront" "26" "71" "-1"
 "197" "girl_bag_08.gif" "extras" "infront" "14" "86" "-1"
-"198" "computer.gif" "extras" "infront" "2" "100" "-1"
+#"198" "computer.gif" "extras" "infront" "2" "100" "-1"
 "199" "glasses_01.gif" "extras" "infront" "35" "44" "-1"
 "200" "glasses_02.gif" "extras" "infront" "34" "47" "-1"
 "201" "glasses_03.gif" "extras" "infront" "36" "48" "-1"

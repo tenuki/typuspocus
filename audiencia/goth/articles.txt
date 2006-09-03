@@ -212,5 +212,5 @@ HCDataSetFile_data
 "896" "baby_02.gif" "extras" "infront" "17" "65" "-1"
 "897" "baby_03.gif" "extras" "infront" "17" "65" "-1"
 #"898" "cat_white.gif" "extras" "infront" "7" "108" "-1"
-"899" "computer.gif" "extras" "infront" "2" "100" "-1"
+#"899" "computer.gif" "extras" "infront" "2" "100" "-1"
 
