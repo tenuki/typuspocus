@@ -6,8 +6,8 @@ class PInterpolator:
         self.fin = complex(pfin[0],pfin[1])
         
 class MadamBezier(PInterpolator):
-    def __init__(self, *args, prev=None):
-        PInterpolador.__init__(*args)
+    def __init__(self, pinicio, pfin, prev=None):
+        PInterpolator.__init__(self,pinicio, pfin)
         d = self.fin-self.inicio
         if prev<>None:
             self.m1 = 2*self.inicio - prev
@@ -25,3 +25,7 @@ class MadamBezier(PInterpolator):
     def getPrev(self):
         return self.m2
         
+if __name__=="__main__":
+    inter = MadamBezier( (0,0), (4,4) )
+    for r in range(10):
+        print inter.getAt( 1.0/(r+1) )
