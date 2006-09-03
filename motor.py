@@ -54,7 +54,7 @@ class MainMotor(object):
         base = 0
         palabras = []
         indice = {}
-        for pal in phrases.PhraseLen(cant).getPhrase().split(" "):
+        for pal in phrases.Spell(cant).getPhrase().split(" "):
             #pal = random.choice(PALABRAS)
             largo = len(pal)
             palabras.append(pal)
