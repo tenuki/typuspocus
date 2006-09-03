@@ -5,7 +5,11 @@ from engine import Game, Scene
 import random
 Layers = None
 iLayers = None
-PPLSIZE = (91, 139)
+PPLSIZE = (55, 119)
+filasx, filasy = (800/55,600/119)
+
+class Auditorio:
+    pass
 
 class SampleScene(Scene):
     def init(self, nombre, wardrobe):
@@ -22,13 +26,13 @@ class SampleScene(Scene):
             img = some.render()
             self.pool.append(img)
         
-        self.background = pygame.Surface((sx*6,sy*5))
-        for x in range(6):
-            for y in range(5):
+        self.background = pygame.Surface((800,600))
+        for y in range(filasy):
+            for x in range(filasx):
                 some = Individual(self.wardrobe)
                 some.random()
-                self.background.blit(some.render(),(sx*x, sy*y)) 
-                
+                dx = (y%2) * sx/2 - sx/2
+                self.background.blit(some.render(),(sx*x+dx, sy/2*y)) 
         
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -234,10 +238,10 @@ class Wardrobe:
     
 if __name__ == "__main__":
     #Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
-    #Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
+    Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
     #Wardrobe1 = Wardrobe('audiencia/girl/')
     #Wardrobe1 = Wardrobe('audiencia/goth/')
-    Wardrobe1 = Wardrobe('audiencia/boy/')
+    #Wardrobe1 = Wardrobe('audiencia/boy/')
     g = Game(800, 600, framerate = 200)
     g.run( SampleScene(g, "Scene1", Wardrobe1) )
     
