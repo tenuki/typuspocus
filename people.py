@@ -2,9 +2,10 @@ import os, re, random
 import pygame
 from pygame.locals import *
 from engine import Game, Scene
-
+import random
 Layers = None
 iLayers = None
+PPLSIZE = (91, 139)
 
 class SampleScene(Scene):
     def init(self, nombre, wardrobe):
@@ -12,6 +13,21 @@ class SampleScene(Scene):
         self.goscene=False
         self.finalizar = False
         self.wardrobe = wardrobe
+
+        self.pool=[]
+        for i in range(30):
+            some = Individual(self.wardrobe)
+            some.random()
+            self.pool.append(some.render())
+        
+        sx,sy = PPLSIZE
+        self.background = pygame.Surface((sx*6,sy*5))
+        for x in range(6):
+            for y in range(5):
+                some = Individual(self.wardrobe)
+                some.random()
+                self.background.blit(some.render(),(sx*x, sy*y)) 
+                
         
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -33,10 +49,11 @@ class SampleScene(Scene):
                     
     def update(self):
         global iLayers
-        self.background = pygame.Surface( (800,600) )
-        some = Individual(self.wardrobe)
-        some.random()
-        self.background = some.render()
+        sx,sy = PPLSIZE
+
+        x,y = random.randint(0,6), random.randint(0,5)
+        self.background.blit(self.pool[random.randint(0,29)],(sx*x, sy*y)) 
+        
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -69,20 +86,16 @@ class Individual:
         order = layerorder.keys()
         order.sort()
         img = None
-        #print order
-        #print layerorder
         for k in order:
             layername=layerorder[k]
-            #print layername
             if layername in self.layers.keys():
                 #we use that layer!
                 article = self.layers[layername][0]
                 if img==None:
-                    img = pygame.Surface( (91, 139) ) #full size
+                    img = pygame.Surface( PPLSIZE ) #full size
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
-                    
                 else:
                     nimg = article.getImage()
                     x, y = article.SnapPos()
@@ -132,10 +145,7 @@ class Article:
         return self.getSome('imagename')
     def getImage(self):
         if self.image==None:
-            #self.image=Image.open(self.path+self.name)
             self.image=pygame.image.load(self.path+self.name)
-            #print repr(self.image)
-        #return self.image
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
@@ -220,7 +230,7 @@ class Wardrobe:
     
     
 if __name__ == "__main__":
-    #Wardrobe2 = Wardrobe('audiencia/fashion_boy/')
+    #Wardrobe1 = Wardrobe('audiencia/fashion_boy/')
     #Wardrobe1 = Wardrobe('audiencia/fashion_girl/')
     #Wardrobe1 = Wardrobe('audiencia/girl/')
     #Wardrobe1 = Wardrobe('audiencia/goth/')
