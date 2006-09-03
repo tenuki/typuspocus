@@ -6,7 +6,7 @@ import random, time
 PALABRAS = "Nuestro objetivo es nuclear a los usuarios de Python, de manera de centralizar la comunicacion a nivel nacional. Pretendemos llegar a usuarios y empresas, promover el uso de Python, intercambiar informacion, compartir experiencias y en general, ser el marco de referencia local en el uso y difusion de esta tecnologia.".split()
 
 class Estados:
-    (OK_DEUNA, OK_CORRG, MAL) = range(3)
+    (VIRGEN, OK_DEUNA, OK_CORRG, MAL) = range(4)
     
 
 class MainMotor(object):
@@ -26,7 +26,7 @@ class MainMotor(object):
         self.estado = [Estados.OK_DEUNA] * self.largohech
         self.puntajeMax = self._getScore()
         self.score = 0
-        self.estado = [None] * self.largohech
+        self.estado = [Estados.VIRGEN] * self.largohech
 
     def hitLetra(self, letra):
         '''Recibe la letra que apretó el usuario y devuelve...
@@ -37,12 +37,14 @@ class MainMotor(object):
         - El calor del público
         - Una lista de eventos
         '''
+        if self.startTime is None:
+            raise ValueError("Todavia no se hizo el start de la sesion!")
         if self.cursor > self.largohech:
             return (None, self.estado, None, None, None)
 
 #        print "Estado viejo", self.estado
         if self.hechizo[self.cursor] == letra:
-            if self.estado[self.cursor] in (None, Estados.OK_DEUNA):
+            if self.estado[self.cursor] in (Estados.VIRGEN, Estados.OK_DEUNA):
                 res = Estados.OK_DEUNA
             else:
                 res = Estados.OK_CORRG
@@ -53,8 +55,8 @@ class MainMotor(object):
         self.cursor += 1
 #        print "Estado nuevo", self.estado
 
-        print self._getScore()
-        print self._getCalor()
+        self._getScore()
+        self._getCalor()
         eventos = self._getEventos()
         return (res, eventos)
 
@@ -124,11 +126,8 @@ class MainMotor(object):
         #     - cantidad de backspaces sobre el total de letras (en contra, ojo que puede dar >1)
         calor = 0
         calor += self.score / self.puntajeMax
-        print calor
         calor -= (time.time() - self.startTime) / self.tiempoJuego
-        print calor
         calor -= self.cant_bs / self.largohech
-        print calor
 
         # sanity check
         if calor > 1:
