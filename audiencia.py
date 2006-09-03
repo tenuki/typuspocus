@@ -1,11 +1,13 @@
+import random
+import math
+
 import pygame
 from pygame.locals import *
+
 from engine import Game, Scene
-from people import *
-import random
+import people
 import varitaje
 import motor
-import math
 import interpol
 
 peoplex,peopley = (55, 119)
@@ -14,19 +16,12 @@ filasx, filasy = (800/peoplex,600/peopley)
 MAXPUFFING = 30
 MAXTOMATEANDO = 20
 
-wardrobes = getAllWardrobes()
-def buildIndividual():
-    wd=random.choice(wardrobes)
-    i= Individual(wd)
-    i.random()
-    return i
-
 class Fila:
     sillas=None
     def __init__(self):
         if Fila.sillas is None:
             Fila.sillas = self.construirSillas()
-        self.personas = [ buildIndividual().render() for x in range(filasx) ]
+        self.personas = [ people.buildIndividual().render() for x in range(filasx) ]
 
     def construirSillas(self):
         img = pygame.image.load('escenario/butaca.png')
@@ -49,9 +44,9 @@ class Fila:
 
 
 class Audiencia:
-    def __init__(self):
+    def __init__(self, level_number):
+        people.resetRandom(level_number)
         self.filas = [ Fila() for y in range(filasy) ]
-
 
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
@@ -67,13 +62,14 @@ class Audiencia:
             fila.render(surface, (dx,dy), porcentaje)
 
 class AudienciaScene(Scene):
-    def init(self):
+    def init(self, level_number):
         import sounds
         self.sounds = sounds
         self.finalizar = False
-        self.audiencia = Audiencia()
+        self.audiencia = Audiencia(level_number)
         self.voluntario = None
         self.calor = 0
+        self.level_number = level_number
         self.fg = pygame.image.load("escenario/foreground.png")
         self.fg.convert()
         self.varitaje = varitaje.Varitaje()

@@ -73,7 +73,7 @@ PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
 class Level(Scene):
-    def init(self, cant_palabras):
+    def init(self, level_number, cant_palabras):
         import sounds
         self.sounds = sounds
         self.motor = MainMotor(cant_palabras)
@@ -81,10 +81,11 @@ class Level(Scene):
         self.offset_cache = [None]*len(self.motor.hechizo)
         self.style_cache = [None]*len(self.motor.hechizo)
         self.last_cursor = 0
+        self.level_number = level_number
         
         self.line_group = pygame.sprite.OrderedUpdates()
         self.line = None
-        self.audiencia = AudienciaScene(self.game)
+        self.audiencia = AudienciaScene(self.game, self.level_number)
         self.subscenes.append( self.audiencia )
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
@@ -94,9 +95,6 @@ class Level(Scene):
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
         self.motor.start()
-        
-               
-        
         
         
     def event(self, evt):
@@ -260,7 +258,7 @@ class MainMenu(Scene):
                 while result == GANO:
                     count += 1
                     self.runScene( LevelIntro( self.game, str(count) ) )
-                    l =  Level(self.game, count*10) 
+                    l =  Level(self.game, count, count*10) 
                     result = self.runScene( l )
                     score += l.motor.score
                 self.runScene( GameOver( self.game, score ) )

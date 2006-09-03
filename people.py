@@ -1,11 +1,17 @@
-import os, re, random
+import os, re, time
 import pygame
+from random import Random
 from pygame.locals import *
 from engine import Game, Scene
 SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
 background = None
+
+random = Random()
+def resetRandom(level_number):
+    global random
+    random.seed(int(time.time()/60/15)+level_number*100)
 
 class SampleScene(Scene):
     def init(self, nombre, wardrobes):
@@ -286,6 +292,13 @@ def getAllWardrobes():
                     Wardrobe('audiencia/girl/'),
                     Wardrobe('audiencia/goth/'),
                     Wardrobe('audiencia/boy/')]
+
+wardrobes = getAllWardrobes()
+def buildIndividual():
+    wd=random.choice(wardrobes)
+    i= Individual(wd)
+    i.random()
+    return i
     
 if __name__ == "__main__":
     wardrobes = getAllWardrobes() # x,y
