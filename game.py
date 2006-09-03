@@ -70,7 +70,7 @@ class LineManager:
         
 
 PERDIO, GANO = range(2)
-PLAYING, WINNING, WON, TIMEOUT, TOMATO, LOSING, LOST, DONE = range(8)
+PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
 class Level(Scene):
     def init(self):
@@ -129,10 +129,13 @@ class Level(Scene):
                 self.wintime = pygame.time.get_ticks()
                     
           
-        elif self.state in [WINNING, WON, LOSING, LOST, TOMATO ]:
+        elif self.state in [ WON ]:
             if evt.type == KEYDOWN:
-                if evt.key == K_ESCAPE:
-                    self.end()
+                    self.end(GANO)
+        elif self.state in [ LOST, TOMATO ]:
+            if evt.type == KEYDOWN:
+                    self.end(PERDIO)
+                
     
     
     
@@ -140,7 +143,8 @@ class Level(Scene):
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
-                self.end( PERDIO )
+                self.state = TOMATOING
+                self.wintime = pygame.time.get_ticks()
                 
             self.level_timer.setTimeLeft( self.motor.getTimeLeft() )
                 
@@ -158,7 +162,12 @@ class Level(Scene):
             if pygame.time.get_ticks() -self.wintime > 5000:
                 self.state = LOST
                 self.sounds.abucheo.play()   
-                 
+        elif self.state == TOMATOING:
+            if pygame.time.get_ticks() -self.wintime > 5000:
+                self.state = TOMATO
+                self.sounds.abucheo.play()
+                
+                         
     def update(self):
         if self.state == PLAYING:
             #self.game.screen.blit(self.background, (0,0))
@@ -206,6 +215,11 @@ class Level(Scene):
                     ( 800/2 - self.voluntario.get_width()/2, 
                     400-self.voluntario.get_height() ) 
                     )
+        elif self.state == TOMATOING:
+            self.game.screen.blit(self.voluntario, 
+                    ( 800/2 - self.voluntario.get_width()/2, 
+                    400-self.voluntario.get_height() ) 
+                    )
         elif self.state == WON:
             pass 
         elif self.state == LOST:
@@ -215,6 +229,20 @@ class Level(Scene):
                     )
         
            
+class LevelIntro(Scene):
+    def init(self, level_name):
+        self.level_name = level_name
+        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        
+    def paint(self):
+        s = self.font.render("Level "+self.level_name, True, (255,255,255))
+        self.background.blit(s, (100,100))
+        self.game.screen.blit(self.background, (0,0))
+    
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+                self.end()
+
 class MainMenu(Scene):
     def init(self):
         self.font = font =  pygame.font.Font("VeraMono.ttf",50)
@@ -230,7 +258,12 @@ class MainMenu(Scene):
             if evt.key == K_ESCAPE:
                 self.end()
             else:
-                result = self.runScene( Level(self.game) )
+                result = GANO
+                count = 0
+                while result == GANO:
+                    count += 1
+                    self.runScene( LevelIntro( self.game, str(count) ) )
+                    result = self.runScene( Level(self.game) )
     
 
 if __name__ == "__main__":
