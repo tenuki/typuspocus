@@ -24,7 +24,7 @@ class SampleScene(Scene):
             some.random()
             self.pool.append(some)
         
-        self.background = pygame.Surface((800,600))
+        self.background = pygame.Surface((800,600), pygame.SRCALPHA)
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
@@ -34,7 +34,9 @@ class SampleScene(Scene):
     def putIndividualAt(self, individual, x, y):
         sx,sy = PPLSIZE
         dx = (y%2) * sx/2 - sx/2
-        self.background.blit(individual.render(),(sx*x+dx, sy/2*y)) 
+        img = individual.render()
+        #img.fill((255,0,0,10))
+        self.background.blit(img,(sx*x+dx, sy/2*y)) 
     
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -55,11 +57,7 @@ class SampleScene(Scene):
             self.end( self.nombre )
                     
     def update(self):
-        global iLayers
-        sx,sy = PPLSIZE
-
         x,y = random.randint(0,filasx-1), random.randint(0,filasy-1)
-        #self.background.blit(self.pool[random.randint(0,29)],(sx*x, sy*y)) 
         self.putIndividualAt(self.pool[random.randint(0,29)], x,y)
         
         self.game.screen.blit(self.background, (0,0))
@@ -101,7 +99,7 @@ class Individual:
                 article = self.layers[layername][0]
                 if img==None:
                     img = pygame.image.load('escenario/butaca.png')
-                    img.convert()
+                    img.convert_alpha()
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
@@ -155,7 +153,7 @@ class Article:
     def getImage(self):
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
-            self.image.convert()
+            self.image.convert_alpha()
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
