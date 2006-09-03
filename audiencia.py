@@ -28,10 +28,10 @@ class Fila:
             base.blit(img, (peoplex * x, 0) )
         return base
 
-    def render(self, surface, (dx,dy) ):
+    def render(self, surface, (dx,dy), porcentaje ):
         surface.blit(Fila.sillas, (dx,dy))
         for x, persona in enumerate(self.personas):
-            if random.randint(0,90)==0:
+            if random.randint(0,100)<porcentaje:
                 gx = random.choice([-1,0,1])
                 gy = random.choice([-1,-2,0])
             else:
@@ -45,17 +45,18 @@ class Audiencia:
         self.fg = pygame.image.load("escenario/foreground.png")
         self.fg.convert()
 
-    def render(self, surface):
+    def render(self, surface, porcentaje):
         for y,fila in enumerate(self.filas):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
-            fila.render(surface, (dx,dy) )
+            fila.render(surface, (dx,dy) , porcentaje)
         surface.blit(self.fg, (0,0))
 
 class AudienciaScene(Scene):
     def init(self):
         self.finalizar = False
         self.audiencia = Audiencia()
+        self.calor = 0
 
     def noop(self):
         for y in range(filasy):
@@ -70,8 +71,11 @@ class AudienciaScene(Scene):
                 self.end()
             elif evt.key == K_RETURN:
                 self.finalizar = True
-    def gameEvent(self):
+    def gameEvent(self, evt):
         pass
+        
+    def setCalor(self, calor):
+        self.calor = calor
     
     def loop(self):
         # aca updateamos el mundo cada paso
@@ -81,7 +85,7 @@ class AudienciaScene(Scene):
     def update(self):
         global iLayers
         self.game.screen.fill((0,0,0))
-        self.audiencia.render(self.game.screen)
+        self.audiencia.render(self.game.screen, abs(self.calor)*100)
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)

@@ -61,7 +61,8 @@ class Level(Scene):
         self.line = None
         self.motor.start()
         
-        self.subscenes.append( AudienciaScene(self.game) )
+        self.audiencia = AudienciaScene(self.game)
+        self.subscenes.append( self.audiencia )
         
         
         
@@ -70,17 +71,27 @@ class Level(Scene):
             if evt.key == K_ESCAPE:
                 self.end()
             
+            res = None
             letra = evt.unicode #.lower()
             if letra.isalpha() or (letra and letra in " ,.<>:;"):
-                self.motor.hitLetra( letra )
+                res, event = self.motor.hitLetra( letra )
             if evt.key == K_BACKSPACE:
-                self.motor.hitBackspace()
+                res, event = self.motor.hitBackspace()
             if evt.key == K_RETURN:
-                self.motor.hitLetra(" ")
+                res, event = self.motor.hitLetra(" ")
+                
+            if res:
+                self.audiencia.gameEvent( event )
     
     def loop(self):
         # aca updateamos el mundo cada paso
-        pass          
+        evt = self.motor.tick()
+        self.audiencia.setCalor( self.motor.calor )
+        
+        if evt:
+            self.audiencia.gameEvent( evt )
+        print self.motor.calor
+           
     def update(self):
         #self.game.screen.blit(self.background, (0,0))
         font = pygame.font.Font("VeraMono.ttf",30)
