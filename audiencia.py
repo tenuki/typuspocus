@@ -65,10 +65,6 @@ class Audiencia:
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
             fila.render(surface, (dx,dy), porcentaje)
-        r=pygame.Rect(0,0,20,20)
-        r.center=self.getRandomPersonPosition()
-        r.clamp_ip(surface.get_rect())
-        surface.subsurface(r).fill((255,0,0))
 
 class AudienciaScene(Scene):
     def init(self):
