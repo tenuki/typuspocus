@@ -16,6 +16,7 @@ class MadamBezier(PInterpolator):
         self.m2 = self.fin-d/4 #random here please 
         
     def getAt(self, t):
+        t=1-t
         c = ((1-t)**3)*self.inicio + \
                 3*t*((1-t)**2)*self.m1+\
                 3*(t**2)*(1-t)*self.m2+\
