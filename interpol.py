@@ -10,7 +10,7 @@ class MadamBezier(PInterpolator):
         PInterpolator.__init__(self,pinicio, pfin)
         d = self.fin-self.inicio
         ycoef = abs(int(d.imag))
-        if 0: #prev<>None:
+        if prev<>None:
             self.m1 = 2*self.inicio - prev.getPrev()
         else:
             self.m1 = self.inicio + d/4 + complex(0, random.randint(-ycoef, ycoef))   
