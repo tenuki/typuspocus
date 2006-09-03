@@ -69,7 +69,7 @@ class AudienciaScene(Scene):
         self.fg = pygame.image.load("escenario/foreground.png")
         self.fg.convert()
         self.varitaje = varitaje.Varitaje()
-        self.mano = pygame.image.load("escenario/manos/mano1.png")
+        self.mano = pygame.image.load("escenario/manos/mano-easteregg.png")
         self.mano.convert()
         self.puffing = 0
         self.nube = pygame.image.load("escenario/nube.png")
