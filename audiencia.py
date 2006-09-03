@@ -5,12 +5,14 @@ from people import *
 import random
 import varitaje
 import motor
+import math
 import interpol
 
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
 MAXPUFFING = 30
+MAXTOMATEANDO = 10
 
 wardrobes = getAllWardrobes()
 def buildIndividual():
@@ -73,6 +75,13 @@ class AudienciaScene(Scene):
         self.nube = pygame.image.load("escenario/nube.png")
         self.nube.convert()
 
+        self.tomate = pygame.image.load("escenario/tomates/tomate.png")
+        self.tomate.convert()
+        self.tomate_aplastado = pygame.image.load("escenario/tomates/tomate_aplastado.png")
+        self.tomate_aplastado.convert()
+
+        self.tomateando = None
+
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
@@ -114,7 +123,20 @@ class AudienciaScene(Scene):
             surface.blit(self.nube, self.nube.get_rect(midbottom=(400,420)))
             print self.puffing
 
+        if self.tomateando is not None:
+            if self.tomateando > 0:
+                self.tomateando -= 1
+
+                rotacion = (float(self.tomateando)/MAXTOMATEANDO)*180
+                scale = 1-float(self.tomateando)/MAXTOMATEANDO
+                imagen = pygame.transform.rotozoom(self.tomate,rotacion,scale)
+
+                surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
+
         surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
+        if self.tomateando == 0:
+            imagen = self.tomate_aplastado
+            surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
 
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
@@ -124,7 +146,7 @@ class AudienciaScene(Scene):
             print "------------MaxPuffing-------------"
 
     def tomateame(self):
-        pass
+        self.tomateando = MAXTOMATEANDO
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
