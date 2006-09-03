@@ -44,6 +44,8 @@ class Audiencia:
         self.filas = [ Fila() for y in range(filasy) ]
         self.fg = pygame.image.load("escenario/foreground.png")
         self.fg.convert()
+        self.mano = pygame.image.load("escenario/manos/mano1.png")
+        self.mano.convert()
 
     def render(self, surface, porcentaje):
         for y,fila in enumerate(self.filas):
@@ -51,6 +53,9 @@ class Audiencia:
             dy = peopley/2 * y
             fila.render(surface, (dx,dy) , porcentaje)
         surface.blit(self.fg, (0,0))
+        surface2 = surface.subsurface(pygame.Rect(0,0,800,525))
+        surface2.blit(self.mano, self.mano.get_rect(center=pygame.mouse.get_pos()))
+
 
 class AudienciaScene(Scene):
     def init(self):
@@ -58,13 +63,6 @@ class AudienciaScene(Scene):
         self.audiencia = Audiencia()
         self.calor = 0
 
-    def noop(self):
-        for y in range(filasy):
-            for x in range(filasx):
-                some = buildIndividual()
-                dx = (y%2) * peoplex/2 - peoplex/2 + 6
-                self.bg.blit(some.render(),(peoplex*x+dx, peopley/2*y)) 
-        
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
@@ -89,4 +87,4 @@ class AudienciaScene(Scene):
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
-    g.run( AudienciaScene(g, "Scene1") )
+    g.run( AudienciaScene(g) )
