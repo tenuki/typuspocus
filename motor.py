@@ -177,7 +177,7 @@ class MainMotor(object):
             if st == Estados.OK_DEUNA or st == Estados.OK_CORRG:
                 acertados += 1
         porcentaje = float(acertados)/len(self.estado)
-        print acertados, "/", len(self.estado)
+        #print acertados, "/", len(self.estado)
         return porcentaje >= self.porcentajeRequerido
 
     def _getCalor(self):
@@ -205,5 +205,5 @@ class MainMotor(object):
         if calor < -1:
             calor = -1
         self.calor = calor
-        print "Hace Calor...", porc_tiempopasado, punt_almomento, valor1, calor, self.tuvoExito()
+        #print "Hace Calor...", porc_tiempopasado, punt_almomento, valor1, calor, self.tuvoExito()
         return calor

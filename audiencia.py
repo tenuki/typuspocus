@@ -8,6 +8,8 @@ import motor
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
+MAXPUFFING = 30
+
 wardrobes = getAllWardrobes()
 def buildIndividual():
     wd=random.choice(wardrobes)
@@ -32,7 +34,7 @@ class Fila:
 
     def render(self, surface, (dx,dy), porcentaje ):
         surface.blit(Fila.sillas, (dx,dy))
-        print porcentaje
+        #print porcentaje
         for x, persona in enumerate(self.personas):
             if random.randint(0,1000)<porcentaje:
                 gx = random.choice([-1,0,1])
@@ -65,6 +67,7 @@ class AudienciaScene(Scene):
         self.varitaje = varitaje.Varitaje()
         self.mano = pygame.image.load("escenario/manos/mano1.png")
         self.mano.convert()
+        self.puffing = 0
         self.nube = pygame.image.load("escenario/nube.png")
         self.nube.convert()
 
@@ -102,16 +105,21 @@ class AudienciaScene(Scene):
         surface.blit(self.fg, (0,0))
 
         if self.voluntario != None:
-            #blah, blah
             surface.blit(self.voluntario, self.voluntario.get_rect(midbottom=(400,370)))
-            print self.voluntario
-            pass
+
+        if self.puffing > 0:
+            self.puffing -= 1
+            surface.blit(self.nube, self.nube.get_rect(midbottom=(400,420)))
+            print self.puffing
 
         surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
 
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
         self.voluntario = voluntario
+        if hacerPuff:
+            self.puffing = MAXPUFFING
+            print "------------MaxPuffing-------------"
 
     def tomateame(self):
         pass
