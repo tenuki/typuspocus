@@ -25,7 +25,7 @@ class MainMotor(object):
     '''
 
     porcentajeRequerido = 0.50
-    tiempoExtra = -20
+    tiempoExtra = 10
     voluntario = cosas.reloj
     voluntario_error = cosas.hongo
     
