@@ -3,6 +3,7 @@ from pygame.locals import *
 from engine import Game, Scene
 from people import *
 import random
+import varitaje
 import motor
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
@@ -47,16 +48,16 @@ class Audiencia:
         self.fg.convert()
         self.mano = pygame.image.load("escenario/manos/mano1.png")
         self.mano.convert()
+        self.varitaje = varitaje.Varitaje()
 
     def render(self, surface, porcentaje):
         for y,fila in enumerate(self.filas):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
-            fila.render(surface, (dx,dy) , porcentaje)
+            fila.render(surface, (dx,dy), porcentaje)
         surface.blit(self.fg, (0,0))
         surface2 = surface.subsurface(pygame.Rect(0,0,800,525))
-        surface2.blit(self.mano, self.mano.get_rect(center=pygame.mouse.get_pos()))
-
+        surface2.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
 
 class AudienciaScene(Scene):
     def init(self):
