@@ -45,20 +45,12 @@ class Fila:
 class Audiencia:
     def __init__(self):
         self.filas = [ Fila() for y in range(filasy) ]
-        self.fg = pygame.image.load("escenario/foreground.png")
-        self.fg.convert()
-        self.mano = pygame.image.load("escenario/manos/mano1.png")
-        self.mano.convert()
-        self.varitaje = varitaje.Varitaje()
 
     def render(self, surface, porcentaje):
         for y,fila in enumerate(self.filas):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
             fila.render(surface, (dx,dy), porcentaje)
-        surface.blit(self.fg, (0,0))
-        surface2 = surface.subsurface(pygame.Rect(0,0,800,525))
-        surface2.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
 
 class AudienciaScene(Scene):
     def init(self):
@@ -66,7 +58,15 @@ class AudienciaScene(Scene):
         self.sounds = sounds
         self.finalizar = False
         self.audiencia = Audiencia()
+        self.voluntario = None
         self.calor = 0
+        self.fg = pygame.image.load("escenario/foreground.png")
+        self.fg.convert()
+        self.varitaje = varitaje.Varitaje()
+        self.mano = pygame.image.load("escenario/manos/mano1.png")
+        self.mano.convert()
+        self.nube = pygame.image.load("escenario/nube.png")
+        self.nube.convert()
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -96,9 +96,18 @@ class AudienciaScene(Scene):
             self.end( )
                     
     def update(self):
-        global iLayers
         self.game.screen.fill((0,0,0))
-        self.audiencia.render(self.game.screen, abs(self.calor)*100)
+        surface = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        self.audiencia.render(surface, abs(self.calor)*100)
+        surface.blit(self.fg, (0,0))
+
+        if self.voluntario != None:
+            #blah, blah
+            surface.blit(self.voluntario, self.voluntario.get_rect(midbottom=(400,370)))
+            print self.voluntario
+            pass
+
+        surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
 
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
