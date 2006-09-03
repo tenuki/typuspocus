@@ -5,7 +5,6 @@ from people import *
 import random
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
-filasx, filasy = (800/peoplex,1)
 
 wardrobes = getAllWardrobes()
 def buildIndividual():
@@ -31,7 +30,6 @@ class Fila:
 
     def render(self, surface, (dx,dy) ):
         surface.blit(Fila.sillas, (dx,dy))
-        self.personas = [ buildIndividual().render() for x in range(filasx) ]
         for x, persona in enumerate(self.personas):
             surface.blit(persona, ((x*peoplex)+dx, dy))
 
