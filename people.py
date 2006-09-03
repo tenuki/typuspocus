@@ -1,7 +1,4 @@
 import os, re, random
-#import Image #,PIL
-#import pygame
-
 import pygame
 from pygame.locals import *
 from engine import Game, Scene
@@ -128,10 +125,8 @@ class Article:
             #self.image=Image.open(self.path+self.name)
             self.image=pygame.image.load(self.path+self.name)
             #print repr(self.image)
-            print 
-            print
         #return self.image
-        return None
+        return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
     layer=property(getLayer)
