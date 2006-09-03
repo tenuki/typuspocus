@@ -9,7 +9,10 @@ class MadamBezier(PInterpolator):
     def __init__(self, *args, prev=None):
         PInterpolador.__init__(*args)
         d = self.fin-self.inicio
-        self.m1 = self.inicio + d/4    
+        if prev<>None:
+            self.m1 = 2*self.inicio - prev
+        else:
+            self.m1 = self.inicio + d/4    
         self.m2 = self.fin-d/4 #random here please 
         
     def getAt(self, t):
@@ -18,4 +21,7 @@ class MadamBezier(PInterpolator):
                 3*(t**2)*(1-t)*self.m2+\
                 (t**3)*self.fin 
         return c.real, c.imag
+        
+    def getPrev(self):
+        return self.m2
         
