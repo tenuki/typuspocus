@@ -7,27 +7,23 @@ import string
 from string import Template
 
 grammar = {
-'intro' : ["hocus pocus", "abracadabra"],
-
 'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","mid","minus","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","re","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
 
-'verb' : ["expeleriamus", "habemus", "engorgio", "reducio", "crucio", "levitatio", "disparatum", "cogito","sunt","enlargio","disappearum"],
+'verb' : ["expeleriamus", "habemus", "levitatio", "disparatum", "cogito"],
 
 'adjective': ["insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
-'animal': ["alligator","alpaca","ant","anteater","antelope","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
+'animal': ["alligator","alpaca","ant","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
 
 'noun': ["$animal"],
 
 'direct_object' : ['$animal','I','you','she','he','we','they'],
 
-'funny_phrase' : ["bizarre fragances expeleriamus","horribilis fungus habemus","pythonus idolotrus"],
+'phrase1' : ["python","god"],
 
-'phrase1' : ["abracadabra", "god", "devil"],
+'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus"],
 
-'phrase2' : ["hocus pocus","my god","holy python", "odius perl", "holy guido", "greatest guido"],
-
-'phrase3' : ["$verb $preposition $noun"],
+'phrase3' : ["$verb $preposition $noun", "guido van rossum","oh my god", "bizarre fragances expeleriamus","horribilis fungus habemus"],
 
 'phrase4' : ["$verb $preposition $adjective $noun"],
 
@@ -39,7 +35,13 @@ grammar = {
 
 'phrase8' : ["the $adjective $preposition $animal $verb $preposition $adjective $noun"],
 
-'phrase' :  ["$intro, $phrase3", "$intro, $phrase4","$intro, $phrase5", "$funny_phrase"]
+'spell_begin' : ["hocus pocus", "abracadabra"],
+
+'now' : ["right now","now","", "at this moment", "immediately", "without delay"],
+
+'spell_end' : ["evaporatum $now", "disappearum $now", "go away $now"],
+
+'funny_phrase' : ["bizarre fragances expeleriamus","horribilis fungus habemus","pythonus idolotrus"],
 }
 
 MAXPHRASE = 8
@@ -47,7 +49,7 @@ MAXPHRASE = 8
 class Phrase:
     def __init__(self):
         self.__phrase = ''
-        self.setPhrase( random.choice( grammar["phrase"] ) )
+        self.setGrammar( random.choice( grammar["phrase8"] ) )
 
     def replace(self, aString ):
         """parses a string, and replaces all the variables with another string,
@@ -70,9 +72,14 @@ class Phrase:
                 ret.append( word )
         return ret
 
-    def setPhrase( self, phrase ):
-        """sets a phrase to be replaced"""
+    def setGrammar( self, phrase ):
+        """sets a grammar to be replaced"""
         self.__phrase = phrase
+
+    def getGrammar( self ):
+        """returns the grammar."""
+        return self.__phrase
+         
 
     def getPhrase(self):
         """ returns the generated and replaced phrase """
@@ -104,16 +111,29 @@ class PhraseLen( Phrase ):
             comma = ", "
             i -= d
 
-        self.setPhrase( phrase )
+        self.setGrammar( phrase )
+
+class Spell( PhraseLen ):
+    def __init__( self, l ):
+
+        begin = self.replace( random.choice( grammar['spell_begin'] ) )
+        end = self.replace( random.choice( grammar['spell_end'] ) )
+        PhraseLen.__init__(self,l-( len(begin) + len(end) ) )
+
+        self.setGrammar( string.join(begin)
+                           + ', '
+                           + self.getGrammar()
+                           + ', '
+                           + string.join(end) )
 
 class FunnyPhrase( Phrase ):
     """returns a phrase that should be funny."""
     def init( self ):
         self.Phrase.__init__(self)
-        self.setPhrase( random.choice( grammar["funny_phrase"] ) )
+        self.setGrammar( random.choice( grammar["funny_phrase"] ) )
 
 if __name__ == "__main__":
-    for i in range(1,40):
+    for i in range(1,100):
         print '---------------------'
 #        print Phrase().getPhrase()
-        print "Len(%d): %s" % (i, PhraseLen(i).getPhrase() )
+        print "Len(%d): %s" % (i, Spell(i).getPhrase() )
