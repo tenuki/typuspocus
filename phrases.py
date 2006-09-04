@@ -7,6 +7,9 @@ import string
 from string import Template
 
 grammar = {
+
+# "pacta tertis nec nocent nec prosunt",
+
 'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
 
 'verb' : ["expeleriamus", "habemus", "levitatio", "cogitum", "possum", "factito", "agito" ],
@@ -16,13 +19,13 @@ grammar = {
 'ten' : ["twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"],
 'number' : ["$digit","$number10_19","$ten"],
 
-'sexual_thing' : ["boobs", "boobies", "teats", "nipples", "tits"],
+'sexual_thing' : ["boobs", "boobies", "teats", "nipples", "tits", "butts"],
 
-'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing","oh-my-god"],
+'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing","superb"],
 
-'animal_part' : ['head','eye','tail','leg','arm','elbow','tongue','brain','lung','nose','knee','toe','foot','shoulder','ankle','neck','jaw','teeth','stomach','testicle','spleen','heart','liver'],
+'animal_part' : ['head','eye','tail','leg','arm','elbow','tongue','brain','lung','nose','knee','toe','foot','shoulder','ankle','neck','jaw','teeth','stomach','testicle','spleen','heart','liver',],
 
-'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
+'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","stinky","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
 'animal': ["alligator","alpaca","ant","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
 
@@ -30,19 +33,23 @@ grammar = {
 
 'noun': ["$animal", "$latin_noun", "$animal_part"],
 
-'name' : ['tenuki','alecu','lucio','leito','facundo','riq','nubis','pabloz','chaghi'],
+'author' : ['tenuki','alecu','lucio','leito','facundo','riq','nubis','pabloz','chaghi'],
+'women_name' : ['Olivia','Charlotte','Emily','Chloe','Ella','Jessica','Isabella','Sophie','Mia','Emma'],
+'men_name' : ['Jack','James','Lachlan','Benjamin','Joshua','Ryan','John','Patrick','Samuel','William'],
+'name' : ['$author','$men_name','$women_name'],
+
 
 'pronoun' : ['I','you','yo','she','he','we','they'],
 
 'subject' : ['$animal','$name',],
 
-'phrase1' : ["python","god"],
+'phrase1' : ["python","god","deus","pamela",],
 
-'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal"],
+'phrase2' : ["holy python", "odius perl", "greatest guido", "import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal","ex nunc","ex tunc"],
 
-'phrase3' : ["$number $animal $animal_part","bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious'],
+'phrase3' : ["$number $animal $animal_part","bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious',"super $sexual_thing enlargio","intensum odoris expeleriamus","enormis $animal_part habeant","hideous hair electrifiamus","super top-model convertimus","incredibilis muscles damus","more money creamus","in love transformis","totalis mind erasing","pacta sunt servanda","bona fides damus","mala fides removing","veni vidi vici"],
 
-'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent", "$number $animal $preposition $noun"],
+'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent", "$number $animal $preposition $noun","$author $verb $excellent $animal_part"],
 
 'phrase5' : ["$subject $verb $preposition $adjective $noun",],
 
