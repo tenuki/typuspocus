@@ -11,9 +11,16 @@ grammar = {
 
 'verb' : ["expeleriamus", "habemus", "levitatio", "cogitum", "possum", "factito", "agito" ],
 
+'digit' : ["one","two","three","four","five","six","seven","eight","nine"],
+'number10_19' : ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","eighteen","nineteen",],
+'ten' : ["twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"],
+'number' : ["$digit","$number10_19","$ten"],
+
 'sexual_thing' : ["boobs", "boobies", "teats", "nipples", "tits"],
 
 'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing"],
+
+'animal_part' : ['head','eye','tail','leg','arm','elbow','tongue','brain','lung','nose','knee','toe','foot'],
 
 'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
@@ -21,7 +28,7 @@ grammar = {
 
 'latin_noun' : ["amicitia", "potentia", "scientia", "aequalitas", "dignitas", "facilitas", "gravitas", "libertas", "novitas", "potestas", "qualitas", "veritas", "certitudo", "longitudo", "magnitudo", "multitudo", "similitudo",],
 
-'noun': ["$animal", "$latin_noun"],
+'noun': ["$animal", "$latin_noun", "$animal_part"],
 
 'name' : ['tenuki','alecu','lucio','leito','facundo','riq','nubis','pabloz','chaghi'],
 
@@ -39,11 +46,11 @@ grammar = {
 
 'phrase5' : ["$subject $verb $preposition $adjective $noun",],
 
-'phrase6' : ["$adjective $animal $verb $preposition $adjective $noun",],
+'phrase6' : ["$number $animal_part $verb $preposition $adjective $noun",],
 
-'phrase7' : ["$adjective $adjective $subject $verb $preposition $adjective $noun"],
+'phrase7' : ["$number $adjective $subject $verb $preposition $adjective $noun"],
 
-'phrase8' : ["$pronoun $verb $adjective $preposition $subject $verb $preposition $adjective $noun"],
+'phrase8' : ["$number $subject $animal_part $verb $preposition $adjective $adjective $noun"],
 
 'spell_begin' : ["hocus pocus", "abracadabra",],
 
@@ -140,6 +147,10 @@ class Spell( PhraseLen ):
                            + self.getGrammar()
                            + ', '
                            + string.join(end) )
+
+    def getPhrase(self):
+        p = PhraseLen.getPhrase(self)
+        return string.strip(p) + '.'
 
 class FunnyPhrase( Phrase ):
     """returns a phrase that should be funny."""
