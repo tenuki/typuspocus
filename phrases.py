@@ -7,7 +7,7 @@ import string
 from string import Template
 
 grammar = {
-'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","re","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
+'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
 
 'verb' : ["expeleriamus", "habemus", "levitatio", "cogitum", "possum", "factito", "agito" ],
 
@@ -18,9 +18,9 @@ grammar = {
 
 'sexual_thing' : ["boobs", "boobies", "teats", "nipples", "tits"],
 
-'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing"],
+'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing","oh-my-god"],
 
-'animal_part' : ['head','eye','tail','leg','arm','elbow','tongue','brain','lung','nose','knee','toe','foot'],
+'animal_part' : ['head','eye','tail','leg','arm','elbow','tongue','brain','lung','nose','knee','toe','foot','shoulder','ankle','neck','jaw','teeth','stomach','testicle','spleen','heart','liver'],
 
 'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
@@ -38,11 +38,11 @@ grammar = {
 
 'phrase1' : ["python","god"],
 
-'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus", "modus operandi","ipso facto",],
+'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal"],
 
-'phrase3' : ["$verb $preposition $noun", "oh my god", "bizarre fragances expeleriamus","horribilis fungus habemus"],
+'phrase3' : ["$number $animal $animal_part","bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious'],
 
-'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent"],
+'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent", "$number $animal $preposition $noun"],
 
 'phrase5' : ["$subject $verb $preposition $adjective $noun",],
 
@@ -162,4 +162,5 @@ if __name__ == "__main__":
     for i in range(1,100):
         print '---------------------'
 #        print Phrase().getPhrase()
-        print "Len(%d): %s" % (i, Spell(i).getPhrase() )
+        p = Spell(i).getPhrase() 
+        print "Len(%d,%d): %s" % (i, len(p), p)
