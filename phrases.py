@@ -7,41 +7,53 @@ import string
 from string import Template
 
 grammar = {
-'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","mid","minus","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","re","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
+'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","re","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
 
-'verb' : ["expeleriamus", "habemus", "levitatio", "disparatum", "cogitum", "summus"],
+'verb' : ["expeleriamus", "habemus", "levitatio", "cogitum", "possum", "factito", "agito" ],
 
-'execellent' : ['huge','execellent','nice','awesome','wonderful','incredible'],
+'sexual_thing' : ["boobs", "boobies", "teats", "nipples", "tits"],
 
-'adjective': [ "$execellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
+'excellent' : ['excellent','nice','awesome','wonderful','incredible',"inspiring","amazing"],
+
+'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","wide-eyed","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
 'animal': ["alligator","alpaca","ant","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
 
-'noun': ["$animal"],
+'latin_noun' : ["amicitia", "potentia", "scientia", "aequalitas", "dignitas", "facilitas", "gravitas", "libertas", "novitas", "potestas", "qualitas", "veritas", "certitudo", "longitudo", "magnitudo", "multitudo", "similitudo",],
 
-'direct_object' : ['$animal','I','you','she','he','we','they'],
+'noun': ["$animal", "$latin_noun"],
+
+'name' : ['tenuki','alecu','lucio','leito','facundo','riq','nubis','pabloz','chaghi'],
+
+'pronoun' : ['I','you','yo','she','he','we','they'],
+
+'subject' : ['$animal','$name',],
 
 'phrase1' : ["python","god"],
 
-'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus"],
+'phrase2' : ["holy python", "odius perl", "greatest guido", "marilyn monroe","import this","pythonus idolotrus", "modus operandi","ipso facto",],
 
-'phrase3' : ["$verb $preposition $noun", "guido van rossum","oh my god", "bizarre fragances expeleriamus","horribilis fungus habemus"],
+'phrase3' : ["$verb $preposition $noun", "oh my god", "bizarre fragances expeleriamus","horribilis fungus habemus"],
 
-'phrase4' : ["$verb $preposition $adjective $noun", "your boobs are $execellent"],
+'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent"],
 
-'phrase5' : ["$direct_object $verb $preposition $adjective $noun"],
+'phrase5' : ["$subject $verb $preposition $adjective $noun",],
 
-'phrase6' : ["the $animal $verb $preposition $adjective $noun", "the $adjective $animal $verb $preposition $noun"],
+'phrase6' : ["$adjective $animal $verb $preposition $adjective $noun",],
 
-'phrase7' : ["the $adjective $animal $verb $preposition $adjective $noun"],
+'phrase7' : ["$adjective $adjective $subject $verb $preposition $adjective $noun"],
 
-'phrase8' : ["the $adjective $preposition $animal $verb $preposition $adjective $noun"],
+'phrase8' : ["$pronoun $verb $adjective $preposition $subject $verb $preposition $adjective $noun"],
 
-'spell_begin' : ["hocus pocus", "abracadabra"],
+'spell_begin' : ["hocus pocus", "abracadabra",],
 
-'now' : ["right now","now","", "at this moment", "immediately", "without delay"],
+'now' : ["right now","now","", "at this moment", "immediately", "without delay", "instantly", "at once", "right away", ],
 
-'spell_end' : ["evaporatum $now", "disappearum $now", "go away $now"],
+'pliz' : ["","please"],
+
+'disappear' : ["disappear", "go away", "evaporate", "vanish", "dematerialise", "dematerialize", "bob under", ],
+
+'spell_end' : ["$pliz $disappear $now"],
 
 'funny_phrase' : ["bizarre fragances expeleriamus","horribilis fungus habemus","pythonus idolotrus"],
 }
@@ -104,7 +116,7 @@ class PhraseLen( Phrase ):
         while i > 0:
             # hardcoded, if you want to support more, just add to grammar
             if i > MAXPHRASE:
-                d = int( random.random() * MAXPHRASE + 1 )
+                d = random.randint(1, MAXPHRASE)
             else:
                 d = i
 
@@ -116,7 +128,8 @@ class PhraseLen( Phrase ):
         self.setGrammar( phrase )
 
 class Spell( PhraseLen ):
-    def __init__( self, l ):
+    """Construct a valid spell, with beginning and ending words."""
+    def __init__( self, l, object = None ):
 
         begin = self.replace( random.choice( grammar['spell_begin'] ) )
         end = self.replace( random.choice( grammar['spell_end'] ) )
