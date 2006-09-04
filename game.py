@@ -264,6 +264,6 @@ class MainMenu(Scene):
                 self.runScene( GameOver( self.game, score ) )
 
 if __name__ == "__main__":
-    g = Game(800, 600, framerate = 200)
+    g = Game(800, 600, framerate = 20)
 
     g.run( MainMenu(g) )
