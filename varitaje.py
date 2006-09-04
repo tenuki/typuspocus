@@ -10,7 +10,7 @@ class Varitaje:
                     True: ((300,300),(700,600)) }
         self.last = True
         self.step = 0
-        self.max = 15
+        self.max = 9
         self.prev = None
         self.inter = None
         self.points = []
