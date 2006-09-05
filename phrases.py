@@ -10,7 +10,9 @@ grammar = {
 
 # "pacta tertis nec nocent nec prosunt",
 
-'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","via","with","within","without"],
+'zen_of_python' : [ "Beautiful is better than ugly","Explicit is better than implicit","Simple is better than complex","Complex is better than complicated","Flat is better than nested","Sparse is better than dense","Readability counts","Special cases aren't special enough to break the rules","Although practicality beats purity","Errors should never pass silently","Unless explicitly silenced","In the face of ambiguity, refuse the temptation to guess","There should be one-- and preferably only one --obvious way to do it","Although that way may not be obvious at first unless you're Dutch","Now is better than never","Although never is often better than *right* now","If the implementation is hard to explain, it's a bad idea","If the implementation is easy to explain, it may be a good idea","Namespaces are one honking great idea -- let's do more of those!"],
+
+'preposition' : ["aboard","about","above","absent","across","after","against","along","alongside","amid","amidst","among","amongst","around","as","at","atop","before","behind","below","beneath","beside","besides","between","beyond","by","despite","down","during","except","following","for","from","in","inside","into","like","near","nearest","notwithstanding","of","off","on","onto","opposite","out","outside","over","past","round","since","through","throughout","till","to","toward","towards","under","underneath","unlike","until","up","upon","with","within","without"],
 
 'verb' : ["expeleriamus", "habemus", "levitatio", "cogitum", "possum", "factito", "agito" ],
 
@@ -27,27 +29,27 @@ grammar = {
 
 'adjective': [ "$excellent", "insolent", "bizarre", "horribilis","perfectis","bad","jittery","purple","tan","better","jolly","quaint","tender","beautiful","kind","quiet","testy","big","long","quick","tricky","black","lazy","quickest","tough","blue","bright","magnificent","magenta","rainy","rare","ugly","ugliest","clumsy","many","ratty","vast","crazy","mighty","red","watery","dizzy","mushy","roasted","wasteful","dull","nasty","robust","stinky","fat","new","round","wonderful","frail","nice","sad","yellow","friendly","nosy","scary","yummy","funny","nutty","scrawny","zany","great","nutritious","short","green","odd","silly","gigantic","orange","stingy","gorgeous","ordinary","strange","grumpy","pretty","striped","handsome","precious","spotty","happy","prickly","tart","horrible","tall","itchy","tame"],
 
-'animal': ["alligator","alpaca","ant","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","turtle dove","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wild boar","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
+'animal': ["alligator","alpaca","ant","ape","armadillo","ass","baboon","badger","bat","bear","bee","beetle","bird","bison","bittern","boar","buffalo","butterfly","buzzard","camel","cat","cattle","cheetah","chicken","chimpanzee","cockroach","cod","coot","coyote","crane","crocodile","deer","dog","dolphin","donkey","dove","duck","eagle","eel","elephant","elk","falcon","ferret","finch","flamingo","fly","fox","frog","gerbil","giraffe","gnat","gnu","goat","goldfinch","goose","gorilla","greyhound","grouse","guinea pig","gull","hamster","hare","hawk","hedgehog","heron","hippopotamus","hog","horse","hummingbird","hyena","impala","kangaroo","koala","lark","lemur","leopard","lion","llama","lobster","locust","magpie","mallard","manatee","mink","mole","monkey","moose","mosquito","mouse","mule","nighthawk","nightingale","opossum","ostrich","otter","ox","panda","parrot","partridge","pelican","penguin","pig","pheasant","pigeon","polar bear","polecat","porcupine","porpoise","possum","prairie dog","python","quail","rabbit","raccoon","rat","raven","reindeer","rhinoceros","rook","salmon","seal","sea lion","shark","sheep","skunk","snake","snipe","sparrow","spider","squirrel","starling","stork","swallow","swan","termite","tiger","toad","trout","turkey","turtle","viper","wallaby","walrus","wasp","weasel","whale","widgeon","wolf","wombat","woodchuck","woodcock","woodpecker","wren","yak","zebra"],
 
-'latin_noun' : ["amicitia", "potentia", "scientia", "aequalitas", "dignitas", "facilitas", "gravitas", "libertas", "novitas", "potestas", "qualitas", "veritas", "certitudo", "longitudo", "magnitudo", "multitudo", "similitudo",],
+'latin_noun' : ["amicitia", "potentia", "scientia", "aequalitas", "dignitas", "facilitas", "gravitas", "libertas", "novitas", "potestas", "qualitas", "veritas", "certitudo", "longitudo", "magnitudo", "multitudo", "similitudo","libiditus",],
 
 'noun': ["$animal", "$latin_noun", "$animal_part"],
 
 'author' : ['tenuki','alecu','lucio','leito','facundo','riq','nubis','pabloz','chaghi'],
 'women_name' : ['Olivia','Charlotte','Emily','Chloe','Ella','Jessica','Isabella','Sophie','Mia','Emma'],
 'men_name' : ['Jack','James','Lachlan','Benjamin','Joshua','Ryan','John','Patrick','Samuel','William'],
-'name' : ['$author','$men_name','$women_name'],
+'name' : ['$author', '$men_name','$women_name'],
 
 
 'pronoun' : ['I','you','yo','she','he','we','they'],
 
-'subject' : ['$animal','$name',],
+'subject' : ['$animal'],
 
 'phrase1' : ["python","god","deus","pamela",],
 
-'phrase2' : ["holy python", "odius perl", "greatest guido", "import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal","ex nunc","ex tunc"],
+'phrase2' : ["holy python", "odius perl", "greatest guido", "import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal"],
 
-'phrase3' : ["$number $animal $animal_part","bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious',"super $sexual_thing enlargio","intensum odoris expeleriamus","enormis $animal_part habeant","hideous hair electrifiamus","super top-model convertimus","incredibilis muscles damus","more money creamus","in love transformis","totalis mind erasing","pacta sunt servanda","bona fides damus","mala fides removing","veni vidi vici"],
+'phrase3' : ["bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious',"super $sexual_thing enlargio","intensum odoris expeleriamus","enormis $animal_part habeant","hideous hair electrifiamus","super top-model convertimus","incredibilis muscles damus","more money creamus","in love transformis","totalis mind erasing","pacta sunt servanda","bona fides damus","alicuius amore ardere","veni vidi vici","libido incrementus forever"],
 
 'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent", "$number $animal $preposition $noun","$author $verb $excellent $animal_part"],
 
