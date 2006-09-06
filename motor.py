@@ -25,8 +25,8 @@ class MainMotor(object):
     Cuando el usr presiona una tecla, hitLetra(), cuando hace backspace, hitBackspace()
     '''
 
-    voluntario = cosas.reloj
-    voluntario_error = cosas.hongo
+    voluntario = None
+    voluntario_error = None
     step_size = 0.1
     fast = 1.5
     slow = 0.75
@@ -44,6 +44,11 @@ class MainMotor(object):
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
+            
+        if self.voluntario is None:
+            self.voluntario = random.choice(cosas.all)
+        while self.voluntario == self.voluntario_error:
+            self.voluntario_error = random.choice(cosas.all)
         (self.hechizo, self.indpals) = self._armaHechizo(self.cantidad_palabras)
         self.largohech = len(self.hechizo)
         self.cursor = 0
