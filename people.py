@@ -14,6 +14,7 @@ def resetRandom(level_number):
     random.seed(int(time.time()/60/15)+level_number*100)
 
 class SampleScene(Scene):
+    """simply makes a lot of people"""
     def init(self, nombre, wardrobes):
         global background
         self.nombre = nombre
@@ -24,7 +25,7 @@ class SampleScene(Scene):
         
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
-            some.random()
+            some.random(level=1) #level between 1 and ..
             self.pool.append(some)
         
         background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
@@ -70,36 +71,69 @@ class SampleScene(Scene):
 
 
 class Individual:
-    LayerProb = {"behind":0.5, 
-        "body":0.9, 
-        "hair":0.7,
-        "underware":0.8,
-        "tops n bottoms":0.9,
-        "shoes":0.8,
-        "jackets":0.7,
-        "hats":0.5,
-        "infront":0.3}
+    AnyPublic, PG18, Exibisionist = range(3)
+    BehaviourDatas = {
+        AnyPublic: {
+            "behind":0.5, 
+            "body":0.95, 
+            "hair":0.7,
+            "underware":0.8,
+            "tops n bottoms":1,
+            "shoes":0.8,
+            "jackets":0.7,
+            "hats":0.5,
+            "infront":0.3},
+        PG18: {
+            "behind":0.5, 
+            "body":0.95, 
+            "hair":0.7,
+            "underware":0.4,
+            "tops n bottoms":0.9,
+            "shoes":0.8,
+            "jackets":0.7,
+            "hats":0.5,
+            "infront":0.3},
+        Exibisionist: {
+            "behind":0.8, 
+            "body":0.90, 
+            "hair":0.7,
+            "underware":0.2,
+            "tops n bottoms":0.05,
+            "shoes":0.7,
+            "jackets":0.3,
+            "hats":0.5,
+            "infront":0.3}
+        }
 
     def __init__(self, wardrobe):
+        """Each person must have a wardrobe, Ha!"""
         self.wardrobe=wardrobe
         self.layers={}
     
-    def random(self):
+    def random(self, level=0, clothinBehavior=BehaviourDatas[AnyPublic]):
+        #choose some layers by it's probe
         sl=[]
-        layers = self.wardrobe.getLayers()
-        for layer in layers:
-            if random.random()<Individual.LayerProb[layer]:
+        for layer in self.wardrobe.getLayers():
+            if random.random()<clothinBehavior[layer]:
                 sl.append(layer)
+                
+        #if this individual is not going to have a body
+        #at least let him be well clothed, for its health!        
         if not 'body' in sl:
-            sl=Individual.LayerProb.keys()
+            sl=clothinBehavior.keys()
             sl.remove('body')
+        
+        #let's wardrobe calculate weights for this level
+        self.wardrobe.adjustProbForLevel(level)
+        
+        #choose clothes, please!!
         for layer in sl:
             if not self.wardrobe.articles.has_key(layer):
                 continue
             r = random.random()
             s = 0
             for art in self.wardrobe.articles[layer]:
-                s += art.peso
+                s += art.absProb(level)
                 if r<=s:
                     self.layers[layer]=art
                     break
@@ -163,6 +197,22 @@ class Article:
         self.image = None
         self.path = path
         
+        self.probByLevel = map(lambda s:float(s), 
+                            self.getSome('wearing').split(':') )
+        self.probLevels = len(self.probByLevel)
+        self.absProbL={}
+        
+    def absProb(self, level):
+        return self.absProbL[level]
+        
+    def setAbsProbForLevel(self, level, prob):
+        self.absProbL[level]=prob
+        
+    def probLevel(self, level):
+        if level>self.probLevels:
+            level=self.probLevels
+        return self.probByLevel[level-1]
+        
     def __repr__(self):
         return self.name
 
@@ -170,28 +220,19 @@ class Article:
         return self.data[getattr(self.fieldset,some)]
     def getLayer(self):
         return self.getSome('layer')
-        
     def getName(self):
         return self.getSome('imagename')
-        
-    def getWeight(self):
-        try:
-            return int(self.getSome('wearing'))
-        except:
-            return float(self.getSome('wearing'))
         
     def getImage(self):
         global background
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
-            #self.image.convert_alpha(background)
             self.image.convert_alpha()
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
     layer=property(getLayer)
     name=property(getName)
-    weight=property(getWeight)
     
     def wget (self, fname):
         """fetch image"""
@@ -201,36 +242,50 @@ class Wardrobe:
     def __init__(self, path):
         self.articles={}
         self.weights={}
+        self.calculatedLevels = {}
+        self.layers = {}
         self.parseConfig(path)
         self.parseArticles(path)
-        self.setWeights()
         
     def add(self, article):
         layer = article.layer
-
-        weight = article.weight
-        weights = self.weights.setdefault(layer, (0,0))
-        normales, especiales = weights
-        if weight==-1:
-            normales+=1
-        else:
-            especiales+=especiales
-        self.weights[layer]= (normales,especiales)
-        
+        self.layers [ layer ] = None        
         artlist = self.articles.setdefault(layer, [])
         artlist.append(article)
         self.articles[layer]=artlist
-
-    def setWeights(self):
-        for layer in self.weights.keys():
-            normales, especiales = self.weights[layer]
-            pnormal = (1.0-especiales)/normales
-            #print 'layer %spnormal is:'%layer,pnormal
+        
+    def adjustProbForLevel(self, level):
+        if self.calculatedLevels.has_key(level):
+            #skip if we made calculations beore
+            return
+            
+        for layer in self.layers.keys():
+            if not self.articles.has_key(layer): continue
+            ##count probability definition
+            ## -1: same as any other article with -1 
+            ##          (let's call the quantity: standardCount)
+            ## x :  0<=x<=1 set x as probability 
+            ##          (let's call its sum: absolute total)
+            standardCount, absoluteTotal = 0, 0
             for article in self.articles[layer]:
-                if article.weight==-1:
-                    article.peso=pnormal
+                probDef = article.probLevel(level)
+                if probDef == -1: standardCount += 1
+                else:  absoluteTotal += probDef
+            
+            #so the articles with standard probe will have
+            # (1-absoluteTotal)/standardCount probability eachone           
+            standardArtProb = (1.0-absoluteTotal)/standardCount
+            
+            #now, take articles with standard prob. and setup them
+            # with anabsolute Probability!
+            for article in self.articles[layer]:
+                prob = article.probLevel(level)
+                if prob==-1:
+                    article.setAbsProbForLevel(level, standardArtProb)
                 else:
-                    article.peso=article.weight
+                    article.setAbsProbForLevel(level, prob)
+        #calculation complete
+        self.calculatedLevels[level]=None
             
     def getLayers(self):
         return self.articles.keys()
