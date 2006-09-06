@@ -4,7 +4,7 @@ from engine import Game, Scene
 from audiencia import AudienciaScene
 import cosas
 from motor import MainMotor, Estados
-
+import hollow
 
 
 CLOCK_TICK = pygame.USEREVENT
@@ -32,14 +32,16 @@ class LineManager:
         self.font = font =  pygame.font.Font(font,font_size)
         text = set([ t for t in hechizo ])
         self.cache = {}
+        colores = [
+            [(130,130,170), (0,0,255)],
+            [(255,255,0),(255,0,0)],
+            [(170,170,100),(255,0,0)],
+            [(255,0,0),(128,0,0)],
+            ]
         for t in text:
-            self.cache[t] = (font.render(t,True,(130,130,170)),
-                font.render(t,True,(255,255,255)),
-                font.render(t,True,(170,170,100)),
-                font.render(t,True,(255,0,0)),
-                )
+            self.cache[t] = [ hollow.textOutline(font,t,*c) for c in colores ]
             self.height = self.cache[t][0].get_height()
-                
+
         words = hechizo.split(" ")
         lines = []
         current = ""
