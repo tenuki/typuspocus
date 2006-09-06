@@ -6,7 +6,6 @@ from engine import Game, Scene
 SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
-background = None
 
 random = Random()
 def resetRandom(level_number):
@@ -15,17 +14,17 @@ def resetRandom(level_number):
 
 class SampleScene(Scene):
     """simply makes a lot of people"""
-    def init(self, nombre, wardrobes):
-        global background
+    def init(self, nombre, wardrobes, level=1):
         self.nombre = nombre
         self.goscene = False
         self.finalizar = False
         self.wardrobes = wardrobes
         self.pool = []
+        self.level=level
         
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
-            some.random(level=1) #level between 1 and ..
+            some.random(level=self.level) #level between 1 and ..
             self.pool.append(some)
         
         background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
@@ -33,7 +32,7 @@ class SampleScene(Scene):
         for y in range(filasy):
             for x in range(filasx):
                 some = Individual(random.choice(self.wardrobes))
-                some.random()
+                some.random(level=self.level)
                 self.putIndividualAt(some, x, y)
                 
     def putIndividualAt(self, individual, x, y):
@@ -110,7 +109,7 @@ class Individual:
         self.wardrobe=wardrobe
         self.layers={}
     
-    def random(self, level=0, clothinBehavior=BehaviourDatas[AnyPublic]):
+    def random(self, level=1, clothinBehavior=BehaviourDatas[AnyPublic]):
         #choose some layers by it's probe
         sl=[]
         for layer in self.wardrobe.getLayers():
@@ -134,7 +133,7 @@ class Individual:
             s = 0
             for art in self.wardrobe.articles[layer]:
                 s += art.absProb(level)
-                if r<=s:
+                if r<s or s==1:
                     self.layers[layer]=art
                     break
                 
@@ -142,7 +141,6 @@ class Individual:
         return repr(self.layers)
 
     def render(self ):
-        global background
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
@@ -154,7 +152,6 @@ class Individual:
                 article = self.layers[layername]
                 if img==None:
                     img = pygame.image.load('escenario/sinbutaca.png')
-                    #img.convert_alpha(background)
                     img.convert_alpha()
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
@@ -224,7 +221,6 @@ class Article:
         return self.getSome('imagename')
         
     def getImage(self):
-        global background
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name)
             self.image.convert_alpha()
@@ -349,10 +345,10 @@ def getAllWardrobes():
                     Wardrobe('audiencia/boy/')]
 
 wardrobes = getAllWardrobes()
-def buildIndividual():
+def buildIndividual(level=1):
     wd=random.choice(wardrobes)
     i= Individual(wd)
-    i.random()
+    i.random(level=level)
     return i
     
 if __name__ == "__main__":
