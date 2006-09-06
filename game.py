@@ -28,7 +28,7 @@ class Timer:
         
         
 class LineManager:
-    def __init__(self, hechizo, font_size = 80, font = "escenario/MagicSchoolOne.ttf", width=600):
+    def __init__(self, hechizo, font_size = 80, font = "escenario/VeraMono.ttf", width=600):
         self.font = font =  pygame.font.Font(font,font_size)
         text = set([ t for t in hechizo ])
         self.cache = {}
