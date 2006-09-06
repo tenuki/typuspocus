@@ -23,7 +23,6 @@ class HiScoreData( Singleton ):
     NAME = 2
     WHEN = 3
     IPADDR = 4
-    ASCII_TIME = 5
    
     HISCORE_FILENAME = 'typos_pocus_hi_scores.pickle'
     
@@ -54,8 +53,7 @@ class HiScoreData( Singleton ):
     def addHiScore( self, score, name, ipaddr):
         print 'addHiScore(%s,%s,%s)' % ( score, name, ipaddr )
         real_when = -time.time()
-        ascii_when = time.ctime()
-        self.hiScores.append( (int(score),real_when,name,ipaddr,ascii_when) )
+        self.hiScores.append( (int(score),real_when,name,ipaddr) )
         self.hiScores.sort()
         self.hiScores.reverse()
 
@@ -95,7 +93,7 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
         linestr +="</tr>\n"
 
         index = 0
-        for i in data.listHiScores():
+        for item in data.listHiScores():
             if index % 2 == 0:
                 linestr +='<tr BGCOLOR="#eeeeee" NOSAVE>\n'
             else:
@@ -105,15 +103,16 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
 
             linestr +="<!-- entry -->"
             try:
-                for j in range(0,len(i)):
-                    if j % len(i) == HiScoreData.COMMIT_TIME:
+                for j in range(0,len(item)):
+                    if j % len(item) == HiScoreData.COMMIT_TIME:
                         continue
-                    linestr +="<td>%s</td>" % i[j]
+                    linestr +="<td>%s</td>" % item[j]
+                linestr +="<td>%s</td>" % time.ctime(-item[HiScoreData.COMMIT_TIME])
                 linestr +="</tr>\n"
             except Exception, e:
                 print 'Error:'
                 print str(e)
-                print i
+                print item
 
         linestr +="</table>\n"
         linestr +='</center>\n'
@@ -135,14 +134,12 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
                 for j in range(0,len_i):
                     if j % len_i == 0:
                         linestr +="\t\t<score>%d</score>\n" % i[j]
-                    if j % len_i == HiScoreData.COMMIT_TIME:
-                        continue
+                    if j % len_i == 1:
+                        linestr +="\t\t<when>%f</when>\n" % -i[j]
                     if j % len_i == 2:
                         linestr +="\t\t<name>%s</name>\n" % i[j]
                     if j % len_i == 3:
                         linestr +="\t\t<ipaddress>%s</ipaddress>\n" % i[j]
-                    if j % len_i == 4:
-                        linestr +="\t\t<when>%s</when>\n" % i[j]
             except Exception, e:
                 print 'Error:'
                 print str(e)
