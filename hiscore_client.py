@@ -14,6 +14,7 @@ class HiScoreClient:
 
     def __init__(self):
         self.__dom = None
+        self.__hiscores = []
 
     def addHiScore( self, score, name ):
         try:
@@ -27,21 +28,38 @@ class HiScoreClient:
             f = urllib2.urlopen('http://%s:%s/listHiScoresInXML'% (HISCORE_SERVER,HISCORE_PORT) )
             document = f.read()
             self.__dom = xml.dom.minidom.parseString(document)
+            self.handleXMLScores()
 
         except Exception, e:
             print str(e)
             raise Exception("local hiscore not yet implemented")
 
-    def handleHiScores(self):
-        handleSlideshowTitle(self.__dom.getElementsByTagName("title")[0])
-        slides = slideshow.getElementsByTagName("slide")
-        handleToc(slides)
-        handleSlides(slides)
-        print "</html>"
+        return self.__hiscores
+
+    def handleXMLScores(self):
+        self.__hiscores = []
+        entries = self.__dom.getElementsByTagName("entry")
+        for entry in entries:
+            score = entry.getElementsByTagName("score")[0]
+            scoreStr = self.getText(score.childNodes)
+            name= entry.getElementsByTagName("name")[0]
+            nameStr = self.getText(name.childNodes)
+            ipaddr = entry.getElementsByTagName("ipaddress")[0]
+            ipaddrStr = self.getText(ipaddr.childNodes)
+            theTime = entry.getElementsByTagName("when")[0]
+            theTimeStr = self.getText(theTime.childNodes)
+            self.__hiscores.append( (int(scoreStr), nameStr, ipaddrStr, theTimeStr) )
+
+    def getText(self, nodelist):
+        rc = ""
+        for node in nodelist:
+            if node.nodeType == node.TEXT_NODE:
+                rc = rc + node.data
+        return rc
 
 if __name__ == '__main__':
     a = HiScoreClient()
     print a.listHiScores()
-#    for i in range(1,100):
-#    a.addHiScore(i,'usuario_test_%s' % i )
-#    print a.getHiScores()
+    for i in range(1,100):
+        a.addHiScore(i,'usuario_test_%s' % i )
+    print a.listHiScores()

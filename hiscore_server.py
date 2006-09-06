@@ -51,11 +51,11 @@ class HiScoreData( Singleton ):
             print 'Could not save hi scores'
             print e
 
-    def addHiScore( self, points, name, ipaddr):
-        print 'addHiScore(%s,%s,%s)' % ( points, name, ipaddr )
+    def addHiScore( self, score, name, ipaddr):
+        print 'addHiScore(%s,%s,%s)' % ( score, name, ipaddr )
         real_when = -time.time()
         ascii_when = time.ctime()
-        self.hiScores.append( (int(points),real_when,name,ipaddr,ascii_when) )
+        self.hiScores.append( (int(score),real_when,name,ipaddr,ascii_when) )
         self.hiScores.sort()
         self.hiScores.reverse()
 
@@ -134,15 +134,15 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
                 len_i = len(i)
                 for j in range(0,len_i):
                     if j % len_i == 0:
-                        linestr +="\t\t<points>%d</points>\n" % i[j]
+                        linestr +="\t\t<score>%d</score>\n" % i[j]
                     if j % len_i == HiScoreData.COMMIT_TIME:
                         continue
                     if j % len_i == 2:
                         linestr +="\t\t<name>%s</name>\n" % i[j]
                     if j % len_i == 3:
-                        linestr +="\t\t<when>%s</when>\n" % i[j]
-                    if j % len_i == 4:
                         linestr +="\t\t<ipaddress>%s</ipaddress>\n" % i[j]
+                    if j % len_i == 4:
+                        linestr +="\t\t<when>%s</when>\n" % i[j]
             except Exception, e:
                 print 'Error:'
                 print str(e)
