@@ -16,12 +16,32 @@ filasx, filasy = (800/peoplex,600/peopley)
 MAXPUFFING = 10
 MAXTOMATEANDO = 20
 
+class Persona:
+    def __init__(self, (dx, dy)):
+        self.position = (dx,dy)
+        self.imagen = people.buildIndividual().render()
+
+    def render(self, surface, porcentaje):
+        if random.randint(0,1000)<porcentaje:
+            gx = random.choice([-1,0,1])
+            gy = random.choice([-1,-2,0])
+        else:
+            gx, gy = 0,0
+        dx, dy = self.position
+        surface.blit(self.imagen, (dx+gx, dy+gy))
+
 class Fila:
     sillas=None
-    def __init__(self):
+    def __init__(self, level_number,(dx,dy)):
+        self.position = (dx, dy)
         if Fila.sillas is None:
             Fila.sillas = self.construirSillas()
-        self.personas = [ people.buildIndividual().render() for x in range(filasx) ]
+        self.personas = []
+        for x in range(filasx):
+            if random.random() > (level_number/0.5+0.1):
+                self.personas.append(None)
+            else:
+                self.personas.append( Persona((dx+x*peoplex,dy)) )
 
     def construirSillas(self):
         img = pygame.image.load('escenario/butaca.png')
@@ -31,22 +51,21 @@ class Fila:
             base.blit(img, (peoplex * x, 0) )
         return base
 
-    def render(self, surface, (dx,dy), porcentaje ):
-        surface.blit(Fila.sillas, (dx,dy))
-        #print porcentaje
+    def render(self, surface, porcentaje ):
+        surface.blit(Fila.sillas, self.position)
         for x, persona in enumerate(self.personas):
-            if random.randint(0,1000)<porcentaje:
-                gx = random.choice([-1,0,1])
-                gy = random.choice([-1,-2,0])
-            else:
-                gx, gy = 0,0
-            surface.blit(persona, ((x*peoplex)+dx+gx, dy+gy))
+            if persona is not None:
+                persona.render(surface, porcentaje)
 
 
 class Audiencia:
     def __init__(self, level_number):
         people.resetRandom(level_number)
-        self.filas = [ Fila() for y in range(filasy) ]
+        self.filas = []
+        for y in range(filasy):
+            dx = (y%2) * peoplex/2 - peoplex/2 + 6
+            dy = peopley/2 * y
+            self.filas.append(Fila(level_number,(dx,dy)))
 
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
@@ -56,10 +75,8 @@ class Audiencia:
         return (dx+peoplex/2, dy+20)
 
     def render(self, surface, porcentaje):
-        for y,fila in enumerate(self.filas):
-            dx = (y%2) * peoplex/2 - peoplex/2 + 6
-            dy = peopley/2 * y
-            fila.render(surface, (dx,dy), porcentaje)
+        for fila in self.filas:
+            fila.render(surface, porcentaje)
 
 class AudienciaScene(Scene):
     def init(self, level_number):
