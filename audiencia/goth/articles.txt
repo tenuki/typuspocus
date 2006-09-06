@@ -207,7 +207,7 @@ HCDataSetFile_data
 "891" "boy_hair_19.gif" "hair" "hair" "32" "15" "-1"
 "892" "boy_hair_18.gif" "hair" "hair" "34" "26" "-1"
 "893" "boy_hair_17.gif" "hair" "hair" "34" "26" "-1"
-"894" "alien.gif" "body" "body" "27" "28" "0.05"
+"894" "alien.gif" "body" "body" "27" "28" "0:0:0.03:0.1:-1"
 "895" "baby_01.gif" "extras" "infront" "17" "65" "-1"
 "896" "baby_02.gif" "extras" "infront" "17" "65" "-1"
 "897" "baby_03.gif" "extras" "infront" "17" "65" "-1"

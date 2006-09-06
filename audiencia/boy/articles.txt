@@ -81,7 +81,7 @@ HCDataSetFile_data
 "50227" "boy_shoes_06.gif" "shoes" "tops n bottoms" "35" "128" "-1"
 "50226" "boy_shoes_11.gif" "shoes" "tops n bottoms" "37" "97" "-1"
 "50225" "boy_shoes_10.gif" "shoes" "tops n bottoms" "37" "119" "-1"
-"77" "alien.gif" "body" "body" "27" "28" "0.05"
+"77" "alien.gif" "body" "body" "27" "28" "0:0:0.03:0.1:-1"
 "78" "boy_bondage_01.gif" "extras" "tops n bottoms" "32" "26" "-1"
 "79" "boy_facialhair_03.gif" "hair" "hair" "35" "56" "-1"
 "50224" "boy_shoes_09.gif" "shoes" "tops n bottoms" "36" "125" "-1"
