@@ -13,7 +13,7 @@ import interpol
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
-MAXPUFFING = 30
+MAXPUFFING = 10
 MAXTOMATEANDO = 20
 
 class Fila:
@@ -76,8 +76,9 @@ class AudienciaScene(Scene):
         self.mano = pygame.image.load("escenario/manos/mano1.png")
         self.mano.convert()
         self.puffing = 0
-        self.nube = pygame.image.load("escenario/nube.png")
-        self.nube.convert()
+        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)) for n in range(5) ]
+        for img in self.nubes:
+            img.convert()
 
         self.tomate = pygame.image.load("escenario/tomates/tomate.png")
         self.tomate.convert()
@@ -132,10 +133,12 @@ class AudienciaScene(Scene):
         if self.voluntario != None:
             surface.blit(self.voluntario, self.voluntario.get_rect(midbottom=(400,370)))
 
-        if self.puffing > 0:
+        if self.puffing > 1:
             self.puffing -= 1
-            surface.blit(self.nube, self.nube.get_rect(midbottom=(400,420)))
-            print self.puffing
+            n = int( len(self.nubes) * (1 - self.puffing/float(MAXPUFFING)) )
+            print n, len(self.nubes)
+            nube = self.nubes[n]
+            surface.blit(nube, nube.get_rect(midbottom=(400,420)))
 
         if self.tomateando is not None:
             if self.tomateando > 0:
