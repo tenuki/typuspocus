@@ -28,7 +28,7 @@ class Timer:
         
         
 class LineManager:
-    def __init__(self, hechizo, font_size = 80, font = "MagicSchoolOne.ttf", width=600):
+    def __init__(self, hechizo, font_size = 80, font = "escenario/MagicSchoolOne.ttf", width=600):
         self.font = font =  pygame.font.Font(font,font_size)
         text = set([ t for t in hechizo ])
         self.cache = {}
@@ -94,8 +94,8 @@ class Level(Scene):
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
         
-        pygame.mixer.music.load("sounds/8bp063-07-dorothys_magic_bag-rondo_alla_turka.mp3")
-        pygame.mixer.music.set_volume(0.5)
+        #pygame.mixer.music.load("sounds/8bp063-07-dorothys_magic_bag-rondo_alla_turka.mp3")
+        #pygame.mixer.music.set_volume(0.5)
         #pygame.mixer.music.play(-1)
         
         self.tick_count = True
@@ -104,7 +104,7 @@ class Level(Scene):
 
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
-        self.messagefont = pygame.font.Font("VeraMono.ttf",50)
+        self.messagefont = pygame.font.Font("escenario/VeraMono.ttf",50)
         self.motor.start()
         
         
@@ -268,7 +268,7 @@ class LevelIntro(Scene):
     def init(self, level_number, level_name):
         self.level_number = level_number
         self.level_name = level_name
-        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
     def paint(self):
         s = self.font.render("Level "+self.level_number, True, (255,255,255))
@@ -286,7 +286,7 @@ class LevelSuccess(Scene):
     def init(self, score, levelscore):
         self.score = score
         self.levelscore = levelscore
-        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
     def paint(self):
         s = self.font.render("Level Completed", True, (255,255,255))
@@ -304,7 +304,7 @@ class LevelSuccess(Scene):
 class GameOver(Scene):
     def init(self, score):
         self.score = score
-        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
     def paint(self):
         s = self.font.render("Game Over: Score "+str(self.score), True, (255,255,255))
@@ -339,7 +339,7 @@ levels = [
       ]                
 class MainMenu(Scene):
     def init(self):
-        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
     def paint(self):
         s = self.font.render("Typus Pocus", True, (255,255,255))
