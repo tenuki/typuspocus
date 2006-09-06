@@ -91,6 +91,11 @@ class Level(Scene):
         self.subscenes.append( self.audiencia )
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
+        
+        pygame.mixer.music.load("sounds/8bp063-07-dorothys_magic_bag-rondo_alla_turka.mp3")
+        pygame.mixer.music.set_volume(0.5)
+        #pygame.mixer.music.play(-1)
+        
         self.tick_count = True
         
         self.state = PLAYING
@@ -131,6 +136,7 @@ class Level(Scene):
                 self.tick_count = not self.tick_count
                 pygame.time.set_timer(CLOCK_TICK, tick_rate)
                 print "tickrate", tick_rate
+            
                 
             if self.motor.cursor >= len(self.motor.hechizo):
                 self.sounds.suspenso.play()
