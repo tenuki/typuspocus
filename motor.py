@@ -47,6 +47,7 @@ class MainMotor(object):
             
         if self.voluntario is None:
             self.voluntario = random.choice(cosas.all)
+        self.voluntario_error = self.voluntario
         while self.voluntario == self.voluntario_error:
             self.voluntario_error = random.choice(cosas.all)
         (self.hechizo, self.indpals) = self._armaHechizo(self.cantidad_palabras)
