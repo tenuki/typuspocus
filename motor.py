@@ -25,13 +25,22 @@ class MainMotor(object):
     Cuando el usr presiona una tecla, hitLetra(), cuando hace backspace, hitBackspace()
     '''
 
-    porcentajeRequerido = 0.50
-    tiempoExtra = 10
     voluntario = cosas.reloj
     voluntario_error = cosas.hongo
+    step_size = 0.1
+    fast = 1.5
+    slow = 0.75
+    good = 1.00
+    bad = 0.70
+    inicio_segundos = 10
+    max_calor_inicial = 0.3
+    max_with_error = 0.9
+    precision_requerida = 0.8
+    tiempo_por_caracter = 0.5
+    changui = 3
+    preferencia_precision = 0.5
     
     def __init__(self, cant):
-        self.LPS = 3.0
         (self.hechizo, self.indpals) = self._armaHechizo(cant)
         self.largohech = len(self.hechizo)
         self.cursor = 0
@@ -39,8 +48,6 @@ class MainMotor(object):
         self.startTime = None
         self.tiempoJuego = self._getTiempoJuego()
         # calculamos el puntaje maximo con un estado 100% ok, y luego reseteamos
-        self.estado = [Estados.OK_DEUNA] * self.largohech
-        self.puntajeMax = self._getScore()
         self.score = 0
         self.estado = [Estados.VIRGEN] * self.largohech
         self.calor = 0
@@ -99,8 +106,7 @@ class MainMotor(object):
             evento = self.estado[self.cursor]
 
         # actualizamos las variables
-        self._getScore()
-        self._getCalor()
+        
         self.tiempoUltTecla = time.time()
         self.cursor += 1
         return (res, evento)
@@ -113,42 +119,19 @@ class MainMotor(object):
         self.tiempoUltTecla = time.time()
         return
 
-    def _getScore(self):
-        '''Calcula el puntaje total según el estado.'''
-        score = 0
-
-        # puntaje de las letras
-        for st in self.estado:
-            if st == Estados.OK_DEUNA:
-                score += 2
-            if st == Estados.OK_CORRG:
-                score += 1
-#        print "Score por letras", score
-
-        # penalizamos los backspaces
-        score -= self.cant_bs * 1
-#        print "Score por bs", score
-
-        # damos mas puntos por palabras todas bien escritas
-        ini = fin = 0
-        for pal in self.hechizo.split():
-            largopal = len(pal)
-            fin += largopal
-            if self.estado[ini:fin] == [Estados.OK_DEUNA]*largopal:
-                score += largopal
-            fin += 1
-            ini += largopal + 1
-#        print "Score por palabra", score
-        self.score = score
-        return score
 
     def start(self):
-        self.startTime = time.time()
+        self.last_update = self.startTime = time.time()
         return
 
     def tick(self):
+        if self.startTime is None:
+            return
+        
         # actualizamos el calor del publico
-        self._getCalor()
+        if time.time() - self.last_update > 1:
+            self._calcCalor()
+            self.last_update = time.time()
 
         # evento? vemos si hace rato que no tocamos una tecla
         inactivo = time.time() - self.tiempoUltTecla
@@ -170,7 +153,7 @@ class MainMotor(object):
     def _getTiempoJuego(self):
         '''Devuelve el tiempo que tiene el usuario para completar el hechizo.'''
         # la hacemos fácil, un segundo por letra
-        return self.largohech/self.LPS + self.tiempoExtra
+        return self.largohech*self.tiempo_por_caracter + self.changui
 
     def tuvoExito(self):
         acertados = 0
@@ -179,33 +162,79 @@ class MainMotor(object):
                 acertados += 1
         porcentaje = float(acertados)/len(self.estado)
         #print acertados, "/", len(self.estado)
-        return porcentaje >= self.porcentajeRequerido
+        return porcentaje >= self.precision_requerida
 
-    def _getCalor(self):
-        '''Devuelve cuan activo está el público.
+    def _calcCalor(self):
+        '''calcula el calor del publico y lo pone en self.calor
+        se debe ejecutar una vez por segundo
+        tambien updetea el score
         Es un float, entre -1 (super enojado) y 1 (super alegre).
         0 es neutro.
+        
+        ver: https://opensvn.csie.org/traccgi/PyAr/wiki/FuncionCalor
         '''
-        # algoritmo para el calor del público:
-        #   Es una suma algebraica de los siguientes floats entre 0 y 1:
-        #     - porcentaje de puntos logrados sobre el total posible a ese momento, y le restamos 3 para que
-        #       se balancee penalizando los errores (por letra, el rango de puntos es de -2 a 1)
-        #     - tiempo pasado sobre el total de tiempo posible (en contra)
-        #     - cantidad de backspaces sobre el total de letras (en contra, ojo que puede dar >1)
-        calor = 0
-        porc_tiempopasado = (time.time() - self.startTime) / self.tiempoJuego
-        punt_almomento = self.puntajeMax * porc_tiempopasado
-        valor1 = ((self.score / punt_almomento) * 3) - 3 
-        calor += valor1
-        calor -= self.cant_bs / self.largohech
-        print "precalor", calor,  (self.cursor/float(self.largohech))
-        calor *= max( (self.cursor/float(self.largohech)), porc_tiempopasado)
-
-        # sanity check
+        
+        #calculos previos
+        acertados = 0.0
+        errados = 0.0
+        for st in self.estado:
+            if st == Estados.OK_DEUNA or st == Estados.OK_CORRG:
+                acertados += 1
+            elif st == Estados.MAL:
+                errados += 1
+        # calculamos el calor por velocidad
+        tiempo_transcurrido = self._getTiempoJuego() - self.getTimeLeft()
+        tiempo_estimado = (acertados+errados)*self.tiempo_por_caracter
+        
+        
+        ratio_velocidad = tiempo_estimado/tiempo_transcurrido
+        
+        calor_velocidad = (ratio_velocidad-self.slow)*2.0/(self.fast-self.slow)-1
+        
+        if ratio_velocidad < self.slow:
+            calor_velocidad = -1.0
+        if ratio_velocidad > self.fast:
+            calor_velocidad = 1.0
+            
+        # calculamos el calor por precision
+        
+        
+        if (acertados+errados) == 0:
+            ratio_precision = self.bad
+        else:
+            ratio_precision = acertados/(acertados+errados)
+        
+        calor_precision = (ratio_precision-self.bad)*2.0/(self.good-self.bad)-1
+        if ratio_precision < self.bad:
+            calor_precision = -1.0
+        if ratio_precision > self.good:
+            calor_precision = 1.0
+            
+        # mezlcamos ambos
+        delta_calor = (
+                 calor_precision*self.preferencia_precision +
+                 calor_velocidad*(1-self.preferencia_precision)
+                 )
+        
+        # filtros pre delta
+        if time.time()-self.tiempoUltTecla > 2:
+            delta_calor = -1
+            
+        # aplicamos el delta
+        calor = self.calor + calor*self.step_size
+        
+        # filtros post delta
+        if time.time()-self.tiempoUltTecla > 5:
+            calor = min(calor, -0.5)
+            
         if calor > 1:
             calor = 1
         if calor < -1:
             calor = -1
+            
+            
+        # corregimos el calor y el score
         self.calor = calor
-        print "Hace Calor...", calor, self.tuvoExito()
+        self.score += calor
+        print "calor: %.2f\t calp: %.2f\t calv: %.2f\t rpre: %.2f\t rvel: %.2f\t"%(calor, calor_precision, calor_velocidad, ratio_precision, ratio_velocidad)
         return calor

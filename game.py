@@ -260,7 +260,7 @@ class MainMenu(Scene):
                     self.runScene( LevelIntro( self.game, str(count) ) )
                     l =  Level(self.game, count, count*10) 
                     result = self.runScene( l )
-                    score += l.motor.score
+                    score += int(l.motor.score)
                 self.runScene( GameOver( self.game, score ) )
 
 if __name__ == "__main__":
