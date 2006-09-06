@@ -89,6 +89,7 @@ class Level(Scene):
         self.subscenes.append( self.audiencia )
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
+        self.tick_count = True
         
         self.state = PLAYING
 
@@ -116,8 +117,18 @@ class Level(Scene):
                     self.audiencia.gameEvent( event )
                     
             elif evt.type == CLOCK_TICK:
-                self.sounds.reloj.play()
-              
+                sound_len = 100
+                timeleft = self.motor.getTimeLeft()
+                total_time = self.motor._getTiempoJuego()
+                tick_rate = sound_len + timeleft * (1000-sound_len)/total_time
+                if self.tick_count:
+                    self.sounds.tick1.play()
+                else:
+                    self.sounds.tick2.play()
+                self.tick_count = not self.tick_count
+                pygame.time.set_timer(CLOCK_TICK, tick_rate)
+                print "tickrate", tick_rate
+                
             if self.motor.cursor >= len(self.motor.hechizo):
                 self.sounds.suspenso.play()
                 if self.motor.tuvoExito():
@@ -262,10 +273,24 @@ class GameOver(Scene):
 levels = [
           # title, parameters
           ("Starting out..", dict(cantidad_palabras =5)),
-          ("Getting better..", dict(cantidad_palabras=30, tiempo_por_caracter=0.4)),
-          ("This guys want speed..", dict(cantidad_palabras=40, tiempo_por_caracter=0.35, preferencia_precision=0.1) ),
-          ("Perfectionism is king..", dict(cantidad_palabras=40, tiempo_por_caracter=0.30, preferencia_precision=0.9)),
-          ("Mixed emotions..", dict(cantidad_palabras=30, tiempo_por_caracter=0.25)),
+          ("Getting better..", dict(
+                        cantidad_palabras=30, 
+                        tiempo_por_caracter=0.4)
+                      ),
+          ("This guys want speed..", dict(
+                      cantidad_palabras=40, 
+                      tiempo_por_caracter=0.35, 
+                      preferencia_precision=0.1) 
+                      ),
+          ("Perfectionism is king..", dict(
+                       cantidad_palabras=40, 
+                       tiempo_por_caracter=0.30, 
+                       preferencia_precision=0.9
+                       )),
+          ("Mixed emotions..", dict(
+                        cantidad_palabras=30, 
+                        tiempo_por_caracter=0.25
+                        )),
       ]                
 class MainMenu(Scene):
     def init(self):
