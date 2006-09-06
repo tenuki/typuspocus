@@ -1,6 +1,6 @@
 #
 # A simple http server for saving hi scores
-# pyweek - PyAr2
+# pyweek - PyAr2 - Typos Pocus
 #
 
 import SimpleHTTPServer
@@ -19,7 +19,7 @@ class Singleton:
 class HiScoreData( Singleton ):
 
     POINTS = 0
-    COMMIT_TIME = 1         # added for comparison
+    COMMIT_TIME = 1         # added for comparing when the score is the same. older time wins
     NAME = 2
     WHEN = 3
     IPADDR = 4
@@ -43,18 +43,17 @@ class HiScoreData( Singleton ):
             pass
 
     def saveHiScores(self):
-        print 'saveHiScores()'
         try:
-            f = file(HiScoreData.HISCORE_FILENAME,'w+')
+            f = file(HiScoreData.HISCORE_FILENAME,'w')
             pickle.dump(self.hiScores, f)
             f.close()
         except Exception, e:
-            print 'Coult not save hi scores'
+            print 'Could not save hi scores'
             print e
 
     def addHiScore( self, points, name, ipaddr):
         print 'addHiScore(%s,%s,%s)' % ( points, name, ipaddr )
-        real_when = time.time()
+        real_when = -time.time()
         ascii_when = time.ctime()
         self.hiScores.append( (int(points),real_when,name,ipaddr,ascii_when) )
         self.hiScores.sort()
@@ -67,9 +66,6 @@ class HiScoreData( Singleton ):
     def listHiScores( self ):
         # only return the 50 first records
         return self.hiScores[:50]
-
-    def __del__(self):
-        self.saveHiSCores()
 
 def Handle( x = Singleton ):
     try:
@@ -90,7 +86,7 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
 
         linestr +='<center>'
         linestr +='<table BORDER=0 BGCOLOR="#dedede" NOSAVE>\n'
-        linestr +="<th><center>Hi Scores</center></th>"
+        linestr +="<th><center>Typos Pocus - Hi Scores</center></th>"
         linestr +="<tr>\n"
         linestr +="\t<td><b>Points</b></td>\n"
         linestr +="\t<td><b>Name</b></td>\n"
@@ -115,16 +111,18 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
                     linestr +="<td>%s</td>" % i[j]
                 linestr +="</tr>\n"
             except Exception, e:
+                print 'Error:'
                 print str(e)
-                print 'Invalid entry:'
                 print i
 
         linestr +="</table>\n"
         linestr +='</center>\n'
+        linestr +='</br></br>\n'
+        linestr +='<p>Download the latest version of Typos Pocus from <a href="http://www.pyweek.org/e/PyAr2/">here</a>'
         linestr +="</body>\n</html>\n"
         self.wfile.write('\n' + linestr)
 
-    def hs_listHiScores_xml(self):
+    def hs_listHiScoresInXML(self):
 
         data = Handle(HiScoreData)
         linestr = '<?xml version="1.0"?>\n'
@@ -145,18 +143,36 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
                         linestr +="\t\t<when>%s</when>\n" % i[j]
                     if j % len_i == 4:
                         linestr +="\t\t<ipaddress>%s</ipaddress>\n" % i[j]
-            except:
-                print 'Invalid entry:'
+            except Exception, e:
+                print 'Error:'
+                print str(e)
                 print i
             linestr +="\t</entry>\n"
         linestr +='</hiscores>\n'
         self.wfile.write(linestr)
 
+    def hs_(self):
+        page = """
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head><title>Typos Pocus - Hi Scores</title>
+</head>
+<body>
+<h2>Welcome to Typos Pocus - Hi Scores</h2>
+<P>Available commands:
+<ul>
+    <li><a href="listHiScores">listHiScores</a></li>
+    <li><a href="listHiScoresInXML">listHiScoresInXML</a></li>
+</ul>
+</body>
+</html>"""
+        self.wfile.write(page)
+
     def hs_addHiScore(self):
         if len(self.hiscore_params) == 2:
             data = Handle(HiScoreData)
             data.addHiScore( self.hiscore_params[0], self.hiscore_params[1], self.client_address[0])
-            self.wfile.write('<html><head><title>Hi Scores Added</title></head></html>')
+            self.wfile.write('<html><head><title>Hi Scores Added</title></head><body><h1>HiScore (%s,%s)Added</h1></body></html>' % ( self.hiscore_params[0], self.hiscore_params[1]) )
         else:            
             self.send_error(400, "invalid parameters")
 
@@ -183,6 +199,8 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
 def main(HandlerClass = HiScoresHandler, ServerClass = BaseHTTPServer.HTTPServer):
     BaseHTTPServer.test(HandlerClass, ServerClass)
 
-
 if __name__ == "__main__":
+    print 'Remember: To change the listening port, just add the new one to the command line'
+    print 'For example:'
+    print '\tpython hiscore_server 80'
     main()
