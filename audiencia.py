@@ -38,7 +38,7 @@ class Fila:
             Fila.sillas = self.construirSillas()
         self.personas = []
         for x in range(filasx):
-            if random.random() > (level_number/0.5+0.1):
+            if random.random() > (level_number/5.0+0.1):
                 self.personas.append(None)
             else:
                 self.personas.append( Persona((dx+x*peoplex,dy)) )
