@@ -73,10 +73,10 @@ PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
 class Level(Scene):
-    def init(self, level_number, cant_palabras):
+    def init(self, level_number, motor):
         import sounds
         self.sounds = sounds
-        self.motor = MainMotor(cant_palabras)
+        self.motor = motor
         self.line_manager = LineManager(self.motor.hechizo)
         self.offset_cache = [None]*len(self.motor.hechizo)
         self.style_cache = [None]*len(self.motor.hechizo)
@@ -155,17 +155,17 @@ class Level(Scene):
             if evt:
                 self.audiencia.gameEvent( evt )
         elif self.state == WINNING:
-            if pygame.time.get_ticks() -self.wintime > 5000:
+            if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = WON
                 self.audiencia.setVoluntario(None, True) 
                 self.sounds.bravo.play()
         elif self.state == LOSING:
-            if pygame.time.get_ticks() -self.wintime > 5000:
+            if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = LOST
                 self.audiencia.setVoluntario(self.motor.voluntario_error, True)
                 self.sounds.abucheo.play()   
         elif self.state == TOMATOING:
-            if pygame.time.get_ticks() -self.wintime > 5000:
+            if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = TOMATO
 
                 
@@ -209,19 +209,42 @@ class Level(Scene):
         
                        
 class LevelIntro(Scene):
-    def init(self, level_name):
+    def init(self, level_number, level_name):
+        self.level_number = level_number
         self.level_name = level_name
         self.font = font =  pygame.font.Font("VeraMono.ttf",50)
         
     def paint(self):
-        s = self.font.render("Level "+self.level_name, True, (255,255,255))
+        s = self.font.render("Level "+self.level_number, True, (255,255,255))
         self.background.blit(s, (100,100))
+        s = self.font.render(self.level_name, True, (255,255,255))
+        self.background.blit(s, (100,300))
+        
         self.game.screen.blit(self.background, (0,0))
     
     def event(self, evt):
         if evt.type == KEYDOWN:
                 self.end()
 
+class LevelSuccess(Scene):
+    def init(self, score, levelscore):
+        self.score = score
+        self.levelscore = levelscore
+        self.font = font =  pygame.font.Font("VeraMono.ttf",50)
+        
+    def paint(self):
+        s = self.font.render("Level Completed", True, (255,255,255))
+        self.background.blit(s, (100,100))
+        s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
+        self.background.blit(s, (100,300))
+        s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
+        self.background.blit(s, (100,400))
+        
+        self.game.screen.blit(self.background, (0,0))
+    
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+                self.end()
 class GameOver(Scene):
     def init(self, score):
         self.score = score
@@ -236,7 +259,14 @@ class GameOver(Scene):
         if evt.type == KEYDOWN:
                 self.end()
                 
-                
+levels = [
+          # title, parameters
+          ("Starting out..", dict(cantidad_palabras =5)),
+          ("Getting better..", dict(cantidad_palabras=30, tiempo_por_caracter=0.4)),
+          ("This guys want speed..", dict(cantidad_palabras=40, tiempo_por_caracter=0.35, preferencia_precision=0.1) ),
+          ("Perfectionism is king..", dict(cantidad_palabras=40, tiempo_por_caracter=0.30, preferencia_precision=0.9)),
+          ("Mixed emotions..", dict(cantidad_palabras=30, tiempo_por_caracter=0.25)),
+      ]                
 class MainMenu(Scene):
     def init(self):
         self.font = font =  pygame.font.Font("VeraMono.ttf",50)
@@ -255,12 +285,24 @@ class MainMenu(Scene):
                 result = GANO
                 count = 0
                 score = 0
+                futech = 0
                 while result == GANO:
-                    count += 1
-                    self.runScene( LevelIntro( self.game, str(count) ) )
-                    l =  Level(self.game, count, count*10) 
+                    if count < len(levels):
+                        subtitle = levels[count][0]
+                        params = levels[count][1]
+                    else:
+                        if futech == 0: futech = count-1
+                        subtitle = "Future tech "+str(count-futech)
+                        params = dict(tiempo_por_caracter=1.0/(count-futech+4))
+                    self.runScene( LevelIntro( self.game, str(count), subtitle ) )
+                    l =  Level(self.game, count, MainMotor(**params)) 
                     result = self.runScene( l )
-                    score += int(l.motor.score)
+                    newscore = int(l.motor.score)
+                    score += newscore
+                    if result == GANO:
+                        self.runScene( LevelSuccess(self.game, score, newscore))
+                    count += 1
+
                 self.runScene( GameOver( self.game, score ) )
 
 if __name__ == "__main__":

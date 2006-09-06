@@ -39,9 +39,12 @@ class MainMotor(object):
     tiempo_por_caracter = 0.5
     changui = 3
     preferencia_precision = 0.5
+    cantidad_palabras = 20
     
-    def __init__(self, cant):
-        (self.hechizo, self.indpals) = self._armaHechizo(cant)
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        (self.hechizo, self.indpals) = self._armaHechizo(self.cantidad_palabras)
         self.largohech = len(self.hechizo)
         self.cursor = 0
         self.cant_bs = 0
@@ -221,7 +224,7 @@ class MainMotor(object):
             delta_calor = -1
             
         # aplicamos el delta
-        calor = self.calor + calor*self.step_size
+        calor = self.calor + delta_calor*self.step_size
         
         # filtros post delta
         if time.time()-self.tiempoUltTecla > 5:
