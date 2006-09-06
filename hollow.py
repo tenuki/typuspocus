@@ -14,8 +14,7 @@ from pygame.locals import *
 def textOutline(font, message, fontcolor, outlinecolor):
     borde = font.render(message, 1, outlinecolor)
     base = font.render(message, 1, fontcolor)
-    img = pygame.Surface( base.get_rect().inflate(2,2).size, 32 )
-    print base, borde, img
+    img = pygame.Surface( base.get_rect().inflate(2,2).size, 0, base )
     for x in 0,2:
         for y in 0,2:
             img.blit(borde, (x,y) )
@@ -36,13 +35,12 @@ if __name__ == '__main__':
     text2 = textOutline(bigfont, entry_info2, grey, white)
 
     #create a window the correct size
-    width = text2.get_width()
-    height = text2.get_height()
+    width, height = text2.get_rect().inflate(10,10).size
     win = pygame.display.set_mode((width, height))
     win.fill((20, 20, 80), (0, 0, width, 30))
-    win.fill((20, 20, 80), (0, height-30, width, 30))
+    win.fill((80, 20, 80), (0, height-30, width, 30))
 
-    win.blit(text2, (0, 0))
+    win.blit(text2, text2.get_rect(center=win.get_rect().center))
     pygame.display.flip()
     
     #wait for the finish
