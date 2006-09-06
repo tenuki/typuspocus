@@ -28,7 +28,7 @@ class Timer:
         
         
 class LineManager:
-    def __init__(self, hechizo, font_size = 30, font = "VeraMono.ttf", width=600):
+    def __init__(self, hechizo, font_size = 80, font = "MagicSchoolOne.ttf", width=600):
         self.font = font =  pygame.font.Font(font,font_size)
         text = set([ t for t in hechizo ])
         self.cache = {}
@@ -73,6 +73,8 @@ PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
 class Level(Scene):
+    linebyline = False
+    
     def init(self, level_number, motor):
         import sounds
         self.sounds = sounds
@@ -95,6 +97,7 @@ class Level(Scene):
 
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
+        self.messagefont = pygame.font.Font("VeraMono.ttf",50)
         self.motor.start()
         
         
@@ -182,33 +185,67 @@ class Level(Scene):
                 
                          
     def update(self):
-        font = pygame.font.Font("VeraMono.ttf",30)
+        font = self.messagefont
             
         if self.state == PLAYING:
             #self.game.screen.blit(self.background, (0,0))
-            
-            cursor = self.motor.cursor
-            offset, line = self.line_manager.getLineFromCursor( cursor )
-            
-            ypos = 540
-            xpos = (800-sum([ self.line_manager.get(l,0).get_width() for l in line ]))/2
-            cursor_xpos = xpos
-            for position, letter in enumerate(line):
-                style = self.motor.estado[position+offset]
+            if self.linebyline:
+                cursor = self.motor.cursor
+                offset, line = self.line_manager.getLineFromCursor( cursor )
                 
-                if position+offset == cursor:
-                    cursor_xpos = xpos
+                ypos = 540
+                xpos = (800-sum([ self.line_manager.get(l,0).get_width() for l in line ]))/2
+                cursor_xpos = xpos
+                for position, letter in enumerate(line):
+                    style = self.motor.estado[position+offset]
                     
-                i = self.line_manager.get(letter, self.motor.estado[position+offset])
+                    if position+offset == cursor:
+                        cursor_xpos = xpos
+                        
+                    i = self.line_manager.get(letter, self.motor.estado[position+offset])
+                    
+                    self.game.screen.blit( i, (xpos, ypos) )
+                    xpos += i.get_width()
+                    cursor_img = font.render("^", True, (255,255,255))
+                    self.game.screen.blit(cursor_img, 
+                                          (cursor_xpos,ypos+self.line_manager.height)
+                                          )                    
+            else:
+                # paint forward
+                xpos = 400
+                ypos = 300
+                cursor = self.motor.cursor
+                print "falta == ",self.motor.hechizo[cursor:]
+                for position, letter in enumerate(self.motor.hechizo[cursor:]):
+                    style = self.motor.estado[position+cursor]
+                    
+                        
+                    i = self.line_manager.get(letter, self.motor.estado[position+cursor])
+                    
+                    self.game.screen.blit( i, (xpos, ypos) )
+                    xpos += i.get_width()
+                    if xpos > 800: break
+                    
+                #pain backwards
+                xpos = 400
+                letters = [l for l in self.motor.hechizo[:cursor]]
+                print "done==", self.motor.hechizo[:cursor]
+                letters.reverse()
+                for position, letter in enumerate(letters):
+                    style = self.motor.estado[-position+cursor]
+                    
+                        
+                    i = self.line_manager.get(letter, self.motor.estado[-1-position+cursor])
+                    width = i.get_width()
+                    if xpos - width < 0: break
+                    xpos -= width
+                    self.game.screen.blit( i, (xpos, ypos) )
+                    
+                    
                 
-                self.game.screen.blit( i, (xpos, ypos) )
-                xpos += i.get_width()
-                
+            
+
             self.level_timer.blit( self.game.screen, (770, 50))
-            cursor_img = font.render("^", True, (255,255,255))
-            self.game.screen.blit(cursor_img, 
-                (cursor_xpos,ypos+self.line_manager.height)
-                )
         if self.state in [WON, LOST, TOMATO]:
             im = font.render("[press any key]", True, (30,30,200))
             ypos = 540
