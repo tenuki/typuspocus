@@ -145,7 +145,7 @@ class PhraseLen( Phrase ):
 
 class Spell( PhraseLen ):
     """Construct a valid spell, with beginning and ending words."""
-    def __init__( self, l, object = None ):
+    def __init__( self, l, objectToVanish = None ):
 
         begin = self.replace( random.choice( grammar['spell_begin'] ) )
         end = self.replace( random.choice( grammar['spell_end'] ) )
