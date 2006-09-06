@@ -10,3 +10,5 @@ ruido magia para el orto
 alarido timeout
 tic del reloj que se acaba
 Voz Alin
+explosion
+tomatazo
