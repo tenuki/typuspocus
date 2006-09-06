@@ -17,9 +17,11 @@ MAXPUFFING = 10
 MAXTOMATEANDO = 20
 
 class Persona:
-    def __init__(self, (dx, dy)):
+    def __init__(self, (dx, dy), level_number):
         self.position = (dx,dy)
-        self.imagen = people.buildIndividual().render()
+        print level_number
+        raise str(level_number)
+        self.imagen = people.buildIndividual(level_number).render()
 
     def render(self, surface, porcentaje):
         if random.randint(0,1000)<porcentaje:
@@ -41,7 +43,7 @@ class Fila:
             if random.random() > (level_number/5.0+0.1):
                 self.personas.append(None)
             else:
-                self.personas.append( Persona((dx+x*peoplex,dy)) )
+                self.personas.append( Persona((dx+x*peoplex,dy), level_number) )
 
     def construirSillas(self):
         img = pygame.image.load('escenario/butaca.png')

@@ -348,7 +348,7 @@ wardrobes = getAllWardrobes()
 def buildIndividual(level=1):
     wd=random.choice(wardrobes)
     i= Individual(wd)
-    i.random(level=level)
+    i.random(level=level+1)
     return i
     
 if __name__ == "__main__":
