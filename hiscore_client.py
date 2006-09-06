@@ -5,34 +5,60 @@
 
 import urllib2
 import xml.dom.minidom
+import hiscore_server
 
 HISCORE_SERVER = 'localhost'
 HISCORE_PORT = 8000
 
+hiscore_server.HiScoreData.HISCORE_FILENAME = 'typos_pocus_local_hi_scores.pickle'
 
 class HiScoreClient:
 
     def __init__(self):
         self.__dom = None
         self.__hiscores = []
+        self.__internet = True
+
+    #
+    #  add Hi Scores
+    #
+    def addLocalHiScore( self, score, name ):
+        data = hiscore_server.Handle(hiscore_server.HiScoreData)
+        data.addHiScore( score, name, 'localhost' )
 
     def addHiScore( self, score, name ):
-        try:
-            urllib2.urlopen('http://%s:%s/addHiScore/%d/%s' % (HISCORE_SERVER,HISCORE_PORT,score,name) )
-        except Exception, e:
-            print str(e)
-            raise Exception("local hiscore not yet implemented")
+        if self.__internet:
+            try:
+                urllib2.urlopen('http://%s:%s/addHiScore/%d/%s' % (HISCORE_SERVER,HISCORE_PORT,score,name) )
+            except Exception, e:
+                print 'Internet connection failed... using local hiscores'
+                self.__internet = False
+                self.addLocalHiScore( score, name )
+        else:
+                self.addLocalHiScore( score, name )
+
+
+    #
+    # list Hi Scores
+    #
+    def listLocalHiScores( self ):
+        data = hiscore_server.Handle(hiscore_server.HiScoreData)
+        self.__hiscores = data.listHiScores()
 
     def listHiScores( self ):
-        try:
-            f = urllib2.urlopen('http://%s:%s/listHiScoresInXML'% (HISCORE_SERVER,HISCORE_PORT) )
-            document = f.read()
-            self.__dom = xml.dom.minidom.parseString(document)
-            self.handleXMLScores()
+        if self.__internet:
+            try:
+                f = urllib2.urlopen('http://%s:%s/listHiScoresInXML'% (HISCORE_SERVER,HISCORE_PORT) )
+                document = f.read()
+                self.__dom = xml.dom.minidom.parseString(document)
+                self.handleXMLScores()
 
-        except Exception, e:
-            print str(e)
-            raise Exception("local hiscore not yet implemented")
+            except Exception, e:
+                print 'Internet connection failed... using local hiscores'
+                self.__internet = False
+                self.listLocalHiScores()
+        else:
+            self.listLocalHiScores()
 
         return self.__hiscores
 
