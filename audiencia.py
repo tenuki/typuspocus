@@ -19,8 +19,10 @@ MAXTOMATEANDO = 20
 class Persona:
     def __init__(self, (dx, dy), level_number):
         self.position = (dx,dy)
-        self.imagen = people.buildIndividual(level_number).render()
-        self.t=0
+        individuo = people.buildIndividual(level_number)
+        self.images = map(lambda state:individuo.render(state), people.iStates)
+        self.state = people.iStates[0]
+        
     def render(self, surface, porcentaje):
         if random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
@@ -28,10 +30,9 @@ class Persona:
         else:
             gx, gy = 0,0
         dx, dy = self.position
-        # esto se va, dave: self.t+=1
-        # esto se va, dave: self.t=self.t%2
-        # esto se va, dave: surface.blit(self.imagen[self.t], (dx+gx, dy+gy))
-        surface.blit(self.imagen, (dx+gx, dy+gy))
+        
+        #get random state
+        surface.blit(random.choice(self.images), (dx+gx, dy+gy))
 
 class Fila:
     sillas=None

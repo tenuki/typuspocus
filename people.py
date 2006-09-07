@@ -12,6 +12,10 @@ def resetRandom(level_number):
     global random
     random.seed(int(time.time()/60/15)+level_number*100)
 
+states = normal, amboslevantados = range(2)
+
+iStates = states
+
 class SampleScene(Scene):
     """simply makes a lot of people"""
     def init(self, nombre, wardrobes, level=1):
@@ -38,7 +42,7 @@ class SampleScene(Scene):
     def putIndividualAt(self, individual, x, y):
         sx,sy = PPLSIZE
         dx = (y%2) * sx/2 - sx/2
-        img = individual.render()
+        img = individual.render()[random.randint(0,1)]
         self.background.blit(img,(sx*x+dx, sy/2*y)) 
     
     def event(self, evt):
@@ -140,16 +144,26 @@ class Individual:
     def __repr__(self):
         return repr(self.layers)
 
-    def render(self ):
+    def render(self, state ):
+        LayerHandsUp = ['body', "tops n bottoms", 'jackets']
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
+        
         img = None
         for k in order:
             layername=layerorder[k]
             if layername in self.layers.keys():
                 #we use that layer!
                 article = self.layers[layername]
+                #check variants:
+                if state==amboslevantados and layername in LayerHandsUp:
+                    xname = article.name
+                    try:
+                        nname=article.name[:-4]+'_brazos_arriba.gif'
+                        article = self.wardrobe.all[nname]
+                    except:
+                        pass
                 if img==None:
                     img = pygame.image.load('escenario/sinbutaca.png')
                     img.convert_alpha()
@@ -240,6 +254,7 @@ class Wardrobe:
         self.weights={}
         self.calculatedLevels = {}
         self.layers = {}
+        self.all = {}
         self.parseConfig(path)
         self.parseArticles(path)
         
@@ -249,6 +264,7 @@ class Wardrobe:
         artlist = self.articles.setdefault(layer, [])
         artlist.append(article)
         self.articles[layer]=artlist
+        self.all[article.name]=article
         
     def adjustProbForLevel(self, level):
         if self.calculatedLevels.has_key(level):
@@ -338,6 +354,7 @@ class Wardrobe:
 
     
 def getAllWardrobes():
+    #return [Wardrobe('audiencia/boy/')]
     return [Wardrobe('audiencia/fashion_boy/'),
                     Wardrobe('audiencia/fashion_girl/'),
                     Wardrobe('audiencia/girl/'),
@@ -354,6 +371,6 @@ def buildIndividual(level=1):
 if __name__ == "__main__":
     wardrobes = getAllWardrobes() # x,y
     g = Game(*SCREEN_SIZE, **{'framerate': 200})
-    g.run( SampleScene(g, "Scene1", wardrobes) )
+    g.run( SampleScene(g, "Scene1", wardrobes, level=6) )
     
     
