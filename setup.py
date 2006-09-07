@@ -35,7 +35,7 @@ except ImportError:
 try:
     import py2exe
 
-    data_files = [ (x, [os.path.join(x, e) for e in z]) for d in ("audiencia", "escenario", "sounds") for x,y,z in os.walk(d) if not ".svn" in x ] + [ "readme.txt"]
+    data_files = [ (x, [os.path.join(x, e) for e in z]) for d in ("audiencia", "escenario", "sounds", "music") for x,y,z in os.walk(d) if not ".svn" in x ] + [ "readme.txt"]
     setup(console=["game.py"], data_files = data_files)
 
 except ImportError:
