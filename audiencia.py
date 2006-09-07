@@ -32,7 +32,8 @@ class Persona:
         dx, dy = self.position
         
         #get random state
-        surface.blit(random.choice(self.images), (dx+gx, dy+gy))
+        #surface.blit(random.choice(self.images), (dx+gx, dy+gy))
+        surface.blit(self.images[0], (dx+gx, dy+gy))
 
 class Fila:
     sillas=None
@@ -171,8 +172,8 @@ class AudienciaScene(Scene):
 
                 p = self.tomateMB.getAt( 1.0-0.1*self.tomateando )
                 surface.blit(imagen, imagen.get_rect(center=p))
-
-        surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
+        else:
+            surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
         if self.tomateando == 0:
             imagen = self.tomate_aplastado
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
