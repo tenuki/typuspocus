@@ -90,6 +90,7 @@ class Level(Scene):
         self.line = None
         self.audiencia = AudienciaScene(self.game, self.level_number)
         self.subscenes.append( self.audiencia )
+        self.todasLasTeclas = ""
         
         pygame.time.set_timer(CLOCK_TICK, 1000)
         
@@ -117,6 +118,7 @@ class Level(Scene):
                 letra = evt.unicode #.lower()
                 if letra.isalpha() or (letra and letra in " ,.<>:;"):
                     res, event = self.motor.hitLetra( letra )
+                    self.checkEaster(letra)
                 if evt.key == K_BACKSPACE:
                     self.motor.hitBackspace()
                 if evt.key == K_RETURN:
@@ -163,7 +165,7 @@ class Level(Scene):
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
-                sounds.abucheo()
+                sounds.puteada()
                 self.audiencia.tomateame()
                 self.wintime = pygame.time.get_ticks()
                 
@@ -190,6 +192,10 @@ class Level(Scene):
                 self.state = TOMATO
 
                 
+    def checkEaster(self, letra):
+        self.todasLasTeclas += letra
+        if "who is your daddy" in self.todasLasTeclas:
+            self.audiencia.doEasterEgg()
                          
     def update(self):
         font = self.messagefont

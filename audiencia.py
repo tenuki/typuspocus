@@ -184,6 +184,10 @@ class AudienciaScene(Scene):
             imagen = self.tomate_aplastado
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
 
+    def doEasterEgg(self):
+        self.mano = pygame.image.load("escenario/manos/mano-easteregg.png")
+        self.mano.convert()
+
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
         self.voluntario = voluntario
