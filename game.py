@@ -165,7 +165,6 @@ class Level(Scene):
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
-            sounds.randomDeeJay()
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
                 sounds.puteada()
@@ -177,6 +176,7 @@ class Level(Scene):
                 
             evt = self.motor.tick()
             self.audiencia.setCalor( self.motor.calor )
+            sounds.heatDeeJay(self.motor.calor)
             
             if evt:
                 self.audiencia.gameEvent( evt )
