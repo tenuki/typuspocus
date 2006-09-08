@@ -4,6 +4,9 @@ from __future__ import division
 import random, time
 import cosas
 import phrases
+
+DEBUG=0
+
 PALABRAS = "Nuestro objetivo es nuclear a los usuarios de Python, de manera de centralizar la comunicacion a nivel nacional. Pretendemos llegar a usuarios y empresas, promover el uso de Python, intercambiar informacion, compartir experiencias y en general, ser el marco de referencia local en el uso y difusion de esta tecnologia.".split()
 
 class Estados:
@@ -92,7 +95,7 @@ class MainMotor(object):
         if self.cursor > self.largohech:
             return (None, self.estado, None, None, None)
 
-#        print "Estado viejo", self.estado
+#        if DEBUG: print "Estado viejo", self.estado
         if self.hechizo[self.cursor] == letra:
             if self.estado[self.cursor] in (Estados.VIRGEN, Estados.OK_DEUNA):
                 res = Estados.OK_DEUNA
@@ -101,7 +104,7 @@ class MainMotor(object):
         else:
             res = Estados.MAL
         self.estado[self.cursor] = res
-#        print "Estado nuevo", self.estado
+#        if DEBUG: print "Estado nuevo", self.estado
 
         # evento? nos fijamos si completamos una palabra
         evento = None
@@ -170,7 +173,7 @@ class MainMotor(object):
             if st == Estados.OK_DEUNA or st == Estados.OK_CORRG:
                 acertados += 1
         porcentaje = float(acertados)/len(self.estado)
-        #print acertados, "/", len(self.estado)
+        #if DEBUG: print acertados, "/", len(self.estado)
         return porcentaje >= self.precision_requerida
 
     def _calcCalor(self):
@@ -245,5 +248,5 @@ class MainMotor(object):
         # corregimos el calor y el score
         self.calor = calor
         self.score += calor
-        print "calor: %.2f\t calp: %.2f\t calv: %.2f\t rpre: %.2f\t rvel: %.2f\t"%(calor, calor_precision, calor_velocidad, ratio_precision, ratio_velocidad)
+        if DEBUG: print "calor: %.2f\t calp: %.2f\t calv: %.2f\t rpre: %.2f\t rvel: %.2f\t"%(calor, calor_precision, calor_velocidad, ratio_precision, ratio_velocidad)
         return calor

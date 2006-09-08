@@ -7,6 +7,7 @@ from motor import MainMotor, Estados
 import hollow
 from sounds import sounds
 
+DEBUG = 0
 
 CLOCK_TICK = pygame.USEREVENT
 
@@ -138,11 +139,12 @@ class Level(Scene):
                     sounds.tick2()
                 self.tick_count = not self.tick_count
                 pygame.time.set_timer(CLOCK_TICK, tick_rate)
-                print "tickrate", tick_rate
+                if DEBUG: print "tickrate", tick_rate
             
                 
             if self.motor.cursor >= len(self.motor.hechizo):
                 sounds.suspenso()
+                sounds.silenciarDeeJay()
                 if self.motor.tuvoExito():
                     self.state = WINNING
                 else:
@@ -163,6 +165,7 @@ class Level(Scene):
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
+            sounds.randomDeeJay()
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
                 sounds.puteada()
@@ -228,7 +231,7 @@ class Level(Scene):
                 xpos = 400
                 ypos = 300
                 cursor = self.motor.cursor
-                print "falta == ",self.motor.hechizo[cursor:]
+                if DEBUG: print "falta == ",self.motor.hechizo[cursor:]
                 for position, letter in enumerate(self.motor.hechizo[cursor:]):
                     style = self.motor.estado[position+cursor]
                     
@@ -242,7 +245,7 @@ class Level(Scene):
                 #pain backwards
                 xpos = 400
                 letters = [l for l in self.motor.hechizo[:cursor]]
-                print "done==", self.motor.hechizo[:cursor]
+                if DEBUG: print "done==", self.motor.hechizo[:cursor]
                 letters.reverse()
                 for position, letter in enumerate(letters):
                     style = self.motor.estado[-position+cursor]

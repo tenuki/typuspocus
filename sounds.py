@@ -18,6 +18,18 @@ class Sounds:
         for s in ["tick1", "tick2", "suspenso", "bravo.wav", "bu.wav"]:
             self.sonidoSuelto(s)
 
+        self.musicfiles = [f for f in os.listdir('music') if f.startswith('mm') and f.endswith('ogg') and f != 'mmend.ogg']
+        self.musicparts = [pygame.mixer.Sound('music/' + f) for f in self.musicfiles]
+
+    def randomDeeJay(self):
+        if not self.canalMusica.get_queue():
+            rnum = random.randint(0, len(self.musicparts) - 1)
+            #print 'queuing %s ...' % self.musicfiles[rnum]
+            self.canalMusica.queue(self.musicparts[rnum])
+
+    def silenciarDeeJay(self):
+        self.canalMusica.fadeout(500)
+
     def buildSonido(self, s):
         if "." not in s:
             s += ".ogg"

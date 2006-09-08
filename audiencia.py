@@ -11,6 +11,8 @@ import motor
 import interpol
 from sounds import sounds
 
+DEBUG = 0
+
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
@@ -163,7 +165,7 @@ class AudienciaScene(Scene):
         if self.puffing > 1:
             self.puffing -= 1
             n = int( len(self.nubes) * (1 - self.puffing/float(MAXPUFFING)) )
-            print n, len(self.nubes)
+            if DEBUG: print n, len(self.nubes)
             nube = self.nubes[n]
             surface.blit(nube, nube.get_rect(midbottom=(400,420)))
 
@@ -193,7 +195,7 @@ class AudienciaScene(Scene):
         self.voluntario = voluntario
         if hacerPuff:
             self.puffing = MAXPUFFING
-            print "------------MaxPuffing-------------"
+            if DEBUG: print "------------MaxPuffing-------------"
 
     def tomateame(self):
         self.tomateando = MAXTOMATEANDO
