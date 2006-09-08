@@ -30,8 +30,9 @@ class Timer:
         
         
 class LineManager:
-    def __init__(self, hechizo, font_size = 80, font = "escenario/MagicSchoolOne.ttf", width=600):
-        self.font = font =  pygame.font.Font(font,font_size)
+    def __init__(self, hechizo, font_size = 80, font = "escenario/MagicSchoolOne.ttf", altfont_size = 80, altfont = "escenario/VeraSe.ttf", width=600):
+        self.font = pygame.font.Font(font,font_size)
+        self.altfont = pygame.font.Font(altfont,altfont_size)
         text = set([ t for t in hechizo ])
         self.cache = {}
         colores = [
@@ -41,6 +42,10 @@ class LineManager:
             [(255,0,0),(128,0,0)],
             ]
         for t in text:
+            if t in " ,.<>:;":
+                font = self.altfont
+            else:
+                font = self.font
             self.cache[t] = [ hollow.textOutline(font,t,*c) for c in colores ]
             self.height = self.cache[t][0].get_height()
 
