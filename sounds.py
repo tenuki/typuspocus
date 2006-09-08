@@ -2,10 +2,13 @@ import pygame
 import os
 import random
 
+VOLUMEN_MUSICA = 0.5
+
 class Sounds:
     def init(self):
         pygame.mixer.set_reserved(3)
         self.canalMusica = pygame.mixer.Channel(0)
+        self.canalMusica.set_volume(VOLUMEN_MUSICA)
         self.canalAmbiente = pygame.mixer.Channel(1)
         self.canalPalabras = pygame.mixer.Channel(2)
 
