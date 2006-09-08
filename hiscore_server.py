@@ -7,7 +7,6 @@ import SimpleHTTPServer
 import BaseHTTPServer
 import time
 import os
-import pickle
 
 class Singleton:
     __single = None
@@ -24,7 +23,7 @@ class HiScoreData( Singleton ):
     WHEN = 3
     IPADDR = 4
    
-    HISCORE_FILENAME = 'typos_pocus_hi_scores.pickle'
+    HISCORE_FILENAME = 'hi_scores.txt'
     
     def __init__( self ):
         Singleton.__init__( self )
@@ -34,24 +33,35 @@ class HiScoreData( Singleton ):
 
     def loadHiScores(self):
         try:
-            os.stat( HiScoreData.HISCORE_FILENAME)
             f = file(HiScoreData.HISCORE_FILENAME)
-            self.hiScores = pickle.load( f )
+            self.hiScores = []
+            for line in f.readlines():
+                # ignore comments
+                if line.startswith("#"):
+                    continue
+                (score,when,name,ipaddr) = line.split(',')
+                self.hiScores.append( (int(score),float(when),name,ipaddr[:-1]) )
             f.close()
-        except OSError:
+        except IOError:
+            # file not found, no problem
             pass
 
     def saveHiScores(self):
         try:
             f = file(HiScoreData.HISCORE_FILENAME,'w')
-            pickle.dump(self.hiScores, f)
+            for i in self.hiScores:
+                f.write('%i,%f,%s,%s\n' % ( i[0],i[1],i[2],i[3] ) )
             f.close()
         except Exception, e:
             print 'Could not save hi scores'
             print e
 
     def addHiScore( self, score, name, ipaddr):
-        print 'addHiScore(%s,%s,%s)' % ( score, name, ipaddr )
+        # safe replacement
+        for l in name:
+            if not l.isalnum():
+                name = name.replace(l,'_')
+
         real_when = -time.time()
         self.hiScores.append( (int(score),real_when,name,ipaddr) )
         self.hiScores.sort()

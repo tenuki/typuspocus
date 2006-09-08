@@ -10,7 +10,7 @@ import hiscore_server
 HISCORE_SERVER = 'localhost'
 HISCORE_PORT = 8000
 
-hiscore_server.HiScoreData.HISCORE_FILENAME = 'typos_pocus_local_hi_scores.pickle'
+hiscore_server.HiScoreData.HISCORE_FILENAME = 'hi_scores_local.txt'
 
 class HiScoreClient:
 
@@ -87,5 +87,5 @@ if __name__ == '__main__':
     a = HiScoreClient()
     print a.listHiScores()
     for i in range(1,100):
-        a.addHiScore(i,'usuario_test_%s' % i )
+        a.addHiScore(i,'usu,<>,ario_test_%s' % i )
     print a.listHiScores()
