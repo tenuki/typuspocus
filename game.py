@@ -5,6 +5,7 @@ from audiencia import AudienciaScene
 import cosas
 from motor import MainMotor, Estados
 import hollow
+from sounds import sounds
 
 
 CLOCK_TICK = pygame.USEREVENT
@@ -78,8 +79,6 @@ class Level(Scene):
     linebyline = False
     
     def init(self, level_number, motor):
-        import sounds
-        self.sounds = sounds
         self.motor = motor
         self.line_manager = LineManager(self.motor.hechizo)
         self.offset_cache = [None]*len(self.motor.hechizo)
@@ -132,16 +131,16 @@ class Level(Scene):
                 total_time = self.motor._getTiempoJuego()
                 tick_rate = sound_len + timeleft * (1000-sound_len)/total_time
                 if self.tick_count:
-                    self.sounds.tick1.play()
+                    sounds.tick1()
                 else:
-                    self.sounds.tick2.play()
+                    sounds.tick2()
                 self.tick_count = not self.tick_count
                 pygame.time.set_timer(CLOCK_TICK, tick_rate)
                 print "tickrate", tick_rate
             
                 
             if self.motor.cursor >= len(self.motor.hechizo):
-                self.sounds.suspenso.play()
+                sounds.suspenso()
                 if self.motor.tuvoExito():
                     self.state = WINNING
                 else:
@@ -164,7 +163,7 @@ class Level(Scene):
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
-                self.sounds.abucheo.play()
+                sounds.abucheo()
                 self.audiencia.tomateame()
                 self.wintime = pygame.time.get_ticks()
                 
@@ -180,12 +179,12 @@ class Level(Scene):
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = WON
                 self.audiencia.setVoluntario(None, True) 
-                self.sounds.bravo.play()
+                sounds.genteunpocobien()
         elif self.state == LOSING:
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = LOST
                 self.audiencia.setVoluntario(self.motor.voluntario_error, True)
-                self.sounds.abucheo.play()   
+                sounds.genteunpocomal()
         elif self.state == TOMATOING:
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = TOMATO

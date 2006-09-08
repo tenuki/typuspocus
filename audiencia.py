@@ -9,6 +9,7 @@ import people
 import varitaje
 import motor
 import interpol
+from sounds import sounds
 
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
@@ -85,8 +86,6 @@ class Audiencia:
 
 class AudienciaScene(Scene):
     def init(self, level_number):
-        import sounds
-        self.sounds = sounds
         self.finalizar = False
         self.audiencia = Audiencia(level_number)
         self.voluntario = None
@@ -109,6 +108,10 @@ class AudienciaScene(Scene):
 
         self.tomateando = None
 
+        pygame.mixer.set_reserved(2)
+        self.channel = pygame.mixer.Channel(0)
+        self.channelVoces = pygame.mixer.Channel(1)
+
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
@@ -119,17 +122,19 @@ class AudienciaScene(Scene):
     def gameEvent(self, evt):
         Threshold=0.20
         aLittleProb = 0.1 
+        
         channel=None
         
         if evt == motor.Eventos.PALOK:
-            channel = self.sounds.bravo.play()
+            sounds.arenga()
         elif evt == motor.Eventos.PALMAL:
-            channel = self.sounds.abucheo.play()
+            sounds.puteada()
         elif evt == motor.Eventos.OK_DEUNA:
-            channel = self.sounds.bravo2.play()
+            sounds.bravo()
         elif evt == motor.Eventos.MAL:
-            channel = self.sounds.abucheo2.play()
-        
+            sounds.bu()
+
+            
         if channel:
             cabs = abs(self.calor)
             r = random.random()
@@ -174,6 +179,7 @@ class AudienciaScene(Scene):
                 surface.blit(imagen, imagen.get_rect(center=p))
         else:
             surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
+
         if self.tomateando == 0:
             imagen = self.tomate_aplastado
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
