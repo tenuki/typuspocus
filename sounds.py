@@ -2,7 +2,7 @@ import pygame
 import os
 import random
 
-VOLUMEN_MUSICA = 0.5
+VOLUMEN_MUSICA = 0.3
 
 class Sounds:
     def init(self):
