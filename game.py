@@ -385,18 +385,64 @@ class LevelSuccess(Scene):
                 
 class GameOver(Scene):
     def init(self, score, laaudiencia):
+        self._background = pygame.image.load("escenario/screens/gameover.png").convert()
+        
+        self.menu = Menu(
+                 pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
+                 pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
+                 ["Yes", "No"],
+                 margin = -40,
+                 normal_color = (173,148,194),
+                 selected_color = (244,232,255),
+                 )
+                 
         self.score = score
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         self.audiencia = laaudiencia
         
+    def do_action(self, sel):
+        if not sel:
+            self.end( True )
+        else:
+            self.end( False )
+            
     def paint(self):
-        s = self.font.render("Game Over: Score "+str(self.score), True, (255,255,255))
-        self.background.blit(s, (100,100))
         self.game.screen.blit(self.background, (0,0))
+        self.menu.blit(self.game.screen, 400, 320)
+        
     
     def event(self, evt):
-        if evt.type == KEYDOWN:
+        if evt.type == MOUSEMOTION:
+            x, y = pygame.mouse.get_pos()
+            x -= 400
+            y -= 180
+            if self.menu.set_mouse(x,y):
+                sounds.pasa()
+                self.paint()
+        elif evt.type == MOUSEBUTTONUP:
+            x, y = pygame.mouse.get_pos()
+            x -= 400
+            y -= 180
+            sel = self.menu.click_mouse(x,y)
+            if sel is not None:
+                sounds.enter()
+                self.do_action(sel)
+        elif evt.type == KEYDOWN:
+            if evt.key == K_ESCAPE:
                 self.end()
+            elif evt.key == K_DOWN:
+                self.menu.next()
+                sounds.pasa()
+                self.paint()
+            elif evt.key == K_UP:
+                self.menu.prev()
+                sounds.pasa()
+                self.paint()
+            elif evt.key in [K_RETURN, K_SPACE]:
+                sel = self.menu.selected
+                sounds.enter()
+                self.do_action(sel)                
+                
                 
 levels = [
           # title, parameters
@@ -624,10 +670,11 @@ class Credits(Scene):
                         ))
         if self.puff:
             delta = time.time()-self.state_start
-            if delta > 1:
+            if delta >= 1:
                 self.puff = None
             else:
                 pos = int(delta*5)
+                pos = max(pos, 4)
                 self.game.screen.blit(self.nubes[pos], (300,150) )
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
@@ -683,7 +730,7 @@ class MainMenu(Scene):
                 
     def do_action(self, sel):
         if sel == 0: # history
-            self.play_freestyle()
+            self.play_history()
         elif sel == 1: # freestyle
             self.play_freestyle()
         elif sel == 2: # hiscores
@@ -698,7 +745,8 @@ class MainMenu(Scene):
             count = 0
             score = 0
             futech = 0
-            while result == GANO:
+            while True:
+                laAudiencia = audiencia.Audiencia(level_number=count)
                 if count < len(levels):
                     subtitle = levels[count][0]
                     params = levels[count][1]
@@ -706,16 +754,27 @@ class MainMenu(Scene):
                     if futech == 0: futech = count-1
                     subtitle = "Future tech "+str(count-futech)
                     params = dict(tiempo_por_caracter=1.0/(count-futech+4))
-                self.runScene( LevelIntro( self.game, str(count), subtitle ) )
-                l =  Level(self.game, count, MainMotor(**params)) 
+                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia) )
+                laAudiencia.doGame()
+                l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )
                 newscore = int(l.motor.score)
                 score += newscore
                 if result == GANO:
-                    self.runScene( LevelSuccess(self.game, score, newscore))
-                count += 1
+                    laAudiencia.doWin()
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    count += 1
+                else:
+                    laAudiencia.doGameOver()
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
+                    if not cont:
+                        break
+                    else:
+                        score = 0
+                        
+                
 
-            self.runScene( GameOver( self.game, score ) )
 
     def play_freestyle(self):
             result = GANO
