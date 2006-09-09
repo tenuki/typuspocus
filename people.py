@@ -177,7 +177,7 @@ class Individual:
                     x, y = article.SnapPos()
                     xsize, ysize = img.get_size()
                     img.blit(nimg, (x,y))
-        img.convert()
+        img = img.convert()
         img.set_colorkey(MAGENTO)
         return img
         
@@ -240,8 +240,7 @@ class Article:
         
     def getImage(self):
         if self.image==None:
-            self.image=pygame.image.load(self.path+self.name)
-            self.image.convert_alpha()
+            self.image=pygame.image.load(self.path+self.name).convert_alpha()
         return self.image
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))

@@ -61,7 +61,7 @@ class Fila:
         base.fill(MAGENTO)
         for x in range(filasx):
             base.blit(img, (peoplex * x, 0) )
-        base.convert()
+        base = base.convert()
         base.set_colorkey(MAGENTO)
         return base
 
@@ -159,20 +159,13 @@ class AudienciaScene(Scene):
         self.voluntario = None
         self.calor = 0
         self.level_number = level_number
-        self.fg = pygame.image.load("escenario/foreground.png")
-        self.fg.convert()
+        self.fg = pygame.image.load("escenario/foreground.png").convert_alpha()
         self.varitaje = varitaje.Varitaje()
-        self.mano = pygame.image.load("escenario/manos/mano1.png")
-        self.mano.convert()
+        self.mano = pygame.image.load("escenario/manos/mano1.png").convert_alpha()
         self.puffing = 0
-        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)) for n in range(5) ]
-        for img in self.nubes:
-            img.convert()
-
-        self.tomate = pygame.image.load("escenario/tomates/tomate.png")
-        self.tomate.convert()
-        self.tomate_aplastado = pygame.image.load("escenario/tomates/tomate_aplastado.png")
-        self.tomate_aplastado.convert()
+        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
+        self.tomate = pygame.image.load("escenario/tomates/tomate.png").convert_alpha()
+        self.tomate_aplastado = pygame.image.load("escenario/tomates/tomate_aplastado.png").convert_alpha()
 
         self.tomateando = None
 
@@ -256,8 +249,7 @@ class AudienciaScene(Scene):
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
 
     def doEasterEgg(self):
-        self.mano = pygame.image.load("escenario/manos/mano-easteregg.png")
-        self.mano.convert()
+        self.mano = pygame.image.load("escenario/manos/mano-easteregg.png").convert_alpha()
 
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
