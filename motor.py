@@ -64,6 +64,7 @@ class MainMotor(object):
         self.estado = [Estados.VIRGEN] * self.largohech
         self.calor = 0
         self.tiempoUltTecla = 0
+        self.dirty = True
 
     def _armaHechizo(self, cant):
         '''Arma el hechizo y un indice que es un dict, donde la clave es la
@@ -90,6 +91,7 @@ class MainMotor(object):
         - El calor del público
         - Una lista de eventos
         '''
+        self.dirty = True
         if self.startTime is None:
             raise ValueError("Todavia no se hizo el start de la sesion!")
         if self.cursor > self.largohech:
@@ -250,3 +252,22 @@ class MainMotor(object):
         self.score += calor
         if DEBUG: print "calor: %.2f\t calp: %.2f\t calv: %.2f\t rpre: %.2f\t rvel: %.2f\t"%(calor, calor_precision, calor_velocidad, ratio_precision, ratio_velocidad)
         return calor
+
+    def getRate(self):
+        if self.dirty:
+            acertados = 0.0
+            errados = 0.0
+            for st in self.estado:
+                if st == Estados.OK_DEUNA or st == Estados.OK_CORRG:
+                    acertados += 1
+                elif st == Estados.MAL:
+                    errados += 1
+                    
+            if (acertados+errados) == 0:
+                ratio_precision = 1
+            else:
+                ratio_precision = acertados/(acertados+errados)
+            self._rate = ratio_precision
+            self.dirty = False
+            
+        return self._rate

@@ -46,7 +46,16 @@ class LineManager:
                 font = self.altfont
             else:
                 font = self.font
-            self.cache[t] = [ hollow.textOutline(font,t,*c) for c in colores ]
+            if t == " ":
+                self.cache[t] = [ 
+                    hollow.textOutline(font,t,*colores[0]),
+                    hollow.textOutline(font,"_",*colores[1]),
+                    hollow.textOutline(font,"_",*colores[2]),
+                    hollow.textOutline(font,"_",*colores[3])
+                    ]
+            else:
+                self.cache[t] = [ hollow.textOutline(font,t,*c) for c in colores ]
+
             self.height = self.cache[t][0].get_height()
 
         words = hechizo.split(" ")
@@ -111,6 +120,8 @@ class Level(Scene):
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
         self.messagefont = pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.ratefont = pygame.font.Font("escenario/VeraMono.ttf",20)
+        self.cursorfont = pygame.font.Font("escenario/MagicSchoolOne.ttf",100)
         self.motor.start()
         
         
@@ -227,7 +238,7 @@ class Level(Scene):
                     
                     self.game.screen.blit( i, (xpos, ypos) )
                     xpos += i.get_width()
-                    cursor_img = font.render("^", True, (255,255,255))
+                    cursor_img = self.cursorfont.render("^", True, (255,255,255))
                     self.game.screen.blit(cursor_img, 
                                           (cursor_xpos,ypos+self.line_manager.height)
                                           )                    
@@ -247,6 +258,14 @@ class Level(Scene):
                     xpos += i.get_width()
                     if xpos > 800: break
                     
+                surface= self.line_manager.get(self.motor.hechizo[cursor], self.motor.estado[cursor])
+                width = surface.get_width()
+                height = surface.get_height()
+                
+                cursor_sf = hollow.textOutline(self.cursorfont, "^", (150,150,250), (0,0,0))
+                self.game.screen.blit( cursor_sf, (400+width/2-cursor_sf.get_width()/2,370))
+                
+                
                 #pain backwards
                 xpos = 400
                 letters = [l for l in self.motor.hechizo[:cursor]]
@@ -267,9 +286,17 @@ class Level(Scene):
             
 
             self.level_timer.blit( self.game.screen, (770, 50))
+            rate = self.motor.getRate()
+            if rate < self.motor.precision_requerida:
+                color_tx = (255,0,0)
+            else:
+                color_tx = (0,255,0)
+                
+            rate_sf = hollow.textOutline( self.ratefont, "%i%%"%(int(rate*100)),  color_tx, (0,0,0) )
+            self.game.screen.blit( rate_sf, (770-rate_sf.get_width()/2, 35-rate_sf.get_height()/2))
         if self.state in [WON, LOST, TOMATO]:
             im = font.render("[press any key]", True, (30,30,200))
-            ypos = 540
+            ypos = 400
             xpos = (800-im.get_width())/2
             
             self.game.screen.blit( im, (xpos, ypos) )
@@ -387,8 +414,10 @@ class MainMenu(Scene):
                     count += 1
 
                 self.runScene( GameOver( self.game, score ) )
-
-if __name__ == "__main__":
-    g = Game(800, 600, framerate = 20)
+def main():
+    g = Game(800, 525, framerate = 20)
 
     g.run( MainMenu(g) )
+    
+if __name__ == "__main__":
+    main()

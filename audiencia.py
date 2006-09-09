@@ -207,4 +207,4 @@ class AudienciaScene(Scene):
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
-    g.run( AudienciaScene(g,1) )
+    g.run( AudienciaScene(g, 10) )
