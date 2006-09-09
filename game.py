@@ -739,11 +739,13 @@ class GameIntro(Scene):
     sections = [
         ["My son,"," this will be a ","challenging day for you."],
         ["You have always been","the black sheep of","our great family."],
-        ["But your old man,","the Great Grossini,","is not what he used to be."],
+        ["But your old man,","the Great Grossini, is","not what he used to be."],
         ["I'm suffering from","Flaccid Wand, so tonite","you will replace me."],
         ["Farewell!"],
         ]
         
+    lines_start = [5,10,17.5,23.5,26,0]
+    
     START, ENTERING, READY, TALKING, PAUSE, GONE = range(6)
     
     start_position = -20,350
@@ -753,15 +755,15 @@ class GameIntro(Scene):
     ready_duration = 2
     talking_duration = 1
     pause_duration = 1
-    gone_duration = 5
+    gone_duration = 3.5
     
-    def init(self, font, color=(255,255,255), outline_color=(0,0,0), line_step=40):
+    def init(self, font, color=(0,0,0), outline_color=(0,0,0), line_step=40):
         self.line_step = line_step
         self.section_imgs = []
         for section in self.sections:
             lines = []
             for line in section:
-                img = hollow.textOutline(font, line, color, outline_color)
+                img = font.render( line, True, color)
                 lines.append( img )
             self.section_imgs.append( lines )
             
@@ -862,16 +864,17 @@ class GameIntro(Scene):
             self.game.screen.blit(self.globo, (0,0))
         
         if self.text:
-        
             delta = time.time()-self.state_start
-            if delta >= len(self.sections):
+            
+            for i in range(len(self.lines_start)):
+                if self.lines_start[i] > delta:
+                    break
+            pos = i
+            if pos >= len(self.sections):
                 self.text = False
                 self.talking_done = True
             else:
-                line_duration = 1
-                for i in range(len(self.section_imgs)):
-                    pass
-                pos = int(delta)
+                
                 text = self.section_imgs[pos]
                 
                 lineas = len(text)
@@ -880,7 +883,7 @@ class GameIntro(Scene):
                 
                 for i,line in enumerate(text):
                     self.game.screen.blit(line, (
-                            180-line.get_width()/2, 
+                            190-line.get_width()/2, 
                             start + self.line_step*i - line.get_height()
                             ))
         if self.puff:
