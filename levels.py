@@ -59,7 +59,7 @@ textosNiveles = [
         "Teatro prestado",
         [Wardrobe('audiencia/girl/', 'articles0.txt'), 
          Wardrobe('audiencia/boy/', 'articles0.txt')],
-        "conejo",
+        "conejo2",     # conejo
         "hocus pocus, disappear now.",
 """Cast the spell 
 as fast and accurately as you can. 
@@ -82,8 +82,7 @@ this demo level.""",
         #"Gente vestida bien",
         [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', fullydressed),
          Wardrobe('audiencia/boy/', 'articles1.txt', fullydressed)],
-
-        "La mascara del fantasma de la opera",
+        "mask",  # La mascara del fantasma de la opera
         "evanesco simulatio, phantasma spectaculum. initium capere.",
 """Dissapear the Phantom's mask, 
 
@@ -106,7 +105,7 @@ You get a job coding ruby on rails.""",
     (
         "Magic arena",
         all_wardrobes, #""Jugadores de basquet o deportistas",
-        "Zapatillas grandes.",
+        "zapatillas", # Zapatillas grandes
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
 you must dissapear the
@@ -125,7 +124,7 @@ chases you around the stadium.""",
     (
         "Fiesta musical",
         all_wardrobes, #""Hip-hoperos o darkies",
-        "Alcohol, drogas, hacer un mix",
+        "vicios", # Alcohol, drogas, hacer un mix
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
 """You were supposed to dissapear 
 a milli vanilli cd, 
@@ -148,7 +147,7 @@ And become RAUL's new girlfriend.""",
     (
         "Las Vegas",
         all_wardrobes, #""Gente adinerada",
-        "papeles y documentos",
+        "docs", # papeles y documentos
         "factus taxus nulus, nilun actin, evaDus fiscus IRSus, whySaw Elvis Bellagium 11 ocean's cardus impustum disapiros ipsofactum.",
 """You get to Las Vegas 
 to perform in a Casino, but 
@@ -171,7 +170,7 @@ all your money playing craps.""",
     (
         "Black magic",
         all_wardrobes, #""Africanitos de la tribu",
-        "Un muricélago, o algún animal raro",
+        "murcielago", # Un muricélago, o algún animal raro
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
 in africa, they find out
