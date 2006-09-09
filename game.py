@@ -440,7 +440,7 @@ class LevelSuccess(BannerScene):
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
         
-        self.audiencia.render(self.background, 100) #abs(self.calor)*100)
+        self.audiencia.render(self.background, 100) #DAVE abs(self.calor)*100)
         self.background.blit(Foreground, (0,0))    
         
         self.game.screen.blit(self.overlay, (0,0))
@@ -455,13 +455,6 @@ class LevelSuccess(BannerScene):
                 "Points accumulated:"+str(self.levelscore),"", 
                 "New Score:"+str(self.score) ])
                 
-        #s = self.font.render("Level Completed", True, (255,255,255))
-        #self.game.screen.blit(s, (100,100))
-        #s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
-        #self.game.screen.blit(s, (100,300))
-        #s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
-        #self.game.screen.blit(s, (100,400))    
-    
     def event(self, evt):
         if evt.type == KEYDOWN:
             if self.status == EstadoMensaje:
@@ -1214,7 +1207,7 @@ class MainMenu(Scene):
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia, nivel))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
