@@ -13,6 +13,8 @@ from sounds import sounds
 
 DEBUG = 0
 
+DELTAVARITA = (-200,0)
+
 peoplex,peopley = (55, 119)
 filasx, filasy = (800/peoplex,600/peopley)
 
@@ -303,7 +305,7 @@ class AudienciaScene(Scene):
                 p = self.tomateMB.getAt( 1.0-0.1*self.tomateando )
                 surface.blit(imagen, imagen.get_rect(center=p))
         else:
-            surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()))
+            surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()).move(*DELTAVARITA))
 
         if self.tomateando == 0:
             imagen = self.tomate_aplastado
