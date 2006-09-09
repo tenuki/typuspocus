@@ -11,6 +11,33 @@ titulo
 params
 """.strip().split("\n")
 
+#
+# Explicación dificultad de los niveles
+# 
+# La idea es que en algunos casos sea dificil porque el hechizo es largo, y en otros casos
+# tiene que ser dificil porque el tiempo es poco.
+# 
+# En los primeros niveles, tiene que ser facil segun ambos parametros, y en los ultimos 
+# dificiles tambien los dos.
+# 
+# Anote entonces los largos de cada hechizo (que estan buenisimos, no los cambiemos) y le
+# asigne un tiempo total en funcion de el tipo de dificultad y el nro de nivel. A partir de
+# eso calculo el tiempo por letra.
+#
+#   Nombre nivel     caracs  tiempo  secs/char  Descripcion
+#   ---------------  ------  ------  ---------  -----------
+#   Teatro prestado     26      20      0.77    Es el mas facil, la intro
+#   Opera               57      27      0.47    Mas dificil, pero no tanto
+#   Magic arena        102      50      0.49    Muy largo, tiempo que le alcance
+#   Fiesta musical     117      48      0.41    Mas largo, menos tiempo
+#   Las Vegas          134      48      0.36    Mas largo, tiempo apretado
+#   Black magic        119      40      0.34    Menos letras, pero cae mas el tiempo
+#   Tatooine           114      35      0.31    Sigue acortandose, menos tiempo
+#   Area 51            113      30      0.27    Igual de largo, bastante menos tiempo
+#   Graveyard          134      25      0.19    Mas largo, el tiempo es aun menor
+#   El lugar feliz     145      20      0.14    Mas complicado que la mierda
+#
+
 textosNiveles = [
     (
         "Teatro prestado",
@@ -25,8 +52,8 @@ your mistakes.""",
 
         """Great! You receive an offer to perform in the "Paris Opera".""",
         "You are not even worthy of this demo level.",
-        "Mandrake",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Orko",
+        dict(tiempo_por_caracter=0.77, preferencia_precision=0.1)
     ),
 
     (
@@ -40,8 +67,8 @@ that will embarass him and
 make him leave.""",
         "Your act was great! You are invited to perform the Halftime show at the local basquetball finals.",
         "You blew it, your father disinherited you. You get a job coding ruby on rails.",
-        "Gandalf",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Lord Zedd",
+        dict(tiempo_por_caracter=0.47, preferencia_precision=0.1)
     ),
 
 
@@ -57,8 +84,8 @@ you must dissapear the
 visitor's MVP lucky sneakers.""",
         "Thanks to your help the locals win and you get invited to do your trick at the after party.",
         "An Angry mob of the local fans chases you around the stadium.",
-        "Harry Potter",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "David Copperfield",
+        dict(tiempo_por_caracter=0.49, preferencia_precision=0.1)
     ),
 
 
@@ -74,8 +101,8 @@ drugs to hide them
 from the cops.""",
         "You got away clean, and kept a lot of famous people out of jail. You are going to Las Vegas now!!",
         "You go to jail charged with drug possession. And become RAUL's new girlfriend.",
-        "David Copperfield",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Skeletor",
+        dict(tiempo_por_caracter=0.41, preferencia_precision=0.1)
     ),
 
 
@@ -87,8 +114,8 @@ from the cops.""",
         "You get to Las Vegas to perform in a Casino, but the owners want to take advantage of your power to evade taxes.",
         "The IRS wants you for beeing an accesory to tax evasion. They send you Africa where they'll never find you",
         "Your act was a total failure, you got wasted and lost all your money playing craps.",
-        "Orko",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Mumm-Ra",
+        dict(tiempo_por_caracter=0.36, preferencia_precision=0.1)
     ),
 
 
@@ -100,8 +127,8 @@ from the cops.""",
         "You go to live with a tribe in africa,  they find out you are a wizard and want you to heal their ill sacred animal",
         "You dissapeared the sacred animal. The angry natives start chasing you around the jungle.",
         "The natives made a tasty casserole out of you.",
-        "Merlyn",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Harry Potter",
+        dict(tiempo_por_caracter=0.34, preferencia_precision=0.1)
     ),
 
     (
@@ -112,8 +139,8 @@ from the cops.""",
         "While running away from the natives, a spaceship abdu^H^H^H^Hrescues you. The venusians ask you to help them vanish a hitchhiker.",
         "Since you were so helpfull, the venusians send you back to earth in an individual spaceship.",
         "Because you were unwilling to cooperate, the venusians performed a 'light saber anal probing' on you.",
-        "Harry Houdini",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Mandrake",
+        dict(tiempo_por_caracter=0.31, preferencia_precision=0.1)
     ),
 
     (
@@ -124,20 +151,20 @@ from the cops.""",
         "Your ship was running a pirated OS and crashed in new mexico. The FBI captures you and asks you to dissapear some evidence of the alien landings.",
         "Now that the evidence exists only on your memory, the FBI makes sure you won't talk by putting a cap in your head",
         "You couldn't do it. But you'll have a lot of time to practice since you are never leaving area 51",
-        "Skeletor",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Harry Houdini",
+        dict(tiempo_por_caracter=0.27, preferencia_precision=0.1)
     ),
 
     (
         "Graveyard",
         "Esqueletos",
         "Estatuilla de Anubis",
-        "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox. ",
+        "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
         "Ok, you died, and went to hell, you can escape to heaven by dissapearing Anubis. All the dead gather around to watch...",
         "You did it!!! Now you go to heaven, that happy place we all dream about as kids, that place where men and women love each other. ",
         "You stay in hell. At least you won't have problems finding a lawyer if you ever come to need one.",
-        "Mumm-Ra",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Merlyn",
+        dict(tiempo_por_caracter=0.19, preferencia_precision=0.1)
     ),
 
 
@@ -149,8 +176,8 @@ from the cops.""",
         "Here we are, it's beautiful, everything that dissapears here goes back to earth, so you are going to revive a lovely goat now!",
         "Congratulations! You fullfilled your destiny as a magician!",
         "Mmm... Too bad you couldn't do it, but hey, a horde of naked angels offers to console you!!",
-        "Lord Zedd",
-        dict(tiempo_por_caracter=0.35, preferencia_precision=0.1)
+        "Gandalf",
+        dict(tiempo_por_caracter=0.14, preferencia_precision=0.1)
     ),
 ]
 
