@@ -1095,6 +1095,9 @@ class TourLevel:
     def __init__(self, country):
         self.historyintro = "Touring in "+country
         self.titulo = "World Tour"
+        self.nombre = "World Tour"
+        self.historybad = "You are deported from\n%s"%country
+        self.historygood = "The people at\n%s\nlove you!"%country
     
 class MainMenu(Scene):
     def init(self):
@@ -1233,7 +1236,8 @@ class MainMenu(Scene):
             while True:
                 laAudiencia = audiencia.Audiencia(level_number=count)
                 params = dict(tiempo_por_caracter=1.0/(count+3))
-                self.runScene( LevelIntro( self.game, str(count), "World Tour" , laAudiencia, TourLevel(countries.getCountry())) )
+                current_level = TourLevel(countries.getCountry())
+                self.runScene( LevelIntro( self.game, str(count), "World Tour" , laAudiencia, current_level) )
                 laAudiencia.doGame()
                 l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )
@@ -1241,12 +1245,12 @@ class MainMenu(Scene):
                 score += newscore
                 if result == GANO:
                     laAudiencia.doWin()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
-                    cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
+                    cont = self.runScene( GameOver( self.game, score, laAudiencia,current_level ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
                         self.runScene(EnterHiscores(self.game, score))
