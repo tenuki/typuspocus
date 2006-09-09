@@ -6,14 +6,18 @@ DEBUG = 1
 
 
 class Game:
-    def __init__(self, x_size, y_size, framerate=30, title=None):
+    def __init__(self, x_size, y_size, framerate=30, title=None, icon=None):
         pygame.mixer.pre_init(44100, -16, False)
         pygame.init()
-	pygame.mixer.init()
+        pygame.mixer.init()
         sounds.init()
         self.screen_size = x_size, y_size
         self.x_size = x_size
         self.y_size = y_size
+        if icon:
+            icon = pygame.image.load(icon)
+            icon.set_colorkey((255,0,255))
+            pygame.display.set_icon( icon ) 
         self.screen = pygame.display.set_mode((x_size, y_size))
         if title:
             pygame.display.set_caption( title ) 

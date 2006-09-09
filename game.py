@@ -724,7 +724,7 @@ class MainMenu(Scene):
             self.runScene( GameOver( self.game, score, laAudiencia ) )
 
 def main():
-    g = Game(800, 525, framerate = 20, title = "Typus Pocus")
+    g = Game(800, 525, framerate = 20, title = "Typus Pocus", icon="escenario/icono.png")
 
     g.run( MainMenu(g) )
     
