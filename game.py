@@ -1110,7 +1110,12 @@ class MainMenu(Scene):
                  )
         sounds.menu()
         
-        self.tour_locked = True
+        try:
+            open("unlock_tour.key")
+            self.tour_locked = False
+        
+        except IOError:
+            self.tour_locked = True
         
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
