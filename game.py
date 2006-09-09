@@ -138,6 +138,7 @@ class Alarm:
 PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
+
 class Level(Scene):
     linebyline = False
     
@@ -156,8 +157,7 @@ class Level(Scene):
         self.subscenes.append( self.audiencia )
         self.todasLasTeclas = ""
         
-        pygame.time.set_timer(CLOCK_TICK, 1000)
-        
+        pygame.time.set_timer(CLOCK_TICK, 1000)        
         #pygame.mixer.music.load("sounds/8bp063-07-dorothys_magic_bag-rondo_alla_turka.mp3")
         #pygame.mixer.music.set_volume(0.5)
         #pygame.mixer.music.play(-1)
@@ -345,10 +345,7 @@ class Level(Scene):
                     if xpos - width < 0: break
                     xpos -= width
                     self.game.screen.blit( i, (xpos, ypos) )
-                    
-                    
-                
-            
+                                
 
             self.level_timer.blit( self.game.screen, (770, 50))
             rate = self.motor.getRate()
@@ -379,27 +376,39 @@ def test():
     
 
 class LevelIntro(Scene):
-    def init(self, level_number, level_name, audiencia):
+    def init(self, level_number, level_name, audiencia, level=None):
         test()
         self.level_number = level_number
         self.audiencia = audiencia
         self.level_name = level_name
         self.font = font =  pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
         self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
+        self.level = level
         
     def update(self):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
-        self.audiencia.render(self.background, 100) #abs(self.calor)*100)
+        self.audiencia.render(self.background, 100) #TODO review DAVE abs(self.calor)*100)
         self.background.blit(Foreground, (0,0))
-        #self.game.screen.blit(self.background, (0,0))
         self.game.screen.blit(self.overlay, (0,0))
-        #s = self.font.render(self.level_name, True, (255,255,255))
-        #self.game.screen.blit(s, (100,250))
-        #s = self.font.render("Level "+self.level_number, True, (255,255,255))
-        #self.background.blit(s, (100,350))
-        
+        if self.level<>None:
+            posx=120
+            widx=600
+            posy=170
+            widy=305            
+            introSurface = self.game.screen.subsurface(pygame.Rect(posx,posy,widx,widy))
+            nline=0
+            fontYsize = 30
+            
+            lines = self.level.historyintro.split('\n')
+            deltaY = (widy - (len(lines)*fontYsize))/2
+            for line in lines:
+                Yellow = (255,255,0)
+                s = self.font.render(line, True, Yellow)
+                tx,ty =s.get_size()
+                introSurface.blit(s, ( (widx-tx)/2,deltaY+nline*fontYsize))
+                nline+=1
             
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -1034,7 +1043,7 @@ class MainMenu(Scene):
         elif sel == 4: #quit            
             self.end()
                     
-    def play_history(self):
+    def play_history(self):            
             result = GANO
             count = 0
             score = 0
@@ -1060,7 +1069,7 @@ class MainMenu(Scene):
                     if futech == 0: futech = count-1
                     subtitle = "Future tech "+str(count-futech)
                     params = dict(tiempo_por_caracter=1.0/(count-futech+4))
-                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia) )
+                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia, nivel) )
                 laAudiencia.doGame()
                 l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )

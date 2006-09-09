@@ -17,7 +17,12 @@ textosNiveles = [
         "Pocos, variados",
         "Un conejo",
         "Hocus pocus, disappear now.",
-        "Cast the spell as fast and accurately as you can. You can backspace and fix your mistakes.",
+"""Cast the spell 
+as fast and accurately as you can. 
+
+You can backspace and fix 
+your mistakes.""",
+
         """Great! You receive an offer to perform in the "Paris Opera".""",
         "You are not even worthy of this demo level.",
         "Mandrake",
@@ -29,7 +34,10 @@ textosNiveles = [
         "Gente vestida bien",
         "La mascara del fantasma de la opera",
         "evanesco simulatio, phantasma spectaculum. initium capere.",
-        "Dissapear the Phantom's mask, that will embarass him and make him leave.",
+"""Dissapear the Phantom's mask, 
+
+that will embarass him and 
+make him leave.""",
         "Your act was great! You are invited to perform the Halftime show at the local basquetball finals.",
         "You blew it, your father disinherited you. You get a job coding ruby on rails.",
         "Gandalf",
@@ -42,7 +50,11 @@ textosNiveles = [
         "Jugadores de basquet o deportistas",
         "Zapatillas grandes.",
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
-        "The locals are loosing by 12, you must dissapear the visitor's MVP lucky sneakers.",
+"""The locals are loosing by 12,
+ 
+you must dissapear the 
+
+visitor's MVP lucky sneakers.""",
         "Thanks to your help the locals win and you get invited to do your trick at the after party.",
         "An Angry mob of the local fans chases you around the stadium.",
         "Harry Potter",
@@ -55,7 +67,11 @@ textosNiveles = [
         "Hip-hoperos o darkies",
         "Alcohol, drogas, hacer un mix",
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
-        "You were supposed to dissapear a milli vanilli cd, instead you must vanish the drugs to hide them from the cops.",
+"""You were supposed to dissapear a 
+milli vanilli cd, 
+instead you must vanish the 
+drugs to hide them 
+from the cops.""",
         "You got away clean, and kept a lot of famous people out of jail. You are going to Las Vegas now!!",
         "You go to jail charged with drug possession. And become RAUL's new girlfriend.",
         "David Copperfield",

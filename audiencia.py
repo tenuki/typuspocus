@@ -88,16 +88,29 @@ class EnginePersonas:
     def finish(self): pass
     def setCalor(self, calor):
         self.calor = calor
+    def moverTipito(self, p):
+        #mueve de p.frompos to p.topos usando p.velocidad
+        #requiere self.now
+        dt=self.now-p.start
+        npx = p.frompos[0] + p.velocidad * dt
+        x,y = p.topos
+        if p.xdir>0 and (npx<p.destpos[0]):
+            x = npx
+        elif p.xdir<0 and (npx>p.destpos[0]):
+            x = npx
+        p.position = (x,y)
         
 class IntroEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
         self.caminando = 0
+        self.startTime = time.time()
         for y in range(filasy):
             for x in range(filasx):
-                if random.random() > (level_number/5.0+0.1):
-                    pass
-                else:
+                ## inicializa c/p con inipos, destpos
+                if random.random() <= (level_number/5.0+0.1):
+                #    pass
+                #else:
                     self.caminando += 1
                     dx = (y%2) * peoplex/2 - peoplex/2 + 6
                     dy = peopley/2 * y                    
@@ -108,31 +121,25 @@ class IntroEngine(EnginePersonas):
                     else:
                         tx = (filasx+1)*peoplex+dx
                     inicial = (tx, dy)
-                    p = Persona( inicial, level_number)
+                    p = Persona(inicial, level_number)
                     p.caminar()
-                    p.destpos = final
-                    p.inipos = inicial
+                    p.start = self.startTime
+                    p.topos = p.destpos = final
+                    p.frompos = p.inipos = inicial
                     v = (p.destpos[0]-tx)
                     if v==0: v=1
                     p.xdir = v/abs(v)
                     p.velocidad = random.randint(20,80) * (p.xdir) 
                     peopleSet[y].append( p )
-        self.startTime = time.time()
 
     def update(self):
         self.caminarUpdate()
         
     def caminarUpdate(self):
-        dt = time.time() - self.startTime
+        self.now = time.time()
         for persons in self.ps.values():
             for p in persons:
-                npx = p.inipos[0] + p.velocidad * dt
-                x,y = p.destpos
-                if p.xdir>0 and (npx<p.destpos[0]):
-                    x = npx
-                elif p.xdir<0 and (npx>p.destpos[0]):
-                    x = npx
-                p.position = (x,y)
+                self.moverTipito(p)
                 if p.position == p.destpos:
                     self.caminando -= 1
                     p.sentarse()
@@ -142,9 +149,6 @@ class IntroEngine(EnginePersonas):
             for p in persons:
                 p.position = p.destpos
         
-    def done(self):
-        return self.caminando == 0            
-
 class GOEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
@@ -153,50 +157,51 @@ class GOEngine(EnginePersonas):
                 p.caminar()
                 p.xdir = - p.xdir
                 p.velocidad = -p.velocidad
-                p.inipos, p.destpos = p.destpos, p.inipos
+                p.frompos, p.topos = p.destpos, p.inipos
         self.startTime = time.time()
         
     def update(self):
         self.caminarUpdate()
         
     def caminarUpdate(self):
-        dt = time.time() - self.startTime
+        self.now = time.time()
         for persons in self.ps.values():
             for p in persons:
-                npx = p.inipos[0] + p.velocidad * dt
-                x,y = p.destpos
-                if p.xdir>0 and (npx<p.destpos[0]):
-                    x = npx
-                elif p.xdir<0 and (npx>p.destpos[0]):
-                    x = npx
-                p.position = (x,y)
+                self.moverTipito(p)
                 if p.position == p.destpos:
                     p.sentarse()
 
 
-class GameEngine:
+class GameEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
         self.calor = 0
         self.seVan = []
     def setCalor(self, calor): self.calor = calor
     def finish(self):
-        pass        
+        pass 
     def update(self):
-        if abs(self.calor)<0.08 and random.random()<0.01:
-            #elegir uno
+        def getOneAtRandom():
             ops = filter(lambda ppl:len(ppl)!=0 ,self.ps.values() )
             if len(ops)>0:
                 l = random.choice(ops)
-                p=random.choice(l)
-                print "camina ",p
-                p.subirse()
-                #fuiste..
+                return random.choice(l)
+            return False
+            
+        p=getOneAtRandom()
+        if self.calor<0.08 and random.random()<0.005:
+            #elegir uno
+            if p:
                 p.goOut()
                 self.seVan.append(p)
+        if self.calor>0.7 and random.random()<0.01:
+            #elegir uno
+            if p:
+                p.subirse()
                 
-        t=time.time()
+        self.now = t=time.time()
         for p in self.seVan:
+            #self.moverTipito(p)
             dt=t-p.start
             npx = p.inipos[0] + p.velocidad * dt
             x,y = p.destpos
@@ -338,7 +343,7 @@ class AudienciaScene(Scene):
                 imagen = pygame.transform.rotozoom(self.tomate,rotacion,scale)
 
                 p = self.tomateMB.getAt( 1.0-0.1*self.tomateando )
-                surface.blit(imagen, imagen.get_rect(center=p))
+                #surface.blit(imagen, imagen.get_rect(center=p))
         else:
             surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()).move(*DELTAVARITA))
 
