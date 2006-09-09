@@ -6,7 +6,7 @@ DEBUG = 1
 
 
 class Game:
-    def __init__(self, x_size, y_size, framerate=30):
+    def __init__(self, x_size, y_size, framerate=30, title=None):
         pygame.mixer.pre_init(44100, -16, False)
         pygame.init()
 	pygame.mixer.init()
@@ -14,7 +14,9 @@ class Game:
         self.screen_size = x_size, y_size
         self.x_size = x_size
         self.y_size = y_size
-        self.screen = pygame.display.set_mode((x_size, y_size)) 
+        self.screen = pygame.display.set_mode((x_size, y_size))
+        if title:
+            pygame.display.set_caption( title ) 
         pygame.mixer.set_reserved(3)
         self.framerate = framerate   
         self.clock = pygame.time.Clock()

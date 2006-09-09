@@ -6,6 +6,7 @@ import cosas
 from motor import MainMotor, Estados
 import hollow
 from sounds import sounds
+import time
 
 DEBUG = 0
 
@@ -119,7 +120,7 @@ class Level(Scene):
 
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
-        self.messagefont = pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.messagefont = pygame.font.Font("escenario/VeraMono.ttf",30)
         self.ratefont = pygame.font.Font("escenario/VeraMono.ttf",20)
         self.cursorfont = pygame.font.Font("escenario/MagicSchoolOne.ttf",100)
         self.motor.start()
@@ -422,13 +423,104 @@ class Menu:
     def next(self):
         self.selected = (self.selected + 1)%len(self.opts)
         
-        
     def prev(self):
-        self.selected = (self.selected - 1)%len(self.opts)        
+        self.selected = (self.selected - 1)%len(self.opts)     
+        
+    def set_mouse(self, x, y):
+        i = self.get_mouse_over(x,y)
+        if i != self.selected:
+            self.selected = i
+            return True        
     
+    def get_mouse_over(self, x, y):
+        for i in range(len(self.opts)):
+            img = self.selected_img[i]
+                
+            tx = 0-img.get_width()/2
+            ty = 0 + self.line_step * i - img.get_height()/2
+            
+            if tx <= x <= tx+img.get_width():
+                if ty+10 <= y <= ty+img.get_height()-10:
+                    return i
+        return None
+        
+    def click_mouse(self, x, y):
+        i = self.get_mouse_over(x,y)
+        if i is not None:
+            return i      
+            
+class Credits(Scene):
+    sections = [
+        ["magic by", "dr kapanga"],
+        ["rabbits by", "fu man chu"],
+        ]
+        
+    BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
     
+    hand_start = 0,0
+    hand_end = 300,300
+    puff_position = 400,250
+    begin_duration = 3
+    hit_duration = 2
+    retreat_duration = 3
+    handout_duration = 4
+    done_duration = 0
+    loop_duration = 5
+    
+    def init(self, font, color=(255,255,255), outline_color=(0,0,0)):
+        self.section_imgs = []
+        for section in sections:
+            lines = []
+            for line in section:
+                img = hollow.textOutline(font, line, color, outline_color)
+                lines.append( line )
+            self.section_imgs.append( lines )
+            
+        self.section_number = 0
+        self.STATE = self.BEGIN
+        self.state_start = time.time()
+        self.hand_pos = None
+        self.puff_img = None
+        self.puff_pos = None
+        self.text = None
+            
+    def loop(self):
+        if self.state == self.BEGIN:
+            if time.time() - self.state_start >= self.begin_duration:
+                self.state = HIT
+                self.state_start = time.time()          
+        elif self.state == self.HIT:
+            if time.time() - self.state_start >= self.hit_duration:
+                self.state = RETREAT
+                self.state_start = time.time()
+        elif self.state == self.RETREAT:
+            if time.time() - self.state_start >= self.retreat_duration:
+                self.state = HANDOUT
+                self.state_start = time.time()
+        elif self.state == self.HANDOUT:
+            if time.time() - self.state_start >= self.handout_duration:
+                self.state = DONE
+                self.state_start = time.time()
+        elif self.state == self.DONE:
+            if time.time() - self.state_start >= self.done_duration:
+                self.state = HIT
+                self.state_start = time.time()
+        elif self.state == self.LOOP:
+            if time.time() - self.state_start >= self.begin_duration:
+                self.state = HIT
+                self.state_start = time.time()
+    
+    def update(self):
+        if self.text:
+            pass
+        if self.puff_img:
+            pass
+        if self.hand_pos:
+            pass
+        
 class MainMenu(Scene):
     def init(self):
+        self._background = pygame.image.load("escenario/screens/menu.png").convert()
         self.font = font =  pygame.font.Font("escenario/MagicSchoolOne.ttf",90)
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
@@ -440,13 +532,26 @@ class MainMenu(Scene):
                  )
         
     def paint(self):
-        s = self.font.render("Typus Pocus", True, (255,255,255))
         self.game.screen.blit(self.background, (0,0))
-        self.game.screen.blit(s, (400-s.get_width()/2,20))
         self.menu.blit(self.game.screen, 400, 180)
         
     def event(self, evt):
-        if evt.type == KEYDOWN:
+        if evt.type == MOUSEMOTION:
+            x, y = pygame.mouse.get_pos()
+            x -= 400
+            y -= 180
+            if self.menu.set_mouse(x,y):
+                sounds.pasa()
+                self.paint()
+        elif evt.type == MOUSEBUTTONUP:
+            x, y = pygame.mouse.get_pos()
+            x -= 400
+            y -= 180
+            sel = self.menu.click_mouse(x,y)
+            if sel is not None:
+                sounds.enter()
+                self.do_action(sel)
+        elif evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
                 self.end()
             elif evt.key == K_DOWN:
@@ -460,16 +565,19 @@ class MainMenu(Scene):
             elif evt.key in [K_RETURN, K_SPACE]:
                 sel = self.menu.selected
                 sounds.enter()
-                if sel == 0: # history
-                    self.play_freestyle()
-                elif sel == 1: # freestyle
-                    self.play_freestyle()
-                elif sel == 2: # hiscores
-                    self.hiscores()
-                elif sel == 3: # credits
-                    self.credits()
-                elif sel == 4: #quit            
-                    self.end()
+                self.do_action(sel)
+                
+    def do_action(self, sel):
+        if sel == 0: # history
+            self.play_freestyle()
+        elif sel == 1: # freestyle
+            self.play_freestyle()
+        elif sel == 2: # hiscores
+            self.hiscores()
+        elif sel == 3: # credits
+            self.credits()
+        elif sel == 4: #quit            
+            self.end()
                     
     def play_freestyle(self):
             result = GANO
@@ -495,7 +603,7 @@ class MainMenu(Scene):
 
             self.runScene( GameOver( self.game, score ) )
 def main():
-    g = Game(800, 525, framerate = 20)
+    g = Game(800, 525, framerate = 20, title = "Typus Pocus")
 
     g.run( MainMenu(g) )
     
