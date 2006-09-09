@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from engine import Game, Scene
 from audiencia import AudienciaScene
+import audiencia
 import cosas
 from motor import MainMotor, Estados
 import hollow
@@ -94,7 +95,8 @@ PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 class Level(Scene):
     linebyline = False
     
-    def init(self, level_number, motor):
+    def init(self, level_number, motor, laAudiencia):
+        self.audiencia = laAudiencia
         self.motor = motor
         self.line_manager = LineManager(self.motor.hechizo)
         self.offset_cache = [None]*len(self.motor.hechizo)
@@ -104,7 +106,7 @@ class Level(Scene):
         
         self.line_group = pygame.sprite.OrderedUpdates()
         self.line = None
-        self.audiencia = AudienciaScene(self.game, self.level_number)
+        self.audiencia = AudienciaScene(self.game, self.level_number, self.audiencia)
         self.subscenes.append( self.audiencia )
         self.todasLasTeclas = ""
         
@@ -306,21 +308,39 @@ class Level(Scene):
             
             self.game.screen.blit( im, (xpos, ypos) )
             
-                
-        
+            
+Foreground = None #= pygame.image.load("escenario/foreground.png")
+
+def test():
+    global Foreground
+    Foreground = pygame.image.load("escenario/foreground.png")
+    Foreground.convert()
+    
+
+class IntermediateScene(Scene):
+    def update(self):
+        self.audiencia.engine.update()
+        self.game.screen.fill((0,0,0))
+        surface = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        self.audiencia.render(surface, abs(self.calor)*100)
+        surface.blit(self.fg, (0,0))
                        
 class LevelIntro(Scene):
-    def init(self, level_number, level_name):
+    def init(self, level_number, level_name, audiencia):
+        test()
         self.level_number = level_number
+        self.audiencia = audiencia
         self.level_name = level_name
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
-    def paint(self):
+    def update(self):
+        self.audiencia.update()
         s = self.font.render("Level "+self.level_number, True, (255,255,255))
         self.background.blit(s, (100,100))
+        self.audiencia.render(self.background, 100) #abs(self.calor)*100)
+        self.background.blit(Foreground, (0,0))
         s = self.font.render(self.level_name, True, (255,255,255))
         self.background.blit(s, (100,300))
-        
         self.game.screen.blit(self.background, (0,0))
     
     def event(self, evt):
@@ -328,8 +348,9 @@ class LevelIntro(Scene):
                 self.end()
 
 class LevelSuccess(Scene):
-    def init(self, score, levelscore):
+    def init(self, score, levelscore, xaudiencia):
         self.score = score
+        self.audiencia = xaudiencia
         self.levelscore = levelscore
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         
@@ -346,10 +367,12 @@ class LevelSuccess(Scene):
     def event(self, evt):
         if evt.type == KEYDOWN:
                 self.end()
+                
 class GameOver(Scene):
-    def init(self, score):
+    def init(self, score, laaudiencia):
         self.score = score
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.audiencia = laaudiencia
         
     def paint(self):
         s = self.font.render("Game Over: Score "+str(self.score), True, (255,255,255))
@@ -621,7 +644,7 @@ class MainMenu(Scene):
         elif sel == 4: #quit            
             self.end()
                     
-    def play_freestyle(self):
+    def play_history(self):
             result = GANO
             count = 0
             score = 0
@@ -644,6 +667,36 @@ class MainMenu(Scene):
                 count += 1
 
             self.runScene( GameOver( self.game, score ) )
+
+    def play_freestyle(self):
+            result = GANO
+            count = 0
+            score = 0
+            futech = 0
+            while result == GANO:
+                laAudiencia = audiencia.Audiencia(level_number=count)
+                if count < len(levels):
+                    subtitle = levels[count][0]
+                    params = levels[count][1]
+                else:
+                    if futech == 0: futech = count-1
+                    subtitle = "Future tech "+str(count-futech)
+                    params = dict(tiempo_por_caracter=1.0/(count-futech+4))
+                self.runScene( 
+                        LevelIntro( self.game, str(count), subtitle, laAudiencia ) )
+                l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
+                laAudiencia.doGame()
+                result = self.runScene( l )
+                newscore = int(l.motor.score)
+                score += newscore
+                if result == GANO:
+                    laAudiencia.doWin()
+                    self.runScene( 
+                        LevelSuccess(self.game, score, newscore, laAudiencia))
+                count += 1
+            laAudiencia.doGameOver()
+            self.runScene( GameOver( self.game, score, laAudiencia ) )
+
 def main():
     g = Game(800, 525, framerate = 20, title = "Typus Pocus")
 

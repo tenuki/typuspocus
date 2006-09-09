@@ -25,7 +25,7 @@ class Persona:
         individuo = people.buildIndividual(level_number)
         self.images = map(lambda state:individuo.render(state), people.iStates)
         self.state = people.iStates[0]
-        self.useRand = False
+        self.alive = False
         self.deltay = 0
         
     def subirse(self):
@@ -34,9 +34,12 @@ class Persona:
         self.deltay = 0
     def camina(self):
         self.deltay = - peopley/6
-                
+
+    def alive(self):
+        self.alive = True
+                        
     def render(self, surface, porcentaje):
-        if self.useRand and random.randint(0,1000)<porcentaje:
+        if self.alive and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
             gy = random.choice([-1,-2,0])
         else:
@@ -74,16 +77,17 @@ class Fila:
 class EnginePersonas:
     def __init__(self, peopleSet):
         pass
-        
+
 class IntroEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
-        
+        self.caminando = 0
         for y in range(filasy):
             for x in range(filasx):
                 if random.random() > (level_number/5.0+0.1):
                     pass
                 else:
+                    self.caminando += 1
                     dx = (y%2) * peoplex/2 - peoplex/2 + 6
                     dy = peopley/2 * y                    
 
@@ -104,13 +108,48 @@ class IntroEngine(EnginePersonas):
                     p.velocidad = random.randint(20,80) * (p.xdir) 
                     peopleSet[y].append( p )
         self.startTime = time.time()
+
+    def update(self):
+        self.caminarUpdate()
+        
+    def caminarUpdate(self):
+        dt = time.time() - self.startTime
+        for persons in self.ps.values():
+            for p in persons:
+                npx = p.inipos[0] + p.velocidad * dt
+                x,y = p.destpos
+                if p.xdir>0 and (npx<p.destpos[0]):
+                    x = npx
+                elif p.xdir<0 and (npx>p.destpos[0]):
+                    x = npx
+                p.position = (x,y)
+                if p.position == p.destpos:
+                    self.caminando -= 1
+                    p.sentarse()
+                    
+    def finish(self):
+        for persons in self.ps.values():
+            for p in persons:
+                p.position = p.destpos
+        
+    def done(self):
+        return self.caminando == 0            
+
+class GOEngine(EnginePersonas):
+    def __init__(self, peopleSet, level_number):
+        self.ps = peopleSet
+        for persons in self.ps.values():
+            for p in persons:
+                p.camina()
+                p.xdir*=-1
+                p.inipos, p.destpos = p.destpos, p.inipos
+        self.startTime = time.time()
         
     def update(self):
         self.caminarUpdate()
         
     def caminarUpdate(self):
         dt = time.time() - self.startTime
-        
         for persons in self.ps.values():
             for p in persons:
                 npx = p.inipos[0] + p.velocidad * dt
@@ -123,13 +162,23 @@ class IntroEngine(EnginePersonas):
                 if p.position == p.destpos:
                     p.sentarse()
 
+
+class GameEngine:
+    def __init__(self, peopleSet, level_number):
+        self.ps = peopleSet
+    def finish(self):
+        pass        
+    def update(self):
+        pass
+    
+
 class Audiencia:
     def __init__(self, level_number):
         people.resetRandom(level_number)
         self.personas = {}
         for y in range(filasy):
             self.personas[y]=[]
-
+        self.level = level_number
         self.engine = IntroEngine(self.personas, level_number)
 
         self.filas = []
@@ -137,9 +186,17 @@ class Audiencia:
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
             self.filas.append(Fila(level_number,(dx,dy), self.personas[y]))
-    
+    def update(self):
+        self.engine.update()    
     def doGame(self):
-        self.engine = self.engine #XXX
+        self.engine.finish()
+        self.engine = GameEngine(self.personas, self.level)
+    def doGameOver(self):
+        self.engine.finish()
+        self.engine = GOEngine(self.personas, self.level)
+    def doWin(self):
+        self.engine.finish()
+        self.engine = GOEngine(self.personas, self.level)
     
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
@@ -153,9 +210,9 @@ class Audiencia:
             fila.render(surface, porcentaje)
 
 class AudienciaScene(Scene):
-    def init(self, level_number):
+    def init(self, level_number, audiencia):
         self.finalizar = False
-        self.audiencia = Audiencia(level_number)
+        self.audiencia = audiencia #Audiencia(level_number)
         self.voluntario = None
         self.calor = 0
         self.level_number = level_number
@@ -215,7 +272,7 @@ class AudienciaScene(Scene):
             self.end( )
                     
     def update(self):
-        self.audiencia.engine.update()
+        self.audiencia.update()
         self.game.screen.fill((0,0,0))
         surface = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
         self.audiencia.render(surface, abs(self.calor)*100)

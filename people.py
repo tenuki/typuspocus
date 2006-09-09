@@ -144,7 +144,7 @@ class Individual:
     def __repr__(self):
         return repr(self.layers)
 
-    def render(self, state ):
+    def render(self, state):
         LayerHandsUp = ['body', "tops n bottoms", 'jackets']
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
