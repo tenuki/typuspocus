@@ -246,7 +246,7 @@ class Audiencia:
         dy = peopley/2 * fila
         return (dx+peoplex/2, dy+20)
 
-    def render(self, surface, porcentaje):
+    def render(self, surface, porcentaje=0):
         for fila in self.filas:
             fila.render(surface, porcentaje)
     def setCalor(self, calor):
