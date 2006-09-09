@@ -7,8 +7,8 @@ import urllib2
 import xml.dom.minidom
 import hiscore_server
 
-HISCORE_SERVER = 'auidiolibre.no-ip.org'
-HISCORE_PORT = 8000
+HISCORE_SERVER = 'typospocus.servegame.org'
+HISCORE_PORT = 8080
 
 hiscore_server.HiScoreData.HISCORE_FILENAME = 'hi_scores_local.txt'
 
