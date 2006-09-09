@@ -232,7 +232,7 @@ casserole out of you.""",
         "Aspiradora loca",
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
-a spaceship abdu^H^H^H^Hrescues 
+a spaceship abducts 
 you. The venusians ask you to help 
 them vanish a hitchhiker.""",
 """Since you were so helpfull, 
@@ -247,8 +247,29 @@ the venusians performed a
 
     (
         "Area 51",
-        all_wardrobes, #""Marcianitos y men in black",
-        "un marcianito de roswell",
+        [Wardrobe('audiencia/boy/', 'articles_alien.txt', {
+    "behind":0.5,
+    "body":1,
+    "hair":0.6,
+    "underware":0.30,
+    "tops":0.3,
+    "bottoms":0.3,
+    "shoes":0.3,
+    "jackets":0.05,
+    "hats":0.01,
+    "infront":0.85,
+}), Wardrobe('audiencia/boy/', 'articles_mib.txt', {
+    "behind":0.5,
+    "body":1,
+    "hair":0.90,
+    "underware":0.30,
+    "tops":1,
+    "bottoms":1,
+    "shoes":1,
+    "jackets":1,
+    "hats":0.01,
+    "infront":1,
+})],"un marcianito de roswell",
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
 """Your ship was running a pirated 
 OS and crashed in new mexico. 
@@ -269,7 +290,18 @@ never leaving area 51""",
 
     (
         "Graveyard",
-        all_wardrobes, #""Esqueletos",
+       [Wardrobe('audiencia/boy/', 'articles8.txt', {
+    "behind":0.5,
+    "body":1,
+    "hair":0.6,
+    "underware":0.30,
+    "tops":0.3,
+    "bottoms":0.3,
+    "shoes":0.3,
+    "jackets":0.05,
+    "hats":0.01,
+    "infront":0.85,
+})], #""Esqueletos",
         "Estatuilla de Anubis",
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
