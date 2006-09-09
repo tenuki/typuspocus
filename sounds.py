@@ -18,16 +18,16 @@ class Sounds:
         self.canalTickTock = pygame.mixer.Channel(3)
         self.canalTickTock.set_volume(VOLUMEN_TICKTOCK)
 
-        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda", "menu"]:
+        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda", "menu", "intro"]:
             self.sonidoEnCanal(s, self.canalAmbiente, -1)
 
         for s in ["arenga", "puteada"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav","camina", "intro"]:
+        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav","camina"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
-        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo"]:
+        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo", "signal.wav"]:
 
             self.sonidoSuelto(s)
 

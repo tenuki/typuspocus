@@ -90,6 +90,51 @@ class LineManager:
         return 0,0
         
 
+class Alarm:
+    alarm_time = 5
+    blink_time = 0.5
+    sound_time = 3
+    
+    def __init__(self):
+        self.armed = False
+        self.start = None
+        font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
+        self.message = hollow.textOutline(font, "Start typing the spell!", (230,100,100), (0,0,0))
+        self.last_blink = None
+        self.blink_state = True
+        self.last_sound = None
+        
+    def arm(self):
+        self.start = time.time()
+        self.armed = True
+        
+    def disarm(self):
+        self.armed = False
+        
+    def blit(self, screen):
+        if self.armed:
+            if time.time()-self.start>self.alarm_time:
+                if self.last_blink is None:
+                    self.last_blink = time.time()
+                    
+                if time.time()-self.last_blink > self.blink_time:
+                    self.blink_state = not self.blink_state
+                    self.last_blink = time.time()
+                    
+                if self.blink_state:
+                    screen.blit(self.message, (400-self.message.get_width()/2, 430))
+                if self.last_sound is None:
+                    self.last_sound = time.time()
+                    sounds.signal()
+                    
+                if time.time()-self.last_sound > self.sound_time:
+                    sounds.signal()
+                    self.last_sound = time.time()
+                    
+
+                
+        
+        
 PERDIO, GANO = range(2)
 PLAYING, WINNING, WON, TIMEOUT, TOMATOING, TOMATO, LOSING, LOST, DONE = range(9)
 
@@ -128,6 +173,8 @@ class Level(Scene):
         self.cursorfont = pygame.font.Font("escenario/MagicSchoolOne.ttf",100)
         self.motor.start()
         sounds.volumenDeeJay(1.0)
+        self.alarm = Alarm()
+        self.alarm.arm()
         
         
     def event(self, evt):
@@ -136,6 +183,7 @@ class Level(Scene):
                 if evt.key == K_ESCAPE:
                     self.end()
                 
+                self.alarm.disarm()
                 res = None
                 letra = evt.unicode #.lower()
                 if letra.isalpha() or (letra and letra in " ,.<>:;"):
@@ -187,6 +235,7 @@ class Level(Scene):
     
     
     def loop(self):
+        
         sounds.heatDeeJay(self.motor.calor)
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
@@ -226,6 +275,10 @@ class Level(Scene):
             self.todasLasTeclas = ""
         if "puto del ojete" in self.todasLasTeclas:
             sounds.abucheo()
+            self.todasLasTeclas = ""
+        if "gimme score" in self.todasLasTeclas:
+            self.motor.score += 10
+            sounds.signal()
             self.todasLasTeclas = ""
                           
     def update(self):
@@ -306,6 +359,9 @@ class Level(Scene):
                 
             rate_sf = hollow.textOutline( self.ratefont, "%i%%"%(int(rate*100)),  color_tx, (0,0,0) )
             self.game.screen.blit( rate_sf, (770-rate_sf.get_width()/2, 35-rate_sf.get_height()/2))
+            
+            
+            self.alarm.blit(self.game.screen)
         if self.state in [WON, LOST, TOMATO]:
             im = hollow.textOutline(font, "[press any key]", (30,30,200), (255,255,255))
             ypos = 400
@@ -686,13 +742,16 @@ class Credits(Scene):
         
 class Ranking(Scene):
     rankings = ["Orko","Lord Zedd",  "David Copperfield", "Harry Potter","Skeletor", "Mum-ra",  "Harry Houdini", "Mandrake", "Gandalf", "Merlin",  ]
-    
+    stages = [10,20,40,60,80,100,120,140,200]
     def init(self, rank=None, score=None):
-        if rank is None:
-            rank = 9#random.randint(0,10)
+        
         if score is None:
             score = random.randint(0,1000)
-            
+            if rank is None:
+                rank = 9#random.randint(0,10)    
+        elif rank is None:
+            rank = sum([1 for i in self.stages if score > i])
+                
         self._background = pygame.image.load("escenario/screens/ranking.png").convert()
         self.paint_info = False
         self.score = score
@@ -761,7 +820,7 @@ class GameIntro(Scene):
     end_position = 465,330
     start_duration = 1
     entering_duration = 5
-    ready_duration = 2
+    ready_duration = 4
     talking_duration = 1
     pause_duration = 1
     gone_duration = 3.5
@@ -1016,7 +1075,7 @@ class MainMenu(Scene):
                     self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
                     if not cont:
-                        self.runScene(Ranking(self.game))
+                        self.runScene(Ranking(self.game, score=score))
                         break
                     else:
                         score = 0
