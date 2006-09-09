@@ -27,7 +27,7 @@ class Sounds:
         for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav","camina"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
-        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo", "signal.wav"]:
+        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo", "signal.wav", "tomato.wav"]:
 
             self.sonidoSuelto(s)
 

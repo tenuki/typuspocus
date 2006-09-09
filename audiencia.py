@@ -320,6 +320,7 @@ class AudienciaScene(Scene):
         self.tomate_aplastado = pygame.image.load("escenario/tomates/tomate_aplastado.png").convert_alpha()
 
         self.tomateando = None
+        self.sound_tomate = True
 
         pygame.mixer.set_reserved(2)
         self.channel = pygame.mixer.Channel(0)
@@ -401,6 +402,10 @@ class AudienciaScene(Scene):
             surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()).move(*DELTAVARITA))
 
         if self.tomateando == 0:
+            if self.sound_tomate:
+                self.sound_tomate = None
+                sounds.tomato()
+                
             imagen = self.tomate_aplastado
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
 
