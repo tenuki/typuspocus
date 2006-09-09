@@ -483,12 +483,30 @@ class Credits(Scene):
         self.puff_img = None
         self.puff_pos = None
         self.text = None
-            
+        
+        self.mano = pygame.image.load("escenario/manos/mano1.png").convert()
+
+        
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+            self.end()
+                
+                
     def loop(self):
         if self.state == self.BEGIN:
             if time.time() - self.state_start >= self.begin_duration:
                 self.state = HIT
                 self.state_start = time.time()          
+            else:
+                p = (time.time()-self.state_start)/self.begin_duration
+                
+                sx, sy = self.hand_start
+                ex, ey = self.hand_end
+                nx = sx + (ex-sx)*p
+                ny = sy + (ey-sy)*p
+                
+                self.hand_pos = nx, ny
+            
         elif self.state == self.HIT:
             if time.time() - self.state_start >= self.hit_duration:
                 self.state = RETREAT
@@ -497,26 +515,42 @@ class Credits(Scene):
             if time.time() - self.state_start >= self.retreat_duration:
                 self.state = HANDOUT
                 self.state_start = time.time()
+            else:
+                p = (time.time()-self.state_start)/self.begin_duration
+                
+                sx, sy = self.hand_start
+                ex, ey = self.hand_end
+                nx = ex - (ex-sx)*p
+                ny = ey - (ey-sy)*p
+                
+                self.hand_pos = nx, ny
+                
         elif self.state == self.HANDOUT:
             if time.time() - self.state_start >= self.handout_duration:
                 self.state = DONE
                 self.state_start = time.time()
+            else:
+                self.hand_pos = None
         elif self.state == self.DONE:
             if time.time() - self.state_start >= self.done_duration:
                 self.state = HIT
                 self.state_start = time.time()
+            else:
+                self.hand_pos = None
         elif self.state == self.LOOP:
             if time.time() - self.state_start >= self.begin_duration:
                 self.state = HIT
                 self.state_start = time.time()
-    
+            else:
+                self.hand_pos = None
+                    
     def update(self):
         if self.text:
             pass
         if self.puff_img:
             pass
         if self.hand_pos:
-            pass
+            self.game.screen.blit( )
         
 class MainMenu(Scene):
     def init(self):
@@ -527,8 +561,8 @@ class MainMenu(Scene):
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
                  ["History Mode", "Freestyle", "Hiscores", "Credits", "Quit"],
                  margin = -40,
-                 normal_color = (130,130,250),
-                 selected_color = (180,180,255),
+                 normal_color = (173,148,194),
+                 selected_color = (244,232,255),
                  )
         
     def paint(self):
