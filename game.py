@@ -923,6 +923,7 @@ class MainMenu(Scene):
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
                  )
+        sounds.menu()
         
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
@@ -958,7 +959,9 @@ class MainMenu(Scene):
             elif evt.key in [K_RETURN, K_SPACE]:
                 sel = self.menu.selected
                 sounds.enter()
+                sounds.apagarVoces()
                 self.do_action(sel)
+                sounds.menu()
                 
     def do_action(self, sel):
         if sel == 0: # history

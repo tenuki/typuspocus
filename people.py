@@ -360,14 +360,12 @@ class Wardrobe:
     
 def getAllWardrobes():
     return [
-            Wardrobe('audiencia/boy/'),
-            Wardrobe('audiencia/fashion_boy/'),
-            Wardrobe('audiencia/goth/'),
-            ]
-    return [Wardrobe('audiencia/fashion_boy/'),
-                    Wardrobe('audiencia/fashion_girl/'),
-                    Wardrobe('audiencia/girl/'),
-                    Wardrobe('audiencia/boy/')]
+        Wardrobe('audiencia/boy/'),
+        Wardrobe('audiencia/girl/'),
+        Wardrobe('audiencia/fashion_boy/'),
+        Wardrobe('audiencia/fashion_girl/'),
+        Wardrobe('audiencia/goth/'),
+    ]
 
 wardrobes = getAllWardrobes()
 def buildIndividual(level=1):

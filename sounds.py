@@ -18,7 +18,7 @@ class Sounds:
         self.canalTickTock = pygame.mixer.Channel(3)
         self.canalTickTock.set_volume(VOLUMEN_TICKTOCK)
 
-        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda"]:
+        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda", "menu"]:
             self.sonidoEnCanal(s, self.canalAmbiente, -1)
 
         for s in ["arenga", "puteada"]:
