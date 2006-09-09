@@ -281,6 +281,10 @@ class Level(Scene):
             self.motor.score += 10
             sounds.signal()
             self.todasLasTeclas = ""
+        if "make me win" in self.todasLasTeclas:
+            self.state = WINNING
+            self.wintime = pygame.time.get_ticks()
+                 
                           
     def update(self):
         font = self.messagefont
