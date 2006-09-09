@@ -170,7 +170,7 @@ all your money playing craps.""",
     (
         "Black magic",
         all_wardrobes, #""Africanitos de la tribu",
-        "murcielago", # Un muricélago, o algún animal raro
+        "mucielago", # Un muricélago, o algún animal raro
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
 in africa, they find out
