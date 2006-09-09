@@ -229,7 +229,7 @@ casserole out of you.""",
     (
         "Tatooine",
         [Wardrobe('audiencia/boy/', 'articles6.txt', enmascarados)],
-        "Aspiradora loca",
+        "aspiradora", # Aspiradora loca
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
 a spaceship abducts 
@@ -269,7 +269,7 @@ the venusians performed a
     "jackets":1,
     "hats":0.01,
     "infront":1,
-})],"un marcianito de roswell",
+})],"alien", # un marcianito de roswell
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
 """Your ship was running a pirated 
 OS and crashed in new mexico. 
@@ -302,7 +302,7 @@ never leaving area 51""",
     "hats":0.01,
     "infront":0.85,
 })], #""Esqueletos",
-        "Estatuilla de Anubis",
+        "anubis", # Estatuilla de Anubis
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
 you can escape to heaven by 
@@ -328,7 +328,7 @@ come to need one.""",
         #""Todos desnudos",
         [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', enpelotas), 
          Wardrobe('audiencia/boy/', 'articles9.txt', enpelotas)],
-        "CUZCO la cabra",
+        "cabra", # CUZCO la cabra
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
 everything that dissapears here goes 
