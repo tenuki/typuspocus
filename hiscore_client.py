@@ -31,6 +31,8 @@ class HiScoreClient:
             try:
                 urllib2.urlopen('http://%s:%s/addHiScore/%d/%s' % (HISCORE_SERVER,HISCORE_PORT,score,name) )
             except Exception, e:
+                import traceback
+                traceback.print_exc()
                 print 'Internet connection failed... using local hiscores'
                 self.__internet = False
                 self.addLocalHiScore( score, name )
@@ -54,6 +56,8 @@ class HiScoreClient:
                 self.handleXMLScores()
 
             except Exception, e:
+                import traceback
+                traceback.print_exc()
                 print 'Internet connection failed... using local hiscores'
                 self.__internet = False
                 self.listLocalHiScores()
