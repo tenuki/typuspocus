@@ -1148,7 +1148,6 @@ class MainMenu(Scene):
         
         except IOError:
             self.tour_locked = True
-        self.tour_locked = False
         
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
