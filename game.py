@@ -187,7 +187,7 @@ class Level(Scene):
                 self.alarm.disarm()
                 res = None
                 letra = evt.unicode #.lower()
-                if letra.isalpha() or (letra and letra in " ,.<>:;"):
+                if letra.isalpha() or (letra and letra in " ,.<>:;1234567890"):
                     res, event = self.motor.hitLetra( letra )
                     self.checkEaster(letra)
                 if evt.key == K_BACKSPACE:
