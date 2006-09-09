@@ -331,19 +331,25 @@ class LevelIntro(Scene):
         self.audiencia = audiencia
         self.level_name = level_name
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
         
     def update(self):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
-        s = self.font.render("Level "+self.level_number, True, (255,255,255))
-        self.background.blit(s, (100,100))
+        
         self.audiencia.render(self.background, 100) #abs(self.calor)*100)
         self.background.blit(Foreground, (0,0))
-        s = self.font.render(self.level_name, True, (255,255,255))
-        self.background.blit(s, (100,300))
+
         #self.game.screen.blit(self.background, (0,0))
-    
+
+        self.game.screen.blit(self.overlay, (0,0))
+        s = self.font.render(self.level_name, True, (255,255,255))
+        self.game.screen.blit(s, (100,250))
+        s = self.font.render("Level "+self.level_number, True, (255,255,255))
+        self.background.blit(s, (100,350))
+        
+            
     def event(self, evt):
         if evt.type == KEYDOWN:
                 self.end()
@@ -354,29 +360,24 @@ class LevelSuccess(Scene):
         self.audiencia = xaudiencia
         self.levelscore = levelscore
         self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
         
     def update(self):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        
         self.audiencia.render(self.background, 100) #abs(self.calor)*100)
-        self.background.blit(Foreground, (0,0))
+        self.background.blit(Foreground, (0,0))    
+        
+        self.game.screen.blit(self.overlay, (0,0))
+        
         s = self.font.render("Level Completed", True, (255,255,255))
-        self.background.blit(s, (100,100))
+        self.game.screen.blit(s, (100,100))
         s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
-        self.background.blit(s, (100,300))
+        self.game.screen.blit(s, (100,300))
         s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
-        self.background.blit(s, (100,400))        
-        #self.game.screen.blit(self.background, (0,0))
-    
-    def paint(self):
-        s = self.font.render("Level Completed", True, (255,255,255))
-        self.background.blit(s, (100,100))
-        s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
-        self.background.blit(s, (100,300))
-        s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
-        self.background.blit(s, (100,400))
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(s, (100,400))    
     
     def event(self, evt):
         if evt.type == KEYDOWN:

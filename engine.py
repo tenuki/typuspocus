@@ -100,5 +100,5 @@ class Scene:
         pass
         
     def paint(self):
-        pass
+        self.update()
      
