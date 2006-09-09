@@ -53,7 +53,10 @@ class MainMotor(object):
         self.voluntario_error = self.voluntario
         while self.voluntario == self.voluntario_error:
             self.voluntario_error = random.choice(cosas.all)
-        (self.hechizo, self.indpals) = self._armaHechizo(self.cantidad_palabras)
+        if "hechizo" in kwargs:
+            (self.hechizo, self.indpals) = self._armaHechizo(0, self.hechizo)
+        else:
+            (self.hechizo, self.indpals) = self._armaHechizo(self.cantidad_palabras)
         self.largohech = len(self.hechizo)
         self.cursor = 0
         self.cant_bs = 0
@@ -66,7 +69,7 @@ class MainMotor(object):
         self.tiempoUltTecla = 0
         self.dirty = True
 
-    def _armaHechizo(self, cant):
+    def _armaHechizo(self, cant=0, spell=None):
         '''Arma el hechizo y un indice que es un dict, donde la clave es la
         posicion de la ultima letra de cada palabra y el valor es una tupla
         con los dos extremos de la palabra.
@@ -74,7 +77,9 @@ class MainMotor(object):
         base = 0
         palabras = []
         indice = {}
-        for pal in phrases.Spell(cant).getPhrase().split(" "):
+        if spell is None:
+            spell = phrases.Spell(cant).getPhrase()
+        for pal in spell.split(" "):
             #pal = random.choice(PALABRAS)
             largo = len(pal)
             palabras.append(pal)

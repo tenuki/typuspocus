@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 import pygame
 from pygame.locals import *
 from engine import Game, Scene
@@ -8,6 +9,7 @@ from motor import MainMotor, Estados
 import hollow
 from sounds import sounds
 import time
+from levels import niveles
 
 DEBUG = 0
 
@@ -538,7 +540,7 @@ class Menu:
             
 class Credits(Scene):
     sections = [
-        ["Doppelganger","Alecu"],
+        ["Doppelgänger","Alecu"],
         ["Nigromante", "LucioTorre"],
         ["Alchemist", "Riq"],
         ["Medium","LeitoMonk"],
@@ -881,9 +883,21 @@ class MainMenu(Scene):
             futech = 0
             while True:
                 laAudiencia = audiencia.Audiencia(level_number=count)
-                if count < len(levels):
-                    subtitle = levels[count][0]
-                    params = levels[count][1]
+                if count < len(niveles):
+                    nivel = niveles[count]
+                    subtitle = nivel.nombre
+                    params = nivel.params
+                    for k,v in nivel.__dict__.items(): 
+                        params[k] = v
+                    #.nombre
+                    #.audiencia
+                    #.objeto
+                    #.hechizo
+                    #.historyintro
+                    #.historygood
+                    #.historybad
+                    #.titulo
+                    #.params
                 else:
                     if futech == 0: futech = count-1
                     subtitle = "Future tech "+str(count-futech)
