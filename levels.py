@@ -45,7 +45,7 @@ textosNiveles = [
         "Teatro prestado",
         [people.Wardrobe('audiencia/boy/', 'articles0.txt')],
         "Un conejo",
-        "Hocus pocus, disappear now.",
+        "hocus pocus, disappear now.",
 """Cast the spell 
 as fast and accurately as you can. 
 
@@ -60,7 +60,7 @@ your mistakes.""",
 
     (
         "Opera",
-        "Gente vestida bien",
+        people.all_wardrobes, #"Gente vestida bien",
         "La mascara del fantasma de la opera",
         "evanesco simulatio, phantasma spectaculum. initium capere.",
 """Dissapear the Phantom's mask, 
@@ -76,7 +76,7 @@ make him leave.""",
 
     (
         "Magic arena",
-        "Jugadores de basquet o deportistas",
+        people.all_wardrobes, #""Jugadores de basquet o deportistas",
         "Zapatillas grandes.",
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
@@ -91,7 +91,7 @@ visitor's MVP lucky sneakers.""",
 
     (
         "Fiesta musical",
-        "Hip-hoperos o darkies",
+        people.all_wardrobes, #""Hip-hoperos o darkies",
         "Alcohol, drogas, hacer un mix",
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
 """You were supposed to dissapear 
@@ -108,9 +108,9 @@ from the cops.""",
 
     (
         "Las Vegas",
-        "Gente adinerada",
+        people.all_wardrobes, #""Gente adinerada",
         "papeles y documentos",
-        "factus taxus nuLus, nilun actin, evaDus fiscus IRSus, whySaw Elvis Bellagium 11 ocean's cardus impustum disapiros ipsofactum.",
+        "factus taxus nulus, nilun actin, evaDus fiscus IRSus, whySaw Elvis Bellagium 11 ocean's cardus impustum disapiros ipsofactum.",
 """You get to Las Vegas 
 to perform in a Casino, but 
 the owners want to take 
@@ -125,7 +125,7 @@ to evade taxes.""",
 
     (
         "Black magic",
-        "Africanitos de la tribu",
+        people.all_wardrobes, #""Africanitos de la tribu",
         "Un muricélago, o algún animal raro",
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
@@ -141,7 +141,7 @@ sacred animal""",
 
     (
         "Tatooine",
-        "Robots de star wars",
+        people.all_wardrobes, #""Robots de star wars",
         "Aspiradora loca",
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
@@ -156,7 +156,7 @@ them vanish a hitchhiker.""",
 
     (
         "Area 51",
-        "Marcianitos y men in black",
+        people.all_wardrobes, #""Marcianitos y men in black",
         "un marcianito de roswell",
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
 """Your ship was running a pirated 
@@ -172,7 +172,7 @@ the alien landings.""",
 
     (
         "Graveyard",
-        "Esqueletos",
+        people.all_wardrobes, #""Esqueletos",
         "Estatuilla de Anubis",
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
@@ -189,7 +189,7 @@ All the dead gather around to watch...""",
 
     (
         "EL LUGAR FELIZ",
-        "Todos desnudos",
+        people.all_wardrobes, #""Todos desnudos",
         "CUZCO la cabra",
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
