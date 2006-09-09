@@ -49,7 +49,7 @@ class LineManager:
             if t == " ":
                 self.cache[t] = [ 
                     hollow.textOutline(font,t,*colores[0]),
-                    hollow.textOutline(font,"_",*colores[1]),
+                    hollow.textOutline(font,t,*colores[1]),
                     hollow.textOutline(font,"_",*colores[2]),
                     hollow.textOutline(font,"_",*colores[3])
                     ]
@@ -451,12 +451,15 @@ class MainMenu(Scene):
                 self.end()
             elif evt.key == K_DOWN:
                 self.menu.next()
+                sounds.pasa()
                 self.paint()
             elif evt.key == K_UP:
                 self.menu.prev()
+                sounds.pasa()
                 self.paint()
             elif evt.key in [K_RETURN, K_SPACE]:
                 sel = self.menu.selected
+                sounds.enter()
                 if sel == 0: # history
                     self.play_freestyle()
                 elif sel == 1: # freestyle

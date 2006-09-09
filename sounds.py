@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+DEBUG = 1
 
 VOLUMEN_MUSICA = 0.3
 VOLUMEN_TICKTOCK = 0.6
@@ -65,6 +66,7 @@ class Sounds:
     def buildSonido(self, s):
         if "." not in s:
             s += ".ogg"
+        if DEBUG: print "Loading sound:", s
         return pygame.mixer.Sound("sounds/"+s)
 
 
