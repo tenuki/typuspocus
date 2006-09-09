@@ -32,14 +32,20 @@ class Persona:
         self.alive = False
         self.deltay = 0
         self.estado = pnormal
+        self.porcentaje = 0
         
     def subirse(self):
-        self.deltay = - peopley/4
+        if 1: #self.estado==pnormal:
+            self.deltay = - peopley/4
     def sentarse(self):
         self.deltay = 0
     def caminar(self):
         self.deltay = - peopley/6
 
+    def setAlive(self, porcentaje):
+        self.porcentaje = porcentaje
+        self.alive = True
+        
     def goOut(self):
         self.xdir = - self.xdir
         self.velocidad = - self.velocidad
@@ -47,7 +53,9 @@ class Persona:
         self.status=pcaminando        
         self.start = time.time()
                                 
-    def render(self, surface, porcentaje):
+    def render(self, surface, porcentaje=None):
+        if self.porcentaje: 
+            porcentaje = self.porcentaje
         if self.alive and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
             gy = random.choice([-1,-2,0])
@@ -178,9 +186,30 @@ class GameEngine(EnginePersonas):
         self.ps = peopleSet
         self.calor = 0
         self.seVan = []
-    def setCalor(self, calor): self.calor = calor
-    def finish(self):
-        pass 
+        self.up = []
+        self.alive=[]
+        
+    def setCalor(self, calor):
+        if DEBUG: print 'engine calor:',calor 
+        self.calor = calor
+        
+    def levantar(self, p):
+        p.subirse()
+        self.up.append(p)
+    
+    def bajar(self, p):
+        p.sentarse()
+        self.up.remove(p)
+        
+    def setAlive(self, p, por=20):
+        if por>=10:
+            p.setAlive(por)
+            if not p in self.alive:
+                self.alive.append(p)
+        else:
+            p.alive=0
+            self.alive.remove(p)
+            
     def update(self):
         def getOneAtRandom():
             ops = filter(lambda ppl:len(ppl)!=0 ,self.ps.values() )
@@ -188,21 +217,30 @@ class GameEngine(EnginePersonas):
                 l = random.choice(ops)
                 return random.choice(l)
             return False
-            
-        p=getOneAtRandom()
-        if self.calor<0.08 and random.random()<0.005:
-            #elegir uno
+        
+        #irse..    
+        if self.calor<0.1 and random.random()<0.005:
+            p=getOneAtRandom()
             if p:
                 p.goOut()
                 self.seVan.append(p)
-        if self.calor>0.7 and random.random()<0.01:
-            #elegir uno
+                
+        #levantarse
+        if self.calor>0.3 :# and random.random()<0.01:
+            p=getOneAtRandom()
             if p:
-                p.subirse()
+                self.levantar(p)
+                
+        #moverse
+        if self.calor>0.0 :# and random.random()<0.01:
+            p=getOneAtRandom()
+            if p:
+                self.setAlive(p)
                 
         self.now = t=time.time()
         for p in self.seVan:
             #self.moverTipito(p)
+            #continue 
             dt=t-p.start
             npx = p.inipos[0] + p.velocidad * dt
             x,y = p.destpos
@@ -213,7 +251,16 @@ class GameEngine(EnginePersonas):
             p.position = (x,y)
             if p.position == p.destpos:
                 p.sentarse()
-
+                
+        if len(self.up)>0 and random.random()>0.7:
+            p=random.choice(self.up)
+            self.bajar(p)
+            
+        if len(self.alive)>0 and random.random()>0.8:
+            p=random.choice(self.alive)
+            if p.porcentaje > 10:
+                self.setAlive(p, p.porcentaje-10)
+            
 class Audiencia:
     def __init__(self, level_number, wardrobe=None):
         people.resetRandom(level_number)
@@ -233,12 +280,15 @@ class Audiencia:
     def doGame(self):
         self.engine.finish()
         self.engine = GameEngine(self.personas, self.level)
+        if DEBUG: print '\n\nGAME ENGINE\n\n\n'
     def doGameOver(self):
         self.engine.finish()
         self.engine = GOEngine(self.personas, self.level)
+        if DEBUG: print '\n\nG.O. ENGINE\n\n\n'
     def doWin(self):
         self.engine.finish()
         self.engine = GOEngine(self.personas, self.level)
+        if DEBUG: print  '\n\nG.O. ENGINE\n\n\n'
     
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
@@ -311,8 +361,10 @@ class AudienciaScene(Scene):
                 channel.stop()
         
     def setCalor(self, calor):
+        if DEBUG: print  'audscene calor:',calor
         self.calor = calor
-    
+        self.audiencia.setCalor(calor)
+        
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.finalizar:
