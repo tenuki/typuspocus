@@ -52,8 +52,12 @@ as fast and accurately as you can.
 You can backspace and fix 
 your mistakes.""",
 
-        """Great! You receive an offer to perform in the "Paris Opera".""",
-        "You are not even worthy of this demo level.",
+"""Great! 
+
+You receive an offer to perform 
+in the "Paris Opera".""",
+"""You are not even worthy of 
+this demo level.""",
         "Orko",
         dict(tiempo_por_caracter=0.77, preferencia_precision=0.1)
     ),
