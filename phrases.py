@@ -49,7 +49,7 @@ grammar = {
 
 'phrase2' : ["holy python", "odius perl", "greatest guido", "import this","pythonus idolotrus", "modus operandi","ipso facto","$number $animal"],
 
-'phrase3' : ["bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious',"super $sexual_thing enlargio","intensum odoris expeleriamus","enormis $animal_part habeant","hideous hair electrifiamus","super top-model convertimus","incredibilis muscles damus","more money creamus","in love transformis","totalis mind erasing","pacta sunt servanda","bona fides damus","alicuius amore ardere","veni vidi vici","libido incrementus forever"],
+'phrase3' : ["bizarre fragances expeleriamus","horribilis fungus habemus",'super califragilistic expialedocious',"super $sexual_thing enlargio","intensum odoris expeleriamus","enormis $animal_part habeant","hideous hair electrifiamus","super top model convertimus","incredibilis muscles damus","more money creamus","in love transformis","totalis mind erasing","pacta sunt servanda","bona fides damus","alicuius amore ardere","veni vidi vici","libido incrementus forever"],
 
 'phrase4' : ["$verb $preposition $adjective $noun", "your $sexual_thing are $excellent", "$number $animal $preposition $noun","$author $verb $excellent $animal_part"],
 
@@ -151,10 +151,12 @@ class Spell( PhraseLen ):
         end = self.replace( random.choice( grammar['spell_end'] ) )
         PhraseLen.__init__(self,l-( len(begin) + len(end) ) )
 
+        g =  self.getGrammar()
+        if g:
+            g += ', '
         self.setGrammar( string.join(begin)
                            + ', '
-                           + self.getGrammar()
-                           + ', '
+                           + g
                            + string.join(end) )
 
     def getPhrase(self):
@@ -168,7 +170,7 @@ class FunnyPhrase( Phrase ):
         self.setGrammar( random.choice( grammar["funny_phrase"] ) )
 
 if __name__ == "__main__":
-    for i in range(1,100):
+    for i in range(1,7):
         print '---------------------'
 #        print Phrase().getPhrase()
         p = Spell(i).getPhrase() 
