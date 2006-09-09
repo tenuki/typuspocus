@@ -78,15 +78,21 @@ class IntroEngine(EnginePersonas):
                 else:
                     dx = (y%2) * peoplex/2 - peoplex/2 + 6
                     dy = peopley/2 * y                    
-                    tx = random.choice( [0+dx, filasx*peoplex+dx] )
+
+                    final = (x*peoplex+dx,dy)
+                    if x < filasx/2:
+                        tx = dx
+                    else:
+                        tx = filasx*peoplex+dx
+                    #rtx = random.choice( [0+dx, filasx*peoplex+dx] )
                     inicial = (tx, dy)
                     p = Persona( inicial, level_number) 
+                    p.destpos = final
                     p.inipos = inicial
-                    p.destpos = (x*peoplex+dx,dy)
                     v = (p.destpos[0]-tx)
                     if v==0: v=1
                     p.xdir = v/abs(v)
-                    p.velocidad = random.randint(20,50) * (p.xdir) 
+                    p.velocidad = random.randint(20,80) * (p.xdir) 
                     peopleSet[y].append( p )
         self.startTime = time.time()
         
