@@ -1,17 +1,19 @@
 import pygame
 import os
 import random
-DEBUG = 1
 
 VOLUMEN_MUSICA = 0.3
+VOLUMEN_TICKTOCK = 0.6
 
 class Sounds:
     def init(self):
-        pygame.mixer.set_reserved(3)
+        pygame.mixer.set_reserved(4)
         self.canalMusica = pygame.mixer.Channel(0)
         self.canalMusica.set_volume(VOLUMEN_MUSICA)
         self.canalAmbiente = pygame.mixer.Channel(1)
         self.canalPalabras = pygame.mixer.Channel(2)
+        self.canalTickTock = pygame.mixer.Channel(3)
+        self.canalTickTock.set_volume(VOLUMEN_TICKTOCK)
 
         for s in ["genteunpocobien", "gentetranquila", "genteunpocomal"]:
             self.sonidoEnCanal(s, self.canalAmbiente)
@@ -19,7 +21,10 @@ class Sounds:
         for s in ["arenga", "puteada"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1", "tick2", "suspenso", "bravo.wav", "bu.wav"]:
+        for s in ["tick1", "tick2", "suspenso"]:
+            self.sonidoEnCanal(s, self.canalTickTock)
+
+        for s in ["bravo.wav", "bu.wav"]:
             self.sonidoSuelto(s)
 
         self.music_groups  = [
@@ -46,16 +51,20 @@ class Sounds:
             group_idx = int((calor + 1) / 2.1 * self.music_part_count)
             print 'calor: %.2f; music_group: %d' % (calor, group_idx)
             self.canalMusica.queue(random.choice(self.music_parts[group_idx]))
+        c= pygame.mixer.find_channel()
+        if c is None:
+            print "canales llenos!"
 
-    def silenciarDeeJay(self):
+    def volumenDeeJay(self, porcentaje):
+        self.canalMusica.set_volume(VOLUMEN_MUSICA*float(porcentaje))
         #self.canalMusica.stop()
         #self.canalMusica.play(self.music_end)
-        self.canalMusica.fadeout(50)
+        #self.canalMusica.queue(None)
+        #self.canalMusica.fadeout(50)
 
     def buildSonido(self, s):
         if "." not in s:
             s += ".ogg"
-        if DEBUG: print "Loading sound:", s
         return pygame.mixer.Sound("sounds/"+s)
 
 

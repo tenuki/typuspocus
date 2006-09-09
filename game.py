@@ -123,6 +123,7 @@ class Level(Scene):
         self.ratefont = pygame.font.Font("escenario/VeraMono.ttf",20)
         self.cursorfont = pygame.font.Font("escenario/MagicSchoolOne.ttf",100)
         self.motor.start()
+        sounds.volumenDeeJay(1.0)
         
         
     def event(self, evt):
@@ -160,7 +161,7 @@ class Level(Scene):
                 
             if self.motor.cursor >= len(self.motor.hechizo):
                 sounds.suspenso()
-                sounds.silenciarDeeJay()
+                sounds.volumenDeeJay(0.5)
                 if self.motor.tuvoExito():
                     self.state = WINNING
                 else:
@@ -179,6 +180,7 @@ class Level(Scene):
     
     
     def loop(self):
+        sounds.heatDeeJay(self.motor.calor)
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
@@ -192,7 +194,6 @@ class Level(Scene):
                 
             evt = self.motor.tick()
             self.audiencia.setCalor( self.motor.calor )
-            sounds.heatDeeJay(self.motor.calor)
             
             if evt:
                 self.audiencia.gameEvent( evt )
