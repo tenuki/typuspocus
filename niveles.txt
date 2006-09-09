@@ -1,0 +1,111 @@
+Historia
+--------
+
+Arranca como alguien que no sabe magia, pero heredó/robó/encontró un libro de magia y está tirando sus propios hechizos. Cuando le va bien, parece como que triunfa y va para mejor, pero sólo se mete en mayores quilombos.
+
+
+
+Teatro prestado
+---------------
+ Audiencia:        Pocos, variados
+ Objeto:           Un conejo
+ Hechizo:          Hocus pocus, disappear now
+ Historia-intro:   Tenés una oportunidad única para probarte por primera vez
+ Historia-goodEnd: ¡Fantástico! Te ofrecen actuar en el teatro de la ópera.
+ Historia-badEnd:  No servís ni para demo.
+
+
+Opera
+-----
+ Audiencia:        Gente vestida bien
+ Objeto:           El fantasma de la ópera, o la máscara
+ Hechizo:          Mascara al fantasma para que el espectáculo pueda comenzar
+ Historia-intro:   El fantasma se fue de la ópera, tenés que enviarle la máscara que se olvidó.
+ Historia-goodEnd: La función fue un éxito, conseguis tu primer contrato.
+ Historia-badEnd:  Nunca más entrarás a un teatro decente.
+
+
+Magic arena
+-----------
+ Audiencia:        Jugadores de basquet o deportistas
+ Objeto:           Zapatillas grandes
+ Hechizo:          Zapatillas del contrario, para que la hinchada local delire.
+ Historia-intro:   El equipo local va perdiendo, en el entretiempo hay que desaparecer las zapatillas especiales del capitán visitante.
+ Historia-goodEnd: Gracias a tu actuación te invitan a una fiesta privada de un famoso grupo musical
+ Historia-badEnd:  El público enojado te corre por la ciudad
+
+
+Fiesta musical
+--------------
+ Audiencia:        Hip-hoperos
+ Objeto:           Alcohol, drogas, hacer un mix
+ Hechizo:          Nos quedamos sin frula o la yuta nos lleva a todos en cana
+ Historia-intro:   Viene la policia y hay que desaparecer algo que no pensábamos
+ Historia-goodEnd: Zafamos, entonces el representante de la  banda nos lleva a un escenario mayor
+ Historia-badEnd:  Pasarás el resto de tus días tras rejas, con Ramón
+
+
+Las Vegas
+---------
+ Audiencia:        Gente adinerada
+ Objeto:           papeles y documentos, y eso
+ Hechizo:          en el acto de las vegas entra el fisco y desaparecen los impuestos sin pagar
+ Historia-intro:   Todos creen que es un acto de magia común, pero realmente hay que desaparecer los papeles de la AFIP del casino
+ Historia-goodEnd: De premio te regalan un viaje al exterior
+ Historia-badEnd:  Te llevan a Guantánamo a cavar zanjas en la trinchera
+
+
+Black magic
+-----------
+ Audiencia:        Africanitos de la tribu
+ Objeto:           Un muricélago, o algún animal raro
+ Hechizo:          curar animalito para que la tribu viva mucho y prospera, porque sino me comen crudo
+ Historia-intro:   La unica manera de que no te encuentre la policia es irte más lejos, y ahora tenes que curar al animal sagrado de la tribu
+ Historia-goodEnd: Pero lo hiciste desaparecer, que no era lo que precisamente querían
+ Historia-badEnd:  Te hicieron vuelta y vuelta con cebollitas
+
+Tatooine
+--------
+ Audiencia:        Robots de star wars
+ Objeto:           Aspiradora loca
+ Hechizo:          robots que funciona mal dejen la tierra liberada a los que si funcionan
+ Historia-intro:   Te salvaste de que te coman crudo porque te abducieron por error, y tenés que desaparecer a un intruso como pago
+ Historia-goodEnd: Te devuelven a la tierra como premio
+ Historia-badEnd:  Probaron contigo un nuevo procedimiento de la "espada laser": anal probing
+
+Area 51
+-------
+ Audiencia:        Marcianitos y men in black
+ Objeto:           un marcianito de roswell
+ Hechizo:          marcianus disapirus o la prensa se entera de que el gobierno esconde la verdad
+ Historia-intro:   Pero la nave tenia windows y crashea, y terminás en Roswell, y ahora hay que hacer desaparecer evidencia
+ Historia-goodEnd: Pero los hombres de negro no van a dejar que vayas por ahi contando lo que viste, y te mandan al cementerio
+ Historia-badEnd:  terminaste en una mesa de operaciones con los ojos estirados y la cabeza inflada
+
+Cementerio
+----------
+ Audiencia:        Esqueletos
+ Objeto:           Estatuilla de Anubis
+ Hechizo:          muerte se evapora y triunfa la vida, poder y alegria a este cuerpo. “Antiguos espíritus del mal transformen este cuerpo decadente…” en mum raaaaaaaaa el inmortal!!!
+ Historia-intro:   Tenemos que volver a salir al mundo de los vivos!
+ Historia-goodEnd: Ya que salimos, salimos donde queremos, donde siempre quisimos estar...
+ Historia-badEnd:  TE quedás afinándole el arpa a San Pedro
+
+
+La casa de Playboy
+------------------
+ Audiencia:        Todos desnudos
+ Objeto:           Ropa
+ Hechizo:          Te saco la ropa, te hago aparecer esta, y todos de fiesta. Yo me quedo con la rubia, vos quedaste con la cabra Cuzco.
+ Historia-intro:   Es el lugar maravilloso y mágico en donde siempre quisimos estar desde niños...
+ Historia-goodEnd: Te recibiste de mago total (ultimate magician)
+ Historia-badEnd:  Te encontró sin ropa el jefe de la asociación "Camioneros nudistas"
+
+
+
+Niveles de mago
+===============
+
+Mandrake
+Gandalf
+Harry Poter
