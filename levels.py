@@ -38,10 +38,12 @@ params
 #   El lugar feliz     145      20      0.14    Mas complicado que la mierda
 #
 
+import people
+
 textosNiveles = [
     (
         "Teatro prestado",
-        "Pocos, variados",
+        [people.Wardrobe('audiencia/boy/', 'articles0.txt')],
         "Un conejo",
         "Hocus pocus, disappear now.",
 """Cast the spell 

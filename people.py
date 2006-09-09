@@ -250,12 +250,9 @@ class Article:
     layer=property(getLayer)
     name=property(getName)
     
-    def wget (self, fname):
-        """fetch image"""
-        os.spawnlp(os.P_WAIT, '/sw/bin/wget', 'wget', fname)
-
 class Wardrobe:
-    def __init__(self, path):
+    def __init__(self, path, articles_txt="articles.txt"):
+        self.articles_txt = articles_txt
         self.articles={}
         self.weights={}
         self.calculatedLevels = {}
@@ -332,7 +329,7 @@ class Wardrobe:
         buscando, leyendoFields, leyendoArticles, listo = range(4)
         status = buscando
         fpath=path+r'/data/'
-        f = open(path+'/articles.txt')
+        f = open(path+'/'+self.articles_txt)
         for l in f:
             l = l.strip('\n')
             if status==buscando:
@@ -367,8 +364,10 @@ def getAllWardrobes():
         Wardrobe('audiencia/goth/'),
     ]
 
-wardrobes = getAllWardrobes()
-def buildIndividual(level=1):
+all_wardrobes = getAllWardrobes()
+def buildIndividual(level, wardrobes):
+    if wardrobes is None:
+        wardrobes = all_wardrobes
     wd=random.choice(wardrobes)
     i= Individual(wd)
     i.random(level=level+1)

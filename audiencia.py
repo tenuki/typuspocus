@@ -24,9 +24,9 @@ MAXTOMATEANDO = 20
 pnormal, pcaminando = range(2)
 
 class Persona:
-    def __init__(self, (dx, dy), level_number):
+    def __init__(self, (dx, dy), level_number, wardrobe):
         self.position = (dx,dy)
-        individuo = people.buildIndividual(level_number)
+        individuo = people.buildIndividual(level_number, wardrobe)
         self.images = map(lambda state:individuo.render(state), people.iStates)
         self.state = people.iStates[0]
         self.alive = False
@@ -101,7 +101,7 @@ class EnginePersonas:
         p.position = (x,y)
         
 class IntroEngine(EnginePersonas):
-    def __init__(self, peopleSet, level_number):
+    def __init__(self, peopleSet, level_number, wardrobe):
         self.ps = peopleSet
         self.caminando = 0
         self.startTime = time.time()
@@ -121,7 +121,7 @@ class IntroEngine(EnginePersonas):
                     else:
                         tx = (filasx+1)*peoplex+dx
                     inicial = (tx, dy)
-                    p = Persona(inicial, level_number)
+                    p = Persona(inicial, level_number, wardrobe)
                     p.caminar()
                     p.start = self.startTime
                     p.topos = p.destpos = final
@@ -214,13 +214,13 @@ class GameEngine(EnginePersonas):
                 p.sentarse()
 
 class Audiencia:
-    def __init__(self, level_number):
+    def __init__(self, level_number, wardrobe=None):
         people.resetRandom(level_number)
         self.personas = {}
         for y in range(filasy):
             self.personas[y]=[]
         self.level = level_number
-        self.engine = IntroEngine(self.personas, level_number)
+        self.engine = IntroEngine(self.personas, level_number, wardrobe)
 
         self.filas = []
         for y in range(filasy):
