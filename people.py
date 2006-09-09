@@ -122,7 +122,7 @@ class Individual:
         for layer in self.wardrobe.getLayers():
             if random.random()<clothinBehavior[layer]:
                 sl.append(layer)
-                
+        
         #if this individual is not going to have a body
         #at least let him be well clothed, for its health!        
         if not 'body' in sl:
@@ -154,7 +154,6 @@ class Individual:
         order.sort()
         MAGENTO = (254,0,254)
         
-        print repr(self.layers)
         img = None
         for k in order:
             layername=layerorder[k]
@@ -354,16 +353,15 @@ class Wardrobe:
                     self.add(Article(l, self.fieldset, path+'/data/'))
                 elif l.startswith('#'):
                     pass
-                else: status=listo
+                else: pass
             elif status==listo:
                 break
         f.close()
-
     
 def getAllWardrobes():
     return [
             Wardrobe('audiencia/boy/'),
-            #Wardrobe('audiencia/fashion_boy/'),
+            Wardrobe('audiencia/fashion_boy/'),
             Wardrobe('audiencia/goth/'),
             ]
     return [Wardrobe('audiencia/fashion_boy/'),
