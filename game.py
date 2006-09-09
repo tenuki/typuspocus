@@ -393,18 +393,24 @@ class LevelIntro(Scene):
         self.background.blit(Foreground, (0,0))
         self.game.screen.blit(self.overlay, (0,0))
         if self.level<>None:
-            posx=120
+            Yellow = (255,255,160)
+            posx=110
             widx=600
-            posy=170
+            posy=140
             widy=305            
             introSurface = self.game.screen.subsurface(pygame.Rect(posx,posy,widx,widy))
-            nline=0
             fontYsize = 30
             
             lines = self.level.historyintro.split('\n')
-            deltaY = (widy - (len(lines)*fontYsize))/2
+            deltaY = (widy - ((len(lines)+2)*fontYsize))/2  #+2 x el titulo
+            
+            nline=0
+            s = self.font.render(self.level.titulo, True, Yellow)
+            tx,ty =s.get_size()
+            introSurface.blit(s, ( (widx-tx)/2,deltaY+nline*fontYsize))
+            nline+=3
+            
             for line in lines:
-                Yellow = (255,255,0)
                 s = self.font.render(line, True, Yellow)
                 tx,ty =s.get_size()
                 introSurface.blit(s, ( (widx-tx)/2,deltaY+nline*fontYsize))

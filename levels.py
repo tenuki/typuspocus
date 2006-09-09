@@ -78,9 +78,7 @@ make him leave.""",
         "Zapatillas grandes.",
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
- 
 you must dissapear the 
-
 visitor's MVP lucky sneakers.""",
         "Thanks to your help the locals win and you get invited to do your trick at the after party.",
         "An Angry mob of the local fans chases you around the stadium.",
