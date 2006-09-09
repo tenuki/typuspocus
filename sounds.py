@@ -19,12 +19,12 @@ class Sounds:
         self.canalTickTock.set_volume(VOLUMEN_TICKTOCK)
 
         for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda"]:
-            self.sonidoEnCanal(s, self.canalAmbiente)
+            self.sonidoEnCanal(s, self.canalAmbiente, -1)
 
         for s in ["arenga", "puteada"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1.wav", "tick2.wav", "suspenso"]:
+        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
         for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "MagiaOK.wav",]:
@@ -86,11 +86,10 @@ class Sounds:
             canal.queue(random.choice(sonidos))
         setattr(self, s, play)
         
-    def sonidoEnCanal(self, s, canal):
+    def sonidoEnCanal(self, s, canal, loops=0):
         sonido = self.buildSonido(s)
         def play():
-            canal.fadeout(50)
-            canal.queue(sonido)
+            canal.play(sonido, loops)
 
         if s.endswith(".wav"):
             s = s[:-4]

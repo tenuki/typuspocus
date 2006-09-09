@@ -164,13 +164,14 @@ class Level(Scene):
             
                 
             if self.motor.cursor >= len(self.motor.hechizo):
-                sounds.suspenso()
                 sounds.apagarVoces()
                 sounds.volumenDeeJay(0.5)
                 if self.motor.tuvoExito():
                     self.state = WINNING
+                    sounds.suspensook()
                 else:
                     self.state = LOSING
+                    sounds.suspensomal()
                 self.wintime = pygame.time.get_ticks()
                     
           
@@ -540,7 +541,7 @@ class Menu:
             
 class Credits(Scene):
     sections = [
-        ["Doppelgänger","Alecu"],
+        ["Doppelganger","Alecu"],
         ["Nigromante", "LucioTorre"],
         ["Alchemist", "Riq"],
         ["Medium","LeitoMonk"],
@@ -549,8 +550,8 @@ class Credits(Scene):
         ["Druid","FacundoBatista"],
         ["HarryPopperist","NubIs"],
         ["Voodo","NarrowMind"],
-        ["Thanks", "to"],
-        ["some","some"]
+        ["Maniqueist", "stortroopers.com"],
+        ["Snake Wranglers","Python Argentina"]
         ]
         
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
@@ -565,13 +566,13 @@ class Credits(Scene):
     done_duration = 0
     loop_duration = 5
     
-    def init(self, font, color=(255,255,255), outline_color=(0,0,0), line_step=40):
+    def init(self, font, color=[(255,255,255), (255,255,0)], outline_color=[(0,0,0)]*2, line_step=40):
         self.line_step = line_step
         self.section_imgs = []
         for section in self.sections:
             lines = []
-            for line in section:
-                img = hollow.textOutline(font, line, color, outline_color)
+            for n,line in enumerate(section):
+                img = hollow.textOutline(font, line, color[n], outline_color[n])
                 lines.append( img )
             self.section_imgs.append( lines )
             
@@ -587,9 +588,11 @@ class Credits(Scene):
         self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
         self.hand = pygame.image.load("escenario/manos/mano1.png").convert_alpha()
         self.hand2 = pygame.image.load("escenario/manos/mano2.png").convert_alpha()
+        sounds.gritosfelicitacion()
         
     def event(self, evt):
         if evt.type == KEYDOWN:
+            sounds.apagarVoces()
             self.end()
                 
                 
