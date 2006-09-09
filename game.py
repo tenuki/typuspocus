@@ -858,6 +858,7 @@ class Ranking(Scene):
 class Locked(Scene):
     def init(self):
         self._background = pygame.image.load("escenario/screens/locked.png").convert()
+        sounds.bu()
         
 
         
@@ -947,9 +948,11 @@ class EnterHiscores(Scene):
                 if letra.isalpha() or (letra and letra in " ,.<>:;1234567890"):
                     self.name += letra
                     self.paint()
+                    sounds.pasa()
                 if evt.key == K_BACKSPACE:
                     self.name = self.name[:-1]
                     self.paint()
+                    sounds.pasa()
                 
 class GameIntro(Scene):
     sections = [

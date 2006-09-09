@@ -139,7 +139,8 @@ to evade taxes.""",
 """The IRS wants you for beeing 
 an accesory to tax evasion. 
 
-They send you Africa where they'll never find you""",
+They send you Africa where
+they'll never find you""",
 """Your act was a total failure, 
 you got wasted and lost 
 all your money playing craps.""",
