@@ -26,7 +26,15 @@ class Persona:
         self.images = map(lambda state:individuo.render(state), people.iStates)
         self.state = people.iStates[0]
         self.useRand = False
+        self.deltay = 0
         
+    def subirse(self):
+        self.deltay = - peopley/4
+    def sentarse(self):
+        self.deltay = 0
+    def camina(self):
+        self.deltay = - peopley/6
+                
     def render(self, surface, porcentaje):
         if self.useRand and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
@@ -36,7 +44,7 @@ class Persona:
         dx, dy = self.position
         
         #get random state
-        surface.blit(self.images[0], (dx+gx, dy+gy))
+        surface.blit(self.images[0], (dx+gx, dy+gy+self.deltay))
 
 class Fila:
     sillas=None
@@ -85,8 +93,9 @@ class IntroEngine(EnginePersonas):
                     else:
                         tx = filasx*peoplex+dx
                     #rtx = random.choice( [0+dx, filasx*peoplex+dx] )
-                    inicial = (tx, dy)
-                    p = Persona( inicial, level_number) 
+                    inicial = (tx, dy )
+                    p = Persona( inicial, level_number)
+                    p.camina()
                     p.destpos = final
                     p.inipos = inicial
                     v = (p.destpos[0]-tx)
@@ -111,7 +120,8 @@ class IntroEngine(EnginePersonas):
                 elif p.xdir<0 and (npx>p.destpos[0]):
                     x = npx
                 p.position = (x,y)
-                
+                if p.position == p.destpos:
+                    p.sentarse()
 
 class Audiencia:
     def __init__(self, level_number):
