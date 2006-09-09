@@ -1176,10 +1176,11 @@ class MainMenu(Scene):
                     #.titulo
                     #.params
                 else:
-                    if futech == 0: futech = count-1
-                    subtitle = "Future tech "+str(count-futech)
-                    params = dict(tiempo_por_caracter=1.0/(count-futech+4))
-                    wardrobes = None
+                    self.runScene(Ranking(self.game, score=score))
+                    self.runScene(EnterHiscores(self.game, score))
+                    self.runScene(Hiscores(self.game))
+                    self.locked = False
+                    break
 
                 laAudiencia = audiencia.Audiencia(count, wardrobes)
                 self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia, nivel) )
