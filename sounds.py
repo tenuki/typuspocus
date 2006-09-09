@@ -22,10 +22,10 @@ class Sounds:
         for s in ["arenga", "puteada"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1", "tick2", "suspenso"]:
+        for s in ["tick1.wav", "tick2.wav", "suspenso"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
-        for s in ["bravo.wav", "bu.wav", "enter", "pasa"]:
+        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav"]:
             self.sonidoSuelto(s)
 
         self.music_groups  = [
