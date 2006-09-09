@@ -431,7 +431,7 @@ class Menu:
         
     def set_mouse(self, x, y):
         i = self.get_mouse_over(x,y)
-        if i != self.selected:
+        if i is not None and  i != self.selected:
             self.selected = i
             return True        
     
@@ -460,19 +460,19 @@ class Credits(Scene):
         
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
     
-    hand_start = 0,0
-    hand_end = 300,300
+    hand_start = -647,-200
+    hand_end = -300,250
     puff_position = 400,250
-    begin_duration = 3
-    hit_duration = 2
-    retreat_duration = 3
+    begin_duration = 1.5
+    hit_duration = 0.0
+    retreat_duration = 1.5
     handout_duration = 4
     done_duration = 0
     loop_duration = 5
     
     def init(self, font, color=(255,255,255), outline_color=(0,0,0)):
         self.section_imgs = []
-        for section in sections:
+        for section in self.sections:
             lines = []
             for line in section:
                 img = hollow.textOutline(font, line, color, outline_color)
@@ -480,15 +480,16 @@ class Credits(Scene):
             self.section_imgs.append( lines )
             
         self.section_number = 0
-        self.STATE = self.BEGIN
+        self.state = self.BEGIN
         self.state_start = time.time()
         self.hand_pos = None
+        self.hand_img = None
         self.puff_img = None
         self.puff_pos = None
         self.text = None
         
-        self.mano = pygame.image.load("escenario/manos/mano1.png").convert()
-
+        self.hand = pygame.image.load("escenario/manos/mano1.png").convert_alpha()
+        self.hand2 = pygame.image.load("escenario/manos/mano2.png").convert_alpha()
         
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -498,10 +499,10 @@ class Credits(Scene):
     def loop(self):
         if self.state == self.BEGIN:
             if time.time() - self.state_start >= self.begin_duration:
-                self.state = HIT
+                self.state = self.HIT
                 self.state_start = time.time()          
             else:
-                p = (time.time()-self.state_start)/self.begin_duration
+                p = (1-(time.time()-self.state_start)/self.begin_duration)**2
                 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
@@ -509,14 +510,15 @@ class Credits(Scene):
                 ny = sy + (ey-sy)*p
                 
                 self.hand_pos = nx, ny
+                self.hand_img = self.hand
             
         elif self.state == self.HIT:
             if time.time() - self.state_start >= self.hit_duration:
-                self.state = RETREAT
+                self.state = self.RETREAT
                 self.state_start = time.time()
         elif self.state == self.RETREAT:
             if time.time() - self.state_start >= self.retreat_duration:
-                self.state = HANDOUT
+                self.state = self.HANDOUT
                 self.state_start = time.time()
             else:
                 p = (time.time()-self.state_start)/self.begin_duration
@@ -527,33 +529,36 @@ class Credits(Scene):
                 ny = ey - (ey-sy)*p
                 
                 self.hand_pos = nx, ny
+                self.hand_img = self.hand2
                 
         elif self.state == self.HANDOUT:
             if time.time() - self.state_start >= self.handout_duration:
-                self.state = DONE
+                self.state = self.DONE
                 self.state_start = time.time()
             else:
                 self.hand_pos = None
         elif self.state == self.DONE:
             if time.time() - self.state_start >= self.done_duration:
-                self.state = HIT
+                self.state = self.BEGIN
                 self.state_start = time.time()
             else:
                 self.hand_pos = None
         elif self.state == self.LOOP:
             if time.time() - self.state_start >= self.begin_duration:
-                self.state = HIT
+                self.state = self.BEGIN
                 self.state_start = time.time()
             else:
                 self.hand_pos = None
                     
     def update(self):
+        self.game.screen.blit(self.background, (0,0))
+        
         if self.text:
             pass
         if self.puff_img:
             pass
         if self.hand_pos:
-            self.game.screen.blit( )
+            self.game.screen.blit(self.hand_img, self.hand_pos )
         
 class MainMenu(Scene):
     def init(self):
@@ -612,7 +617,7 @@ class MainMenu(Scene):
         elif sel == 2: # hiscores
             self.hiscores()
         elif sel == 3: # credits
-            self.credits()
+            self.runScene( Credits( self.game, self.font ) )
         elif sel == 4: #quit            
             self.end()
                     
