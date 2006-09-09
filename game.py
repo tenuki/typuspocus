@@ -722,7 +722,12 @@ class GameIntro(Scene):
         
         self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
         self.guy = pygame.image.load("escenario/presentador.gif").convert_alpha()
-        
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+            self.end()
+                
+                
+                
     def loop(self):
         if self.state == self.ENTERING:
             if time.time() - self.state_start >= self.entering_duration:
