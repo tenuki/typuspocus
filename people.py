@@ -149,6 +149,7 @@ class Individual:
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
+        MAGENTO = (254,0,254)
         
         img = None
         for k in order:
@@ -165,8 +166,9 @@ class Individual:
                     except:
                         pass
                 if img==None:
-                    img = pygame.image.load('escenario/sinbutaca.png')
-                    img.convert_alpha()
+                    #img = pygame.image.load('escenario/sinbutaca.png')
+                    img = pygame.Surface((91, 139))
+                    img.fill(MAGENTO)
                     nx,ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
                     x,y=img.get_size()
@@ -175,6 +177,8 @@ class Individual:
                     x, y = article.SnapPos()
                     xsize, ysize = img.get_size()
                     img.blit(nimg, (x,y))
+        img.convert()
+        img.set_colorkey(MAGENTO)
         return img
         
 

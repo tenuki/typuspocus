@@ -2,7 +2,7 @@ import sys
 import pygame
 from pygame.locals import *
 from sounds import sounds
-DEBUG = 0
+DEBUG = 1
 
 
 class Game:

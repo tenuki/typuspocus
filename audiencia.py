@@ -52,11 +52,14 @@ class Fila:
                 self.personas.append( Persona((dx+x*peoplex,dy), level_number) )
 
     def construirSillas(self):
+        MAGENTO = (254,0,254)
         img = pygame.image.load('escenario/butaca.png')
-        img.convert_alpha()
-        base = pygame.Surface((800, peopley), 0, img)
+        base = pygame.Surface((800, peopley))
+        base.fill(MAGENTO)
         for x in range(filasx):
             base.blit(img, (peoplex * x, 0) )
+        base.convert()
+        base.set_colorkey(MAGENTO)
         return base
 
     def render(self, surface, porcentaje ):
@@ -204,4 +207,4 @@ class AudienciaScene(Scene):
         
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
-    g.run( AudienciaScene(g) )
+    g.run( AudienciaScene(g,1) )
