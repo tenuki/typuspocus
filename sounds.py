@@ -24,10 +24,10 @@ class Sounds:
         for s in ["arenga", "puteada"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav", "intro"]:
+        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav","camina", "intro"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
-        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav","MagiaOK.wav", ]:
+        for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo"]:
 
             self.sonidoSuelto(s)
 

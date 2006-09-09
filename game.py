@@ -223,7 +223,11 @@ class Level(Scene):
         self.todasLasTeclas += letra
         if "who is your daddy" in self.todasLasTeclas:
             self.audiencia.doEasterEgg()
-                         
+            self.todasLasTeclas = ""
+        if "puto del ojete" in self.todasLasTeclas:
+            sounds.abucheo()
+            self.todasLasTeclas = ""
+                          
     def update(self):
         font = self.messagefont
             
@@ -528,7 +532,7 @@ class Menu:
             return i      
             
 class Credits(Scene):
-    sections = [
+    us = [
         ["Doppelganger","Alecu"],
         ["Nigromante", "LucioTorre"],
         ["Alchemist", "Riq"],
@@ -538,10 +542,12 @@ class Credits(Scene):
         ["Druid","FacundoBatista"],
         ["HarryPopperist","NubIs"],
         ["Voodo","NarrowMind"],
+        ]
+    them = [
         ["Maniqueist", "stortroopers.com"],
         ["Snake Wranglers","Python Argentina"]
         ]
-        
+    sections = []  
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
     
     hand_start = -647,-200
@@ -556,6 +562,9 @@ class Credits(Scene):
     
     def init(self, font, color=[(255,255,255), (255,255,0)], outline_color=[(0,0,0)]*2, line_step=40):
         self.line_step = line_step
+        random.shuffle(self.us)
+        random.shuffle(self.them)
+        self.sections = self.us + self.them
         self.section_imgs = []
         for section in self.sections:
             lines = []
@@ -613,7 +622,7 @@ class Credits(Scene):
                 self.state = self.HANDOUT
                 self.state_start = time.time()
             else:
-                p = (1-(time.time()-self.state_start)/self.begin_duration)**2
+                p = (1-(time.time()-self.state_start)/self.begin_duration)**2+0.1
                 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
@@ -676,7 +685,7 @@ class Credits(Scene):
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
 class Ranking(Scene):
-    rankings = ["Orko","Lord Zedd", "Harry Potter","Skeletor", "Mum-ra", "David Copperfield",  "Harry Houdini", "Mandrake", "Gandalf", "Merlin",  ]
+    rankings = ["Orko","Lord Zedd",  "David Copperfield", "Harry Potter","Skeletor", "Mum-ra",  "Harry Houdini", "Mandrake", "Gandalf", "Merlin",  ]
     
     def init(self, rank=None, score=None):
         if rank is None:
@@ -694,7 +703,7 @@ class Ranking(Scene):
         self.font3 = pygame.font.Font("escenario/MagicSchoolOne.ttf",110)
         
         font = pygame.font.Font("escenario/MagicSchoolOne.ttf",30)
-        self.textos = [ font.render(line, True, (255,255,255)) for line in self.rankings ]
+        self.textos = [ font.render("%2i:"%(10-i)+line, True, (255,255,255)) for (i,line) in enumerate(self.rankings) ]
         
         self.start_time = time.time()
         sounds.sube()
@@ -710,7 +719,7 @@ class Ranking(Scene):
             
             if int(time.time()-self.start_time) >= i:
                 if self.rank>=i:
-                    self.game.screen.blit( sf, (300-sf.get_width(), ypos) )
+                    self.game.screen.blit( sf, (100, ypos) )
                 if self.rank == i:
                     self.paint_info = True
                 if i > self.rank:
@@ -750,7 +759,7 @@ class GameIntro(Scene):
     
     start_position = -20,350
     end_position = 465,330
-    start_duration = 3
+    start_duration = 1
     entering_duration = 5
     ready_duration = 2
     talking_duration = 1
@@ -783,13 +792,14 @@ class GameIntro(Scene):
         self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
         self.guy = pygame.image.load("audiencia/dad.gif").convert_alpha()
         self.guy_alpha = pygame.Surface( (self.guy.get_width(), self.guy.get_height()) )
-        self.guy_alpha.set_alpha(200)
+        self.guy_alpha.set_alpha(180)
         
         self.lampara = pygame.image.load("escenario/screens/dad.png").convert_alpha()
         self.globo = pygame.image.load("escenario/screens/balloon.png").convert_alpha()
         
     def event(self, evt):
         if evt.type == KEYDOWN:
+            sounds.apagarVoces()
             self.end()
                 
                 
@@ -799,7 +809,7 @@ class GameIntro(Scene):
             if time.time() - self.state_start >= self.start_duration:
                 self.state = self.ENTERING
                 self.state_start = time.time() 
-                
+                sounds.camina()                
                 
         
         if self.state == self.ENTERING:
@@ -861,7 +871,7 @@ class GameIntro(Scene):
             self.game.screen.blit(self.lampara, (0,0))
             
         if self.ballon_on:
-            self.game.screen.blit(self.globo, (0,0))
+            self.game.screen.blit(self.globo, (30,30))
         
         if self.text:
             delta = time.time()-self.state_start
@@ -879,11 +889,11 @@ class GameIntro(Scene):
                 
                 lineas = len(text)
                 space = lineas * self.line_step
-                start = 180-space/2
+                start = 210-space/2
                 
                 for i,line in enumerate(text):
                     self.game.screen.blit(line, (
-                            190-line.get_width()/2, 
+                            220-line.get_width()/2, 
                             start + self.line_step*i - line.get_height()
                             ))
         if self.puff:
