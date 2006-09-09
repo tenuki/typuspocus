@@ -8,7 +8,7 @@ import cosas
 from motor import MainMotor, Estados
 import hollow
 from sounds import sounds
-import time
+import time, random
 from levels import niveles
 
 DEBUG = 0
@@ -684,7 +684,50 @@ class Credits(Scene):
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
+class Ranking(Scene):
+    rankings = ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"]
+    
+    def init(self, rank=None, score=None):
+        if rank is None:
+            rank = random.randint(0,10)
+        if score is None:
+            score = random.randint(0,1000)
+        self.paint_info = False
+        self.score = score
+        self.rank = rank
+        self.font = font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
+        self.textos = [ font.render(line, True, (140, 240, 160)) for line in self.rankings ]
         
+        self.start_time = time.time()
+        
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+                self.end()
+                
+    def update(self):
+        ypos = 400
+        self.game.screen.blit(self.background, (0,0))
+        for i, sf in enumerate(self.textos):
+            
+            if int(time.time()-self.start_time) >= i:
+                if self.rank>=i:
+                    self.game.screen.blit( sf, (250-sf.get_width(), ypos) )
+                else:
+                    self.paint_info = True
+                    break
+            ypos -= 40
+            
+        yri = self.font.render("Your ranking is: "+self.rankings[self.rank], True, (160,160,250))
+        
+        ysi = self.font.render("Your score is: "+str(self.score), True, (160,160,250))
+        
+        if self.paint_info:
+            self.game.screen.blit(yri, (400, 100))
+            self.game.screen.blit(ysi, (400, 300))
+        
+        
+        
+    
 class GameIntro(Scene):
     sections = [
         ["hola mundo", "yo soy luis"],
@@ -734,7 +777,8 @@ class GameIntro(Scene):
         if self.state == self.ENTERING:
             if time.time() - self.state_start >= self.entering_duration:
                 self.state = self.READY
-                self.state_start = time.time()          
+                self.state_start = time.time() 
+                sounds.farol()         
             else:
                 p = ((time.time()-self.state_start)/self.entering_duration)
                 
@@ -753,7 +797,7 @@ class GameIntro(Scene):
                 self.state_start = time.time()
                 self.text = False
             else:
-                pass 
+                pass
         elif self.state == self.TALKING:
             if self.talking_done:
                 self.state = self.PAUSE
@@ -778,7 +822,6 @@ class GameIntro(Scene):
                 
                  
     def update(self):
-        print self.state
         self.game.screen.blit(self.background, (0,0))
         
         if self.text:
@@ -917,6 +960,7 @@ class MainMenu(Scene):
                     self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
                     if not cont:
+                        self.runScene(Ranking(self.game))
                         break
                     else:
                         score = 0
