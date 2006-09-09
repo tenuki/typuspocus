@@ -67,8 +67,15 @@ your mistakes.""",
 
 that will embarass him and 
 make him leave.""",
-        "Your act was great! You are invited to perform the Halftime show at the local basquetball finals.",
-        "You blew it, your father disinherited you. You get a job coding ruby on rails.",
+"""Your act was great! 
+
+You are invited to perform the 
+Halftime show at the local
+basquetball finals.""",
+"""You blew it, 
+your father disinherited you. 
+
+You get a job coding ruby on rails.""",
         "Lord Zedd",
         dict(tiempo_por_caracter=0.47, preferencia_precision=0.1)
     ),
@@ -80,9 +87,12 @@ make him leave.""",
         "Zapatillas grandes.",
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
-you must dissapear the 
+you must dissapear the
 visitor's MVP lucky sneakers.""",
-        "Thanks to your help the locals win and you get invited to do your trick at the after party.",
+
+"""Thanks to your help the locals win
+and you get invited to do your trick at
+the after party.",
         "An Angry mob of the local fans chases you around the stadium.",
         "David Copperfield",
         dict(tiempo_por_caracter=0.49, preferencia_precision=0.1)
@@ -99,8 +109,12 @@ a milli vanilli cd,
 instead you must vanish the 
 drugs to hide them 
 from the cops.""",
-        "You got away clean, and kept a lot of famous people out of jail. You are going to Las Vegas now!!",
-        "You go to jail charged with drug possession. And become RAUL's new girlfriend.",
+"""You got away clean, 
+and kept a lot of famous people out of jail. 
+
+You are going to Las Vegas now!!""",
+"""You go to jail charged with drug possession. 
+And become RAUL's new girlfriend.""",
         "Skeletor",
         dict(tiempo_por_caracter=0.41, preferencia_precision=0.1)
     ),
@@ -116,8 +130,13 @@ to perform in a Casino, but
 the owners want to take 
 advantage of your power 
 to evade taxes.""",
-        "The IRS wants you for beeing an accesory to tax evasion. They send you Africa where they'll never find you",
-        "Your act was a total failure, you got wasted and lost all your money playing craps.",
+"""The IRS wants you for beeing 
+an accesory to tax evasion. 
+
+They send you Africa where they'll never find you""",
+"""Your act was a total failure, 
+you got wasted and lost 
+all your money playing craps.""",
         "Mumm-Ra",
         dict(tiempo_por_caracter=0.36, preferencia_precision=0.1)
     ),
@@ -133,8 +152,11 @@ in africa, they find out
 you are a wizard and want 
 you to heal their ill 
 sacred animal""",
-        "You dissapeared the sacred animal. The angry natives start chasing you around the jungle.",
-        "The natives made a tasty casserole out of you.",
+"""You dissapeared the sacred animal. 
+The angry natives start chasing 
+you around the jungle.""",
+"""The natives made a tasty
+casserole out of you.""",
         "Harry Potter",
         dict(tiempo_por_caracter=0.34, preferencia_precision=0.1)
     ),
@@ -148,8 +170,12 @@ sacred animal""",
 a spaceship abdu^H^H^H^Hrescues 
 you. The venusians ask you to help 
 them vanish a hitchhiker.""",
-        "Since you were so helpfull, the venusians send you back to earth in an individual spaceship.",
-        "Because you were unwilling to cooperate, the venusians performed a 'light saber anal probing' on you.",
+"""Since you were so helpfull, 
+the venusians send you back to earth 
+in an individual spaceship.""",
+"""Because you were unwilling to cooperate, 
+the venusians performed a 
+'light saber anal probing' on you.""",
         "Mandrake",
         dict(tiempo_por_caracter=0.31, preferencia_precision=0.1)
     ),
@@ -164,8 +190,14 @@ OS and crashed in new mexico.
 The FBI captures you and asks you 
 to dissapear some evidence of 
 the alien landings.""",
-        "Now that the evidence exists only on your memory, the FBI makes sure you won't talk by putting a cap in your head",
-        "You couldn't do it. But you'll have a lot of time to practice since you are never leaving area 51",
+"""Now that the evidence exists 
+only on your memory,
+the FBI makes sure you won't talk 
+by putting a cap in your head""",
+"""You couldn't do it. 
+But you'll have a lot of time 
+to practice since you are
+never leaving area 51""",
         "Harry Houdini",
         dict(tiempo_por_caracter=0.27, preferencia_precision=0.1)
     ),
@@ -180,8 +212,15 @@ you can escape to heaven by
 dissapearing Anubis. 
 
 All the dead gather around to watch...""",
-        "You did it!!! Now you go to heaven, that happy place we all dream about as kids, that place where men and women love each other. ",
-        "You stay in hell. At least you won't have problems finding a lawyer if you ever come to need one.",
+"""You did it!!! 
+Now you go to heaven, that happy
+place we all dream about as kids,
+that place where men and women
+love each other.""",
+"""You stay in hell. At least 
+you won't have problems 
+finding a lawyer if you ever 
+come to need one.""",
         "Merlyn",
         dict(tiempo_por_caracter=0.19, preferencia_precision=0.1)
     ),
@@ -196,8 +235,15 @@ All the dead gather around to watch...""",
 everything that dissapears here goes 
 back to earth, so you are going to 
 revive a lovely goat now!""",
-        "Congratulations! You fullfilled your destiny as a magician!",
-        "Mmm... Too bad you couldn't do it, but hey, a horde of naked angels offers to console you!!",
+"""Congratulations! 
+
+You fullfilled your destiny 
+as a Magician!""",
+"""Mmm... 
+
+Too bad you couldn't do it, but hey, 
+a horde of naked angels offers 
+to console you!!""",
         "Gandalf",
         dict(tiempo_por_caracter=0.14, preferencia_precision=0.1)
     ),

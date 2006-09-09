@@ -378,15 +378,33 @@ def test():
     global Foreground
     Foreground = pygame.image.load("escenario/foreground.png")
     Foreground.convert()
-    
 
-class LevelIntro(Scene):
+
+class BannerScene(Scene):
+    def renderOn(self, surface, lines):
+        Yellow = (255,255,160)
+        posx=110
+        widx=600
+        posy=140
+        widy=300 # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar.. 
+        introSurface = surface.subsurface(pygame.Rect(posx,posy,widx,widy))
+        fontYsize = 30
+                
+        deltaY = (widy - (len(lines)*fontYsize))/2
+        nline=0        
+        for line in lines:
+            s = self.font.render(line, True, Yellow)
+            tx,ty =s.get_size()
+            introSurface.blit(s, ((widx-tx)/2, deltaY+nline*fontYsize))
+            nline+=1
+
+class LevelIntro(BannerScene):
     def init(self, level_number, level_name, audiencia, level=None):
         test()
         self.level_number = level_number
         self.audiencia = audiencia
         self.level_name = level_name
-        self.font = font =  pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
+        self.font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
         self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
         self.level = level
         
@@ -398,40 +416,24 @@ class LevelIntro(Scene):
         self.background.blit(Foreground, (0,0))
         self.game.screen.blit(self.overlay, (0,0))
         if self.level<>None:
-            Yellow = (255,255,160)
-            posx=110
-            widx=600
-            posy=140
-            widy=305            
-            introSurface = self.game.screen.subsurface(pygame.Rect(posx,posy,widx,widy))
-            fontYsize = 30
-            
-            lines = self.level.historyintro.split('\n')
-            deltaY = (widy - ((len(lines)+2)*fontYsize))/2  #+2 x el titulo
-            
-            nline=0
-            s = self.font.render(self.level.titulo, True, Yellow)
-            tx,ty =s.get_size()
-            introSurface.blit(s, ( (widx-tx)/2,deltaY+nline*fontYsize))
-            nline+=3
-            
-            for line in lines:
-                s = self.font.render(line, True, Yellow)
-                tx,ty =s.get_size()
-                introSurface.blit(s, ( (widx-tx)/2,deltaY+nline*fontYsize))
-                nline+=1
-            
+            self.renderOn(self.game.screen, [self.level.nombre, '',''] +
+                                    self.level.historyintro.split('\n') )
+           
     def event(self, evt):
         if evt.type == KEYDOWN:
                 self.end()
 
-class LevelSuccess(Scene):
-    def init(self, score, levelscore, xaudiencia):
+EstadoMensaje, EstadoContinuar = range(2)
+
+class LevelSuccess(BannerScene):
+    def init(self, score, levelscore, xaudiencia, level):
         self.score = score
+        self.level = level
         self.audiencia = xaudiencia
         self.levelscore = levelscore
-        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        #self.font =  pygame.font.Font("escenario/VeraMono.ttf",50)
         self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
+        self.status = EstadoMensaje
         
     def update(self):
         self.audiencia.update()
@@ -442,22 +444,35 @@ class LevelSuccess(Scene):
         self.background.blit(Foreground, (0,0))    
         
         self.game.screen.blit(self.overlay, (0,0))
-        
-        s = self.font.render("Level Completed", True, (255,255,255))
-        self.game.screen.blit(s, (100,100))
-        s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
-        self.game.screen.blit(s, (100,300))
-        s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
-        self.game.screen.blit(s, (100,400))    
+        if self.status == EstadoMensaje:
+            self.font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
+            self.renderOn(self.game.screen,[self.level.nombre, '',''] +
+                                    self.level.historygood.split('\n'))
+        else:
+            self.font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+            self.renderOn(self.game.screen, 
+                ["Level Completed","",
+                "Points accumulated:"+str(self.levelscore),"", 
+                "New Score:"+str(self.score) ])
+                
+        #s = self.font.render("Level Completed", True, (255,255,255))
+        #self.game.screen.blit(s, (100,100))
+        #s = self.font.render("Points accumulated:"+str(self.levelscore), True, (255,255,255))
+        #self.game.screen.blit(s, (100,300))
+        #s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
+        #self.game.screen.blit(s, (100,400))    
     
     def event(self, evt):
         if evt.type == KEYDOWN:
+            if self.status == EstadoMensaje:
+                self.status=EstadoContinuar
+            else:
                 self.end()
                 
 class GameOver(Scene):
-    def init(self, score, laaudiencia):
+    def init(self, score, laaudiencia, level):
         self._background = pygame.image.load("escenario/screens/gameover.png").convert()
-        
+        self.level=level
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
@@ -1195,12 +1210,12 @@ class MainMenu(Scene):
                 score += newscore
                 if result == GANO:
                     laAudiencia.doWin()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia, nivel))
                     count += 1
                 else:
                     laAudiencia.doGameOver()
                     self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
-                    cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
+                    cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
                         self.runScene(EnterHiscores(self.game, score))
