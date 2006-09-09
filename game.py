@@ -460,6 +460,28 @@ class LevelSuccess(BannerScene):
                 self.status=EstadoContinuar
             else:
                 self.end()
+
+class LevelFailSuccess(LevelSuccess):
+    ## please make me simpler!
+    def update(self):
+        self.audiencia.update()
+        self.game.screen.fill((0,0,0))
+        self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        
+        self.audiencia.render(self.background)
+        self.background.blit(Foreground, (0,0))    
+        
+        self.game.screen.blit(self.overlay, (0,0))
+        if self.status == EstadoMensaje:
+            self.font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
+            self.renderOn(self.game.screen,[self.level.nombre, '',''] +
+                                    self.level.historybad.split('\n'))
+        else:
+            self.font =  pygame.font.Font("escenario/VeraMono.ttf",30)
+            self.renderOn(self.game.screen, 
+                ["Level Completed","",
+                "Points accumulated:"+str(self.levelscore),"", 
+                "New Score:"+str(self.score) ])
                 
 class GameOver(Scene):
     def init(self, score, laaudiencia, level):
@@ -1172,7 +1194,7 @@ class MainMenu(Scene):
         elif sel == 4: #quit            
             self.end()
                     
-    def play_history(self):            
+    def play_history(self):
             result = GANO
             count = 0
             score = 0
@@ -1214,7 +1236,7 @@ class MainMenu(Scene):
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia, nivel))
+                    self.runScene( LevelFailSuccess(self.game, score, newscore, laAudiencia, nivel))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
@@ -1246,7 +1268,7 @@ class MainMenu(Scene):
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
+                    self.runScene( LevelFailSuccess(self.game, score, newscore, laAudiencia, current_level))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia,current_level ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
