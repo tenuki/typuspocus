@@ -493,13 +493,14 @@ class Credits(Scene):
     done_duration = 0
     loop_duration = 5
     
-    def init(self, font, color=(255,255,255), outline_color=(0,0,0)):
+    def init(self, font, color=(255,255,255), outline_color=(0,0,0), line_step=40):
+        self.line_step = line_step
         self.section_imgs = []
         for section in self.sections:
             lines = []
             for line in section:
                 img = hollow.textOutline(font, line, color, outline_color)
-                lines.append( line )
+                lines.append( img )
             self.section_imgs.append( lines )
             
         self.section_number = 0
@@ -507,10 +508,11 @@ class Credits(Scene):
         self.state_start = time.time()
         self.hand_pos = None
         self.hand_img = None
-        self.puff_img = None
+        self.puff = None
         self.puff_pos = None
         self.text = None
         
+        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
         self.hand = pygame.image.load("escenario/manos/mano1.png").convert_alpha()
         self.hand2 = pygame.image.load("escenario/manos/mano2.png").convert_alpha()
         
@@ -525,7 +527,7 @@ class Credits(Scene):
                 self.state = self.HIT
                 self.state_start = time.time()          
             else:
-                p = (1-(time.time()-self.state_start)/self.begin_duration)**2
+                p = ((time.time()-self.state_start)/self.begin_duration)**2
                 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
@@ -536,20 +538,23 @@ class Credits(Scene):
                 self.hand_img = self.hand
             
         elif self.state == self.HIT:
-            if time.time() - self.state_start >= self.hit_duration:
-                self.state = self.RETREAT
-                self.state_start = time.time()
+            self.text = self.section_imgs[ self.section_number ]
+            self.section_number += 1
+            self.puff = True
+            self.state = self.RETREAT
+               
+                
         elif self.state == self.RETREAT:
             if time.time() - self.state_start >= self.retreat_duration:
                 self.state = self.HANDOUT
                 self.state_start = time.time()
             else:
-                p = (time.time()-self.state_start)/self.begin_duration
+                p = (1-(time.time()-self.state_start)/self.begin_duration)**2
                 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
-                nx = ex - (ex-sx)*p
-                ny = ey - (ey-sy)*p
+                nx = sx + (ex-sx)*p
+                ny = sy + (ey-sy)*p
                 
                 self.hand_pos = nx, ny
                 self.hand_img = self.hand2
@@ -562,24 +567,45 @@ class Credits(Scene):
                 self.hand_pos = None
         elif self.state == self.DONE:
             if time.time() - self.state_start >= self.done_duration:
-                self.state = self.BEGIN
-                self.state_start = time.time()
+                if self.section_number < len(self.section_imgs):
+                    self.state = self.BEGIN
+                    self.state_start = time.time()
+                else:
+                    self.state = self.LOOP
+                    self.state_start = time.time()
+                    self.text = None
+                    self.hand_pos = None
             else:
                 self.hand_pos = None
         elif self.state == self.LOOP:
             if time.time() - self.state_start >= self.begin_duration:
                 self.state = self.BEGIN
                 self.state_start = time.time()
-            else:
-                self.hand_pos = None
+                self.section_number = 0
+
+                
                     
     def update(self):
         self.game.screen.blit(self.background, (0,0))
         
         if self.text:
-            pass
-        if self.puff_img:
-            pass
+            lineas = len(self.text)
+            space = lineas * self.line_step
+            start = 320-space/2
+            
+            for i,line in enumerate(self.text):
+                self.game.screen.blit(line, (
+                        400-line.get_width()/2, 
+                        start + self.line_step*i - line.get_height()
+                        ))
+        if self.puff:
+            delta = time.time()-self.state_start
+            if delta > 1:
+                self.puff = None
+            else:
+                pos = int(delta*5)
+                self.game.screen.blit(self.nubes[pos], (300,150) )
+                print pos, delta
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
