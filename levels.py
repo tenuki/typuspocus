@@ -26,7 +26,7 @@ params
 #
 #   Nombre nivel     caracs  tiempo  secs/char  Descripcion
 #   ---------------  ------  ------  ---------  -----------
-#   Teatro prestado     26      20      0.77    Es el mas facil, la intro
+#   Teatro prestado     45      35      0.77    Es el mas facil, la intro
 #   Opera               57      27      0.47    Mas dificil, pero no tanto
 #   Magic arena        102      50      0.49    Muy largo, tiempo que le alcance
 #   Fiesta musical     117      48      0.41    Mas largo, menos tiempo
@@ -99,7 +99,7 @@ textosNiveles = [
         [Wardrobe('audiencia/girl/', 'articles0.txt'), 
          Wardrobe('audiencia/boy/', 'articles0.txt')],
         "conejo2",     # conejo
-        "hocus pocus, disappear now.",
+        "hocus pocus, disappear now, desaparecelo chico.",
 """Cast the spell 
 as fast and accurately as you can. 
 
