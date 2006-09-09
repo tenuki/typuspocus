@@ -71,15 +71,15 @@ class Sounds:
     def multiplesEnCanal(self, s, canal):
         sonidos = [ self.buildSonido(n) for n in os.listdir("sounds") if n.startswith(s) and "." in n ]
         def play():
-            canal.queue(random.choice(sonidos))
             canal.fadeout(50)
+            canal.queue(random.choice(sonidos))
         setattr(self, s, play)
         
     def sonidoEnCanal(self, s, canal):
         sonido = self.buildSonido(s)
         def play():
-            canal.queue(sonido)
             canal.fadeout(50)
+            canal.queue(sonido)
 
         if s.endswith(".wav"):
             s = s[:-4]
