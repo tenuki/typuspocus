@@ -492,8 +492,17 @@ class Menu:
             
 class Credits(Scene):
     sections = [
-        ["magic by", "dr kapanga"],
-        ["rabbits by", "fu man chu"],
+        ["Doppelganger","Alecu"],
+        ["Nigromante", "LucioTorre"],
+        ["Alchemist", "Riq"],
+        ["Medium","LeitoMonk"],
+        ["FortuneTeller", "Tenuki"],
+        ["SpellCaster","PabloZ"],
+        ["Druid","FacundoBatista"],
+        ["HarryPopperist","NubIs"],
+        ["Voodo","NarrowMind"],
+        ["Thanks", "to"],
+        ["some","some"]
         ]
         
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
