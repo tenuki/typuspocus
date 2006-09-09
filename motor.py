@@ -259,6 +259,8 @@ class MainMotor(object):
         # corregimos el calor y el score
         self.calor = calor
         self.score += calor
+        if self.score < 0:
+            self.score = 0.0
         if DEBUG: print "calor: %.2f\t calp: %.2f\t calv: %.2f\t rpre: %.2f\t rvel: %.2f\t"%(calor, calor_precision, calor_velocidad, ratio_precision, ratio_velocidad)
         return calor
 
