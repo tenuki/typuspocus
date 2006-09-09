@@ -357,6 +357,8 @@ class LevelSuccess(Scene):
         
     def update(self):
         self.audiencia.update()
+        self.game.screen.fill((0,0,0))
+        self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
         self.audiencia.render(self.background, 100) #abs(self.calor)*100)
         self.background.blit(Foreground, (0,0))
         s = self.font.render("Level Completed", True, (255,255,255))
@@ -365,7 +367,7 @@ class LevelSuccess(Scene):
         self.background.blit(s, (100,300))
         s = self.font.render("New Score:"+str(self.score), True, (255,255,255))
         self.background.blit(s, (100,400))        
-        self.game.screen.blit(self.background, (0,0))
+        #self.game.screen.blit(self.background, (0,0))
     
     def paint(self):
         s = self.font.render("Level Completed", True, (255,255,255))
