@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-DEBUG = 1
+DEBUG = 0
 
 VOLUMEN_MUSICA = 1 #0.3
 VOLUMEN_TICKTOCK = 0.6
