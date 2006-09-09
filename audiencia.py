@@ -141,7 +141,8 @@ class GOEngine(EnginePersonas):
         for persons in self.ps.values():
             for p in persons:
                 p.camina()
-                p.xdir*=-1
+                p.xdir = - p.xdir
+                p.velocidad = -p.velocidad
                 p.inipos, p.destpos = p.destpos, p.inipos
         self.startTime = time.time()
         
