@@ -840,7 +840,7 @@ class Ranking(Scene):
             ypos -= 35
             
         yri = self.font.render("Your ranking is:", True, (255,248,144))
-        print "rank", self.rank
+#        print "rank", self.rank
         yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
         
         ysi = self.font.render("Score", True, (255,248,144))

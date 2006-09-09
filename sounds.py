@@ -53,7 +53,7 @@ class Sounds:
     def heatDeeJay(self, calor):
         if not self.canalMusica.get_queue():
             group_idx = int((calor + 1) / 2.1 * self.music_part_count)
-            print 'calor: %.2f; music_group: %d' % (calor, group_idx)
+#            print 'calor: %.2f; music_group: %d' % (calor, group_idx)
             self.canalMusica.queue(random.choice(self.music_parts[group_idx]))
         c= pygame.mixer.find_channel()
         if c is None:
