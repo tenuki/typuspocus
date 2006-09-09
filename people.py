@@ -81,7 +81,8 @@ class Individual:
             "body":0.95, 
             "hair":0.7,
             "underware":0.8,
-            "tops n bottoms":1,
+            "tops":1,
+            "bottoms":1,
             "shoes":0.8,
             "jackets":0.7,
             "hats":0.5,
@@ -91,7 +92,8 @@ class Individual:
             "body":0.95, 
             "hair":0.7,
             "underware":0.4,
-            "tops n bottoms":0.9,
+            "tops":0.9,
+            "bottoms":0.9,
             "shoes":0.8,
             "jackets":0.7,
             "hats":0.5,
@@ -101,7 +103,8 @@ class Individual:
             "body":0.90, 
             "hair":0.7,
             "underware":0.2,
-            "tops n bottoms":0.05,
+            "tops":0.05,
+            "bottoms":0.05,
             "shoes":0.7,
             "jackets":0.3,
             "hats":0.5,
@@ -145,12 +148,13 @@ class Individual:
         return repr(self.layers)
 
     def render(self, state):
-        LayerHandsUp = ['body', "tops n bottoms", 'jackets']
+        LayerHandsUp = ['body', "tops", "shoes", "bottoms", 'jackets']
         layerorder = self.wardrobe.getLayerorder()
         order = layerorder.keys()
         order.sort()
         MAGENTO = (254,0,254)
         
+        print repr(self.layers)
         img = None
         for k in order:
             layername=layerorder[k]
@@ -357,11 +361,14 @@ class Wardrobe:
 
     
 def getAllWardrobes():
-    #return [Wardrobe('audiencia/boy/')]
+    return [
+            Wardrobe('audiencia/boy/'),
+            #Wardrobe('audiencia/fashion_boy/'),
+            Wardrobe('audiencia/goth/'),
+            ]
     return [Wardrobe('audiencia/fashion_boy/'),
                     Wardrobe('audiencia/fashion_girl/'),
                     Wardrobe('audiencia/girl/'),
-                    Wardrobe('audiencia/goth/'),
                     Wardrobe('audiencia/boy/')]
 
 wardrobes = getAllWardrobes()
