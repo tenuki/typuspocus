@@ -611,6 +611,7 @@ class Credits(Scene):
             self.text = self.section_imgs[ self.section_number ]
             self.section_number += 1
             self.puff = True
+            sounds.MagiaOK()
             self.state = self.RETREAT
                
                 
@@ -672,13 +673,141 @@ class Credits(Scene):
             delta = time.time()-self.state_start
             if delta >= 1:
                 self.puff = None
+                sounds.arenga()
+            
             else:
                 pos = int(delta*5)
-                pos = max(pos, 4)
+                pos = min(pos, 4)
                 self.game.screen.blit(self.nubes[pos], (300,150) )
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
+        
+class GameIntro(Scene):
+    sections = [
+        ["hola mundo", "yo soy luis"],
+        ["mago de profesion"],
+        ["esta es mi intro"],
+        ]
+        
+    ENTERING, READY, TALKING, PAUSE, GONE = range(5)
+    
+    start_position = -20,250
+    end_position = 385,250
+    entering_duration = 5
+    ready_duration = 2
+    talking_duration = 1
+    pause_duration = 1
+    gone_duration = 5
+    
+    def init(self, font, color=(255,255,255), outline_color=(0,0,0), line_step=40):
+        self.line_step = line_step
+        self.section_imgs = []
+        for section in self.sections:
+            lines = []
+            for line in section:
+                img = hollow.textOutline(font, line, color, outline_color)
+                lines.append( img )
+            self.section_imgs.append( lines )
+            
+        self.section_number = 0
+        self.state = self.ENTERING
+        self.state_start = time.time()
+        self.guy_pos = None
+        self.guy_img = None
+        self.puff = None
+        self.puff_pos = None
+        self.text = False
+        self.talking_done = False
+        
+        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
+        self.guy = pygame.image.load("escenario/presentador.gif").convert_alpha()
+        
+    def loop(self):
+        if self.state == self.ENTERING:
+            if time.time() - self.state_start >= self.entering_duration:
+                self.state = self.READY
+                self.state_start = time.time()          
+            else:
+                p = ((time.time()-self.state_start)/self.entering_duration)
+                
+                sx, sy = self.start_position
+                ex, ey = self.end_position
+                nx = sx + (ex-sx)*p
+                ny = sy + (ey-sy)*p
+                
+                self.guy_pos = nx, ny
+                self.guy_img = self.guy
+               
+                
+        elif self.state == self.READY:
+            if time.time() - self.state_start >= self.ready_duration:
+                self.state = self.TALKING
+                self.state_start = time.time()
+                self.text = False
+            else:
+                pass 
+        elif self.state == self.TALKING:
+            if self.talking_done:
+                self.state = self.PAUSE
+                self.state_start = time.time()
+            else:
+                self.text = True
+        elif self.state == self.PAUSE:
+            if time.time() - self.state_start >= self.pause_duration:
+                self.state = self.GONE
+                self.state_start = time.time()
+                self.guy_pos = None
+                self.puff = True
+                sounds.MagiaOK()                
+            else:
+                pass
+        elif self.state == self.GONE:
+            if time.time() - self.state_start >= self.gone_duration:
+                self.end()
+            else:
+                pass
+                
+                
+                 
+    def update(self):
+        print self.state
+        self.game.screen.blit(self.background, (0,0))
+        
+        if self.text:
+        
+            delta = time.time()-self.state_start
+            if delta >= len(self.sections):
+                self.text = False
+                self.talking_done = True
+            else:
+                line_duration = 1
+                pos = int(delta)
+                print "say", pos, delta
+                text = self.section_imgs[pos]
+                
+                lineas = len(text)
+                space = lineas * self.line_step
+                start = 170-space/2
+                
+                for i,line in enumerate(text):
+                    self.game.screen.blit(line, (
+                            400-line.get_width()/2, 
+                            start + self.line_step*i - line.get_height()
+                            ))
+        if self.puff:
+            delta = time.time()-self.state_start
+            if delta >= 1:
+                self.puff = None
+            else:
+                pos = int(delta*5)
+                pos = min(pos, 4)
+                print "puff", pos, delta
+                self.game.screen.blit(self.nubes[pos], (330,220) )
+        if self.guy_pos:
+            self.game.screen.blit(self.guy_img, self.guy_pos )
+
+
 class MainMenu(Scene):
     def init(self):
         self._background = pygame.image.load("escenario/screens/menu.png").convert()
@@ -807,7 +936,7 @@ class MainMenu(Scene):
 
 def main():
     g = Game(800, 525, framerate = 20, title = "Typus Pocus", icon="escenario/icono.png")
-
+    g.run( GameIntro(g, pygame.font.Font("escenario/MagicSchoolOne.ttf",50)) )
     g.run( MainMenu(g) )
     
 if __name__ == "__main__":
