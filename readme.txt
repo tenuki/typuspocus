@@ -1,1 +1,1 @@
-gracias
+gracias/thank you/danke

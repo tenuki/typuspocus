@@ -10,7 +10,7 @@ import hollow
 from sounds import sounds
 import time, random
 from levels import niveles
-
+import countries
 DEBUG = 0
 
 CLOCK_TICK = pygame.USEREVENT
@@ -324,7 +324,7 @@ class LevelIntro(Scene):
         self.level_number = level_number
         self.audiencia = audiencia
         self.level_name = level_name
-        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
         self.overlay = pygame.image.load("escenario/screens/overlay.png").convert_alpha()
         
     def update(self):
@@ -676,60 +676,79 @@ class Credits(Scene):
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
 class Ranking(Scene):
-    rankings = ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"]
+    rankings = ["Orko","Lord Zedd", "Harry Potter","Skeletor", "Mum-ra", "David Copperfield",  "Harry Houdini", "Mandrake", "Gandalf", "Merlin",  ]
     
     def init(self, rank=None, score=None):
         if rank is None:
-            rank = random.randint(0,10)
+            rank = 9#random.randint(0,10)
         if score is None:
             score = random.randint(0,1000)
+            
+        self._background = pygame.image.load("escenario/screens/ranking.png").convert()
         self.paint_info = False
         self.score = score
         self.rank = rank
-        self.font = font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
-        self.textos = [ font.render(line, True, (140, 240, 160)) for line in self.rankings ]
+        self.kaping = True
+        self.font = pygame.font.Font("escenario/MagicSchoolOne.ttf",65)
+        self.font2 = pygame.font.Font("escenario/MagicSchoolOne.ttf",90)
+        self.font3 = pygame.font.Font("escenario/MagicSchoolOne.ttf",110)
+        
+        font = pygame.font.Font("escenario/MagicSchoolOne.ttf",30)
+        self.textos = [ font.render(line, True, (255,255,255)) for line in self.rankings ]
         
         self.start_time = time.time()
+        sounds.sube()
         
     def event(self, evt):
         if evt.type == KEYDOWN:
                 self.end()
                 
     def update(self):
-        ypos = 400
+        ypos = 450
         self.game.screen.blit(self.background, (0,0))
         for i, sf in enumerate(self.textos):
             
             if int(time.time()-self.start_time) >= i:
                 if self.rank>=i:
-                    self.game.screen.blit( sf, (250-sf.get_width(), ypos) )
-                else:
+                    self.game.screen.blit( sf, (300-sf.get_width(), ypos) )
+                if self.rank == i:
                     self.paint_info = True
+                if i > self.rank:
                     break
-            ypos -= 40
+            ypos -= 35
             
-        yri = self.font.render("Your ranking is: "+self.rankings[self.rank], True, (160,160,250))
+        yri = self.font.render("Your ranking is:", True, (255,248,144))
+        yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
         
-        ysi = self.font.render("Your score is: "+str(self.score), True, (160,160,250))
+        ysi = self.font.render("Score", True, (255,248,144))
+        ys = self.font3.render(str(self.score), True,  (255,254,232))
         
         if self.paint_info:
-            self.game.screen.blit(yri, (400, 100))
-            self.game.screen.blit(ysi, (400, 300))
-        
+            if self.kaping:
+                self.kaping = False
+                sounds.golpe()
+            self.game.screen.blit(yri, (480-yri.get_width()/2, 150))
+            self.game.screen.blit(yr, (480-yr.get_width()/2, 205))
+            self.game.screen.blit(ysi, (680-ysi.get_width()/2, 300))
+            self.game.screen.blit(ys, (670-ys.get_width()/2, 340))
+
         
         
     
 class GameIntro(Scene):
     sections = [
-        ["hola mundo", "yo soy luis"],
-        ["mago de profesion"],
-        ["esta es mi intro"],
+        ["My son,"," this will be a ","challenging day for you."],
+        ["You have always been","the black sheep of","our great family."],
+        ["But your old man,","the Great Grossini,","is not what he used to be."],
+        ["I'm suffering from","Flaccid Wand, so tonite","you will replace me."],
+        ["Farewell!"],
         ]
         
-    ENTERING, READY, TALKING, PAUSE, GONE = range(5)
+    START, ENTERING, READY, TALKING, PAUSE, GONE = range(6)
     
-    start_position = -20,250
-    end_position = 385,250
+    start_position = -20,350
+    end_position = 465,330
+    start_duration = 3
     entering_duration = 5
     ready_duration = 2
     talking_duration = 1
@@ -747,7 +766,7 @@ class GameIntro(Scene):
             self.section_imgs.append( lines )
             
         self.section_number = 0
-        self.state = self.ENTERING
+        self.state = self.START
         self.state_start = time.time()
         self.guy_pos = None
         self.guy_img = None
@@ -755,9 +774,18 @@ class GameIntro(Scene):
         self.puff_pos = None
         self.text = False
         self.talking_done = False
+        self.lamp_on = False
+        self.ballon_on = False
+        self.alpha = True
         
         self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
-        self.guy = pygame.image.load("escenario/presentador.gif").convert_alpha()
+        self.guy = pygame.image.load("audiencia/dad.gif").convert_alpha()
+        self.guy_alpha = pygame.Surface( (self.guy.get_width(), self.guy.get_height()) )
+        self.guy_alpha.set_alpha(200)
+        
+        self.lampara = pygame.image.load("escenario/screens/dad.png").convert_alpha()
+        self.globo = pygame.image.load("escenario/screens/balloon.png").convert_alpha()
+        
     def event(self, evt):
         if evt.type == KEYDOWN:
             self.end()
@@ -765,11 +793,20 @@ class GameIntro(Scene):
                 
                 
     def loop(self):
+        if self.state == self.START:
+            if time.time() - self.state_start >= self.start_duration:
+                self.state = self.ENTERING
+                self.state_start = time.time() 
+                
+                
+        
         if self.state == self.ENTERING:
             if time.time() - self.state_start >= self.entering_duration:
                 self.state = self.READY
                 self.state_start = time.time() 
                 sounds.farol()         
+                self.lamp_on = True
+                self.alpha = False
             else:
                 p = ((time.time()-self.state_start)/self.entering_duration)
                 
@@ -787,11 +824,14 @@ class GameIntro(Scene):
                 self.state = self.TALKING
                 self.state_start = time.time()
                 self.text = False
+                self.ballon_on = True                
+                sounds.intro()
             else:
                 pass
         elif self.state == self.TALKING:
             if self.talking_done:
                 self.state = self.PAUSE
+                self.ballon_on = False
                 self.state_start = time.time()
             else:
                 self.text = True
@@ -815,6 +855,12 @@ class GameIntro(Scene):
     def update(self):
         self.game.screen.blit(self.background, (0,0))
         
+        if self.lamp_on:
+            self.game.screen.blit(self.lampara, (0,0))
+            
+        if self.ballon_on:
+            self.game.screen.blit(self.globo, (0,0))
+        
         if self.text:
         
             delta = time.time()-self.state_start
@@ -823,17 +869,18 @@ class GameIntro(Scene):
                 self.talking_done = True
             else:
                 line_duration = 1
+                for i in range(len(self.section_imgs)):
+                    pass
                 pos = int(delta)
-                print "say", pos, delta
                 text = self.section_imgs[pos]
                 
                 lineas = len(text)
                 space = lineas * self.line_step
-                start = 170-space/2
+                start = 180-space/2
                 
                 for i,line in enumerate(text):
                     self.game.screen.blit(line, (
-                            400-line.get_width()/2, 
+                            180-line.get_width()/2, 
                             start + self.line_step*i - line.get_height()
                             ))
         if self.puff:
@@ -843,11 +890,13 @@ class GameIntro(Scene):
             else:
                 pos = int(delta*5)
                 pos = min(pos, 4)
-                print "puff", pos, delta
-                self.game.screen.blit(self.nubes[pos], (330,220) )
+                self.game.screen.blit(self.nubes[pos], (420,300) )
+                
         if self.guy_pos:
             self.game.screen.blit(self.guy_img, self.guy_pos )
-
+            if self.alpha:
+                self.game.screen.blit(self.guy_alpha, self.guy_pos )
+            
 
 class MainMenu(Scene):
     def init(self):
@@ -856,7 +905,7 @@ class MainMenu(Scene):
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
-                 ["History Mode", "Freestyle", "Hiscores", "Credits", "Quit"],
+                 ["History Mode", "World Tour", "Hiscores", "Credits", "Quit"],
                  margin = -40,
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
@@ -902,7 +951,7 @@ class MainMenu(Scene):
         if sel == 0: # history
             self.play_history()
         elif sel == 1: # freestyle
-            self.play_freestyle()
+            self.play_world_tour()
         elif sel == 2: # hiscores
             self.hiscores()
         elif sel == 3: # credits
@@ -959,34 +1008,37 @@ class MainMenu(Scene):
                 
 
 
-    def play_freestyle(self):
+    def play_world_tour(self):
             result = GANO
             count = 0
             score = 0
             futech = 0
-            while result == GANO:
+            while True:
                 laAudiencia = audiencia.Audiencia(level_number=count)
-                if count < len(levels):
-                    subtitle = levels[count][0]
-                    params = levels[count][1]
-                else:
-                    if futech == 0: futech = count-1
-                    subtitle = "Future tech "+str(count-futech)
-                    params = dict(tiempo_por_caracter=1.0/(count-futech+4))
-                self.runScene( 
-                        LevelIntro( self.game, str(count), subtitle, laAudiencia ) )
-                l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
+                subtitle = "Touring "+countries.getCountry()
+                params = dict(tiempo_por_caracter=1.0/(count+3))
+                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia) )
                 laAudiencia.doGame()
+                l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )
                 newscore = int(l.motor.score)
                 score += newscore
                 if result == GANO:
                     laAudiencia.doWin()
-                    self.runScene( 
-                        LevelSuccess(self.game, score, newscore, laAudiencia))
-                count += 1
-            laAudiencia.doGameOver()
-            self.runScene( GameOver( self.game, score, laAudiencia ) )
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    count += 1
+                else:
+                    laAudiencia.doGameOver()
+                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
+                    cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
+                    if not cont:
+                        self.runScene(Ranking(self.game))
+                        break
+                    else:
+                        score = 0
+                        
+                
+
 
 def main():
     g = Game(800, 525, framerate = 20, title = "Typus Pocus", icon="escenario/icono.png")
