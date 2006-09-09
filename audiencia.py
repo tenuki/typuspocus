@@ -215,6 +215,7 @@ class AudienciaScene(Scene):
         self.finalizar = False
         self.audiencia = audiencia #Audiencia(level_number)
         self.voluntario = None
+        self.lastbravo = time.time()
         self.calor = 0
         self.level_number = level_number
         self.fg = pygame.image.load("escenario/foreground.png").convert_alpha()
@@ -251,7 +252,9 @@ class AudienciaScene(Scene):
         elif evt == motor.Eventos.OK_DEUNA:
             r = random.random()
             if self.calor>r:
-                sounds.bravo()
+                if time.time()-self.lastbravo>1.5:
+                    self.lastbravo = time.time()            
+                    sounds.bravo()
         elif evt == motor.Eventos.MAL:
             sounds.bu()
 

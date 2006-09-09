@@ -605,7 +605,6 @@ class Credits(Scene):
             else:
                 pos = int(delta*5)
                 self.game.screen.blit(self.nubes[pos], (300,150) )
-                print pos, delta
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
