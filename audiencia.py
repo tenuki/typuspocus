@@ -156,6 +156,7 @@ class IntroEngine(EnginePersonas):
         for persons in self.ps.values():
             for p in persons:
                 p.position = p.destpos
+                p.sentarse()
         
 class GOEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
