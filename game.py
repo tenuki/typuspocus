@@ -1198,7 +1198,7 @@ class MainMenu(Scene):
                     self.runScene(Ranking(self.game, score=score))
                     self.runScene(EnterHiscores(self.game, score))
                     self.runScene(Hiscores(self.game))
-                    self.locked = False
+                    self.tour_locked = False
                     break
 
                 laAudiencia = audiencia.Audiencia(count, wardrobes)
