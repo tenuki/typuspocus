@@ -817,6 +817,27 @@ class Ranking(Scene):
             self.game.screen.blit(ysi, (680-ysi.get_width()/2, 300))
             self.game.screen.blit(ys, (670-ys.get_width()/2, 340))
 
+class Locked(Scene):
+    def init(self):
+        self._background = pygame.image.load("escenario/screens/locked.png").convert()
+        
+
+        
+    def paint(self):
+        self.game.screen.blit(self.background, (0,0))
+        font = pygame.font.Font("escenario/MagicSchoolOne.ttf",60)
+        sf2 = hollow.textOutline(font, "You must first finish your career",(255,254,232), (0,0,0))
+        sf3 = hollow.textOutline(font, "before touring the world",(255,254,232), (0,0,0))
+            
+        self.game.screen.blit(sf2, (400-sf2.get_width()/2, 350))
+        self.game.screen.blit(sf3, (400-sf3.get_width()/2, 420))
+        
+            
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+            sounds.apagarVoces()
+            self.end()
+
         
 class Hiscores(Scene):
     def init(self):
@@ -1070,12 +1091,14 @@ class MainMenu(Scene):
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
-                 ["History Mode", "World Tour", "Hiscores", "Credits", "Quit"],
+                 ["Career", "World Tour", "Hiscores", "Credits", "Quit"],
                  margin = -40,
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
                  )
         sounds.menu()
+        
+        self.tour_locked = True
         
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
@@ -1119,7 +1142,10 @@ class MainMenu(Scene):
         if sel == 0: # history
             self.play_history()
         elif sel == 1: # freestyle
-            self.play_world_tour()
+            if self.tour_locked:
+                self.runScene( Locked(self.game) )
+            else:
+                self.play_world_tour()
         elif sel == 2: # hiscores
             self.runScene( Hiscores(self.game) )
         elif sel == 3: # credits
