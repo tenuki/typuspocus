@@ -236,7 +236,6 @@ class Level(Scene):
     
     
     def loop(self):
-        
         sounds.heatDeeJay(self.motor.calor)
         # aca updateamos el mundo cada paso
         if self.state == PLAYING:
@@ -381,7 +380,7 @@ def test():
 
 
 class BannerScene(Scene):
-    def renderOn(self, surface, lines):
+    def renderOn(self, surface, lines=[]):
         Yellow = (255,255,160)
         posx=110
         widx=600
@@ -412,7 +411,7 @@ class LevelIntro(BannerScene):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
-        self.audiencia.render(self.background, 100) #TODO review DAVE abs(self.calor)*100)
+        self.audiencia.render(self.background)
         self.background.blit(Foreground, (0,0))
         self.game.screen.blit(self.overlay, (0,0))
         if self.level<>None:
@@ -440,7 +439,7 @@ class LevelSuccess(BannerScene):
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
         
-        self.audiencia.render(self.background, 100) #DAVE abs(self.calor)*100)
+        self.audiencia.render(self.background)
         self.background.blit(Foreground, (0,0))    
         
         self.game.screen.blit(self.overlay, (0,0))
@@ -449,7 +448,7 @@ class LevelSuccess(BannerScene):
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historygood.split('\n'))
         else:
-            self.font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+            self.font =  pygame.font.Font("escenario/VeraMono.ttf",30)
             self.renderOn(self.game.screen, 
                 ["Level Completed","",
                 "Points accumulated:"+str(self.levelscore),"", 
@@ -476,7 +475,7 @@ class GameOver(Scene):
                  )
                  
         self.score = score
-        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",30)
         self.audiencia = laaudiencia
         
     def do_action(self, sel):
@@ -489,7 +488,6 @@ class GameOver(Scene):
         self.game.screen.blit(self.background, (0,0))
         self.menu.blit(self.game.screen, 400, 320)
         
-    
     def event(self, evt):
         if evt.type == MOUSEMOTION:
             x, y = pygame.mouse.get_pos()
@@ -1119,6 +1117,7 @@ class MainMenu(Scene):
         
         except IOError:
             self.tour_locked = True
+        self.tour_locked = False
         
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
@@ -1224,8 +1223,6 @@ class MainMenu(Scene):
                         break
                     else:
                         score = 0
-                        
-                
 
 
     def play_world_tour(self):
