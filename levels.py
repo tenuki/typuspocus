@@ -53,6 +53,19 @@ fullydressed = {
     "infront":0.85,
 }
 
+gothdressed = {
+    "behind":0.5,
+    "body":1,
+    "hair":0.95,
+    "underware":0.95,
+    "tops":0.5,
+    "bottoms":0.5,
+    "shoes":0.7,
+    "jackets":0.3,
+    "hats":0.3,
+    "infront":0.40,
+}
+
 enmascarados = {
     "behind":0.5,
     "body":1,
@@ -149,7 +162,8 @@ chases you around the stadium.""",
 
     (
         "Fiesta musical",
-        all_wardrobes, #""Hip-hoperos o darkies",
+        #""Hip-hoperos o darkies",
+        [Wardrobe('audiencia/goth/', 'articles3.txt', gothdressed), ],
         "vicios", # Alcohol, drogas, hacer un mix
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
 """You were supposed to dissapear 

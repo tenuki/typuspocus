@@ -33,12 +33,10 @@ HCDataSetFile_fields
 "7" "waldrobe"
 
 HCDataSetFile_data
-#"9" "boy_body_01.gif" "body" "body" "26" "28" "-1"
 "10" "boy_body_02.gif" "body" "body" "26" "28" "-1"
 "11" "boy_body_03.gif" "body" "body" "26" "28" "-1"
 "10" "boy_body_02_brazos_arriba.gif" "body" "body" "26" "28" "0"
 "11" "boy_body_03_brazos_arriba.gif" "body" "body" "26" "28" "0"
-"111" "skeletor.gif" "body" "body" "26" "28" "0.05"
 "15" "boy_jeans_01.gif" "bottoms" "bottoms" "39" "94" "-1"
 "16" "boy_trousers_02.gif" "bottoms" "bottoms" "39" "98" "-1"
 "17" "boy_trousers_03.gif" "bottoms" "bottoms" "38" "94" "-1"
@@ -88,8 +86,6 @@ HCDataSetFile_data
 "50227" "boy_shoes_06.gif" "shoes" "shoes" "35" "128" "-1"
 "50226" "boy_shoes_11.gif" "shoes" "shoes" "37" "97" "-1"
 "50225" "boy_shoes_10.gif" "shoes" "shoes" "37" "119" "-1"
-"77" "alien.gif" "body" "body" "27" "28" "0:0:0.03:0.1:-1"
-"772" "alien_brazos_arriba.gif" "body" "body" "27" "28" "0"
 "78" "boy_bondage_01.gif" "extras" "tops" "32" "26" "-1"
 "782" "boy_bondage_01_brazos_arriba.gif" "extras" "tops" "32" "26" "0"
 "79" "boy_facialhair_03.gif" "hair" "hair" "35" "56" "-1"

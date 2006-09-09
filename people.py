@@ -76,12 +76,12 @@ AnyPublic, PG18, Exibisionist = range(3)
 BehaviourDatas = {
     AnyPublic: {
         "behind":0.5, 
-        "body":0.995, 
+        "body":0.999, 
         "hair":0.9,
         "underware":0.8,
         "tops":1,
         "bottoms":1,
-        "shoes":0.8,
+        "shoes":1,
         "jackets":0.1,
         "hats":0.1,
         "infront":0.15},
