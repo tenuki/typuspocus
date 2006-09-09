@@ -1,8 +1,8 @@
 import random
 import math
-
 import pygame
 from pygame.locals import *
+import time
 
 from engine import Game, Scene
 import people
@@ -25,9 +25,10 @@ class Persona:
         individuo = people.buildIndividual(level_number)
         self.images = map(lambda state:individuo.render(state), people.iStates)
         self.state = people.iStates[0]
+        self.useRand = False
         
     def render(self, surface, porcentaje):
-        if random.randint(0,1000)<porcentaje:
+        if self.useRand and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
             gy = random.choice([-1,-2,0])
         else:
@@ -35,21 +36,15 @@ class Persona:
         dx, dy = self.position
         
         #get random state
-        #surface.blit(random.choice(self.images), (dx+gx, dy+gy))
         surface.blit(self.images[0], (dx+gx, dy+gy))
 
 class Fila:
     sillas=None
-    def __init__(self, level_number,(dx,dy)):
+    def __init__(self, level_number,(dx,dy), people):
         self.position = (dx, dy)
         if Fila.sillas is None:
             Fila.sillas = self.construirSillas()
-        self.personas = []
-        for x in range(filasx):
-            if random.random() > (level_number/5.0+0.1):
-                self.personas.append(None)
-            else:
-                self.personas.append( Persona((dx+x*peoplex,dy), level_number) )
+        self.personas = people
 
     def construirSillas(self):
         MAGENTO = (254,0,254)
@@ -68,16 +63,68 @@ class Fila:
             if persona is not None:
                 persona.render(surface, porcentaje)
 
+class EnginePersonas:
+    def __init__(self, peopleSet):
+        pass
+        
+class IntroEngine(EnginePersonas):
+    def __init__(self, peopleSet, level_number):
+        self.ps = peopleSet
+        
+        for y in range(filasy):
+            for x in range(filasx):
+                if random.random() > (level_number/5.0+0.1):
+                    pass
+                else:
+                    dx = (y%2) * peoplex/2 - peoplex/2 + 6
+                    dy = peopley/2 * y                    
+                    tx = random.choice( [0+dx, filasx*peoplex+dx] )
+                    inicial = (tx, dy)
+                    p = Persona( inicial, level_number) 
+                    p.inipos = inicial
+                    p.destpos = (x*peoplex+dx,dy)
+                    v = (p.destpos[0]-tx)
+                    if v==0: v=1
+                    p.xdir = v/abs(v)
+                    p.velocidad = random.randint(20,50) * (p.xdir) 
+                    peopleSet[y].append( p )
+        self.startTime = time.time()
+        
+    def update(self):
+        self.caminarUpdate()
+        
+    def caminarUpdate(self):
+        dt = time.time() - self.startTime
+        
+        for persons in self.ps.values():
+            for p in persons:
+                npx = p.inipos[0] + p.velocidad * dt
+                x,y = p.destpos
+                if p.xdir>0 and (npx<p.destpos[0]):
+                    x = npx
+                elif p.xdir<0 and (npx>p.destpos[0]):
+                    x = npx
+                p.position = (x,y)
+                
 
 class Audiencia:
     def __init__(self, level_number):
         people.resetRandom(level_number)
+        self.personas = {}
+        for y in range(filasy):
+            self.personas[y]=[]
+
+        self.engine = IntroEngine(self.personas, level_number)
+
         self.filas = []
         for y in range(filasy):
             dx = (y%2) * peoplex/2 - peoplex/2 + 6
             dy = peopley/2 * y
-            self.filas.append(Fila(level_number,(dx,dy)))
-
+            self.filas.append(Fila(level_number,(dx,dy), self.personas[y]))
+    
+    def doGame(self):
+        self.engine = self.engine #XXX
+    
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
         dx = (fila%2) * peoplex/2 - peoplex/2 + 6
@@ -159,6 +206,7 @@ class AudienciaScene(Scene):
             self.end( )
                     
     def update(self):
+        self.audiencia.engine.update()
         self.game.screen.fill((0,0,0))
         surface = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
         self.audiencia.render(surface, abs(self.calor)*100)
