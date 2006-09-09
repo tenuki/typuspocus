@@ -377,43 +377,119 @@ levels = [
                         tiempo_por_caracter=0.25
                         )),
       ]                
+      
+      
+class Menu:
+    def __init__(self, font, font_selected, opts, margin=0, normal_color=(255,255,255), selected_color=(255,255,255), selected_border_color=None, normal_border_color=None):
+        self.font = font
+        self.font_selected = font_selected
+        if selected_border_color == None:
+            selected_border_color = (0,0,0)
+        if normal_border_color == None:
+            normal_border_color = (0,0,0)
+        self.margin = margin
+        self.color = color
+        self.opts = opts
+        self.selected = 0
+        self.selected_img = []
+        self.unselected_img = []
+        
+        line_step = 0
+        for text in self.opts:
+            sel = hollow.textOutline(font_selected, text, selected_color, selected_border_color )
+            unsel = hollow.textOutline(font, text, normal_color, normal_border_color )
+            self.selected_img.append( sel )
+            self.unselected_img.append( unsel )
+            line_step = max(max(sel.get_height(), unsel.get_height())+self.margin, line_step)
+            
+        self.line_step = line_step
+            
+                
+    def blit(self, surface, center_x, start_y):
+        for i in range(len(self.opts)):
+            
+            if i == self.selected:
+                img = self.selected_img[i]
+            else:
+                img = self.unselected_img[i]
+                
+            x = center_x-img.get_width()/2
+            y = start_y + self.line_step * i - img.get_height()/2
+            
+            surface.blit( img, (x,y) )
+            
+    def next(self):
+        self.selected = (self.selected + 1)%len(self.opts)
+        
+        
+    def prev(self):
+        self.selected = (self.selected - 1)%len(self.opts)        
+    
+    
 class MainMenu(Scene):
     def init(self):
-        self.font = font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        self.font = font =  pygame.font.Font("escenario/MagicSchoolOne.ttf",90)
+        self.menu = Menu(
+                 pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
+                 pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
+                 ["History Mode", "Freestyle", "Hiscores", "Credits", "Quit"],
+                 margin = -40,
+                 normal_color = (130,130,250),
+                 selected_color = (180,180,255),
+                 )
         
     def paint(self):
         s = self.font.render("Typus Pocus", True, (255,255,255))
-        self.background.blit(s, (100,100))
         self.game.screen.blit(self.background, (0,0))
-        
+        self.game.screen.blit(s, (400-s.get_width()/2,20))
+        self.menu.blit(self.game.screen, 400, 180)
         
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
                 self.end()
-            else:
-                result = GANO
-                count = 0
-                score = 0
-                futech = 0
-                while result == GANO:
-                    if count < len(levels):
-                        subtitle = levels[count][0]
-                        params = levels[count][1]
-                    else:
-                        if futech == 0: futech = count-1
-                        subtitle = "Future tech "+str(count-futech)
-                        params = dict(tiempo_por_caracter=1.0/(count-futech+4))
-                    self.runScene( LevelIntro( self.game, str(count), subtitle ) )
-                    l =  Level(self.game, count, MainMotor(**params)) 
-                    result = self.runScene( l )
-                    newscore = int(l.motor.score)
-                    score += newscore
-                    if result == GANO:
-                        self.runScene( LevelSuccess(self.game, score, newscore))
-                    count += 1
+            elif evt.key == K_DOWN:
+                self.menu.next()
+                self.paint()
+            elif evt.key == K_UP:
+                self.menu.prev()
+                self.paint()
+            elif evt.key in [K_RETURN, K_SPACE]:
+                sel = self.menu.selected
+                if sel == 0: # history
+                    self.play_freestyle()
+                elif sel == 1: # freestyle
+                    self.play_freestyle()
+                elif sel == 2: # hiscores
+                    self.hiscores()
+                elif sel == 3: # credits
+                    self.credits()
+                elif sel == 4: #quit            
+                    self.end()
+                    
+    def play_freestyle(self):
+            result = GANO
+            count = 0
+            score = 0
+            futech = 0
+            while result == GANO:
+                if count < len(levels):
+                    subtitle = levels[count][0]
+                    params = levels[count][1]
+                else:
+                    if futech == 0: futech = count-1
+                    subtitle = "Future tech "+str(count-futech)
+                    params = dict(tiempo_por_caracter=1.0/(count-futech+4))
+                self.runScene( LevelIntro( self.game, str(count), subtitle ) )
+                l =  Level(self.game, count, MainMotor(**params)) 
+                result = self.runScene( l )
+                newscore = int(l.motor.score)
+                score += newscore
+                if result == GANO:
+                    self.runScene( LevelSuccess(self.game, score, newscore))
+                count += 1
 
-                self.runScene( GameOver( self.game, score ) )
+            self.runScene( GameOver( self.game, score ) )
 def main():
     g = Game(800, 525, framerate = 20)
 

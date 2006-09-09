@@ -135,7 +135,9 @@ class AudienciaScene(Scene):
         elif evt == motor.Eventos.PALMAL:
             sounds.puteada()
         elif evt == motor.Eventos.OK_DEUNA:
-            sounds.bravo()
+            r = random.random()
+            if self.calor>r:
+                sounds.bravo()
         elif evt == motor.Eventos.MAL:
             sounds.bu()
 
