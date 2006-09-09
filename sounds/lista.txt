@@ -2,13 +2,13 @@ gente tranquila	X
 gente contenta X
 gente exultante X
 grillito de fondoX
-boooo 
+boooo X
 gritos mala onda X
 gritos felicitaciones X
-ruido magia ok
-ruido magia para el orto
-alarido timeout
-tic del reloj que se acaba
+ruido magia ok X
+ruido magia para el orto X
+alarido timeout X
+tic del reloj que se acaba X 
 Voz Alien
 explosion
 tomatazo
