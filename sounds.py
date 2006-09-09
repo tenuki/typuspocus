@@ -3,8 +3,9 @@ import os
 import random
 DEBUG = 1
 
-VOLUMEN_MUSICA = 0.3
+VOLUMEN_MUSICA = 1 #0.3
 VOLUMEN_TICKTOCK = 0.6
+VOLUMEN_AMBIENTE = 0.6
 
 class Sounds:
     def init(self):
@@ -12,11 +13,12 @@ class Sounds:
         self.canalMusica = pygame.mixer.Channel(0)
         self.canalMusica.set_volume(VOLUMEN_MUSICA)
         self.canalAmbiente = pygame.mixer.Channel(1)
+        self.canalAmbiente.set_volume(VOLUMEN_AMBIENTE)
         self.canalPalabras = pygame.mixer.Channel(2)
         self.canalTickTock = pygame.mixer.Channel(3)
         self.canalTickTock.set_volume(VOLUMEN_TICKTOCK)
 
-        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal"]:
+        for s in ["genteunpocobien", "gentetranquila", "genteunpocomal", "gritosfelicitacion", "gritosmalaonda"]:
             self.sonidoEnCanal(s, self.canalAmbiente)
 
         for s in ["arenga", "puteada"]:
@@ -62,6 +64,13 @@ class Sounds:
         #self.canalMusica.play(self.music_end)
         #self.canalMusica.queue(None)
         #self.canalMusica.fadeout(50)
+    
+    def apagarVoces(self):
+        self.canalAmbiente.stop()
+        self.canalPalabras.stop()
+
+    def apagarSonidos(self):
+        pygame.mixer.fadeout(250)
 
     def buildSonido(self, s):
         if "." not in s:

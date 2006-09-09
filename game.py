@@ -162,6 +162,7 @@ class Level(Scene):
                 
             if self.motor.cursor >= len(self.motor.hechizo):
                 sounds.suspenso()
+                sounds.apagarVoces()
                 sounds.volumenDeeJay(0.5)
                 if self.motor.tuvoExito():
                     self.state = WINNING
@@ -172,9 +173,11 @@ class Level(Scene):
           
         elif self.state in [ WON ]:
             if evt.type == KEYDOWN:
+                    sounds.apagarSonidos()
                     self.end(GANO)
         elif self.state in [ LOST, TOMATO ]:
             if evt.type == KEYDOWN:
+                    sounds.apagarSonidos()
                     self.end(PERDIO)
                 
     
@@ -186,7 +189,7 @@ class Level(Scene):
         if self.state == PLAYING:
             if self.motor.getTimeLeft() <= 0:
                 self.state = TOMATOING
-                sounds.puteada()
+                sounds.gritosmalaonda()
                 self.audiencia.tomateame()
                 self.wintime = pygame.time.get_ticks()
                 
@@ -202,12 +205,12 @@ class Level(Scene):
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = WON
                 self.audiencia.setVoluntario(None, True) 
-                sounds.genteunpocobien()
+                sounds.gritosfelicitacion()
         elif self.state == LOSING:
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = LOST
                 self.audiencia.setVoluntario(self.motor.voluntario_error, True)
-                sounds.genteunpocomal()
+                sounds.gritosmalaonda()
         elif self.state == TOMATOING:
             if pygame.time.get_ticks() -self.wintime > 2000:
                 self.state = TOMATO
