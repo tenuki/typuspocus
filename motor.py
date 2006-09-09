@@ -48,8 +48,12 @@ class MainMotor(object):
         for k, v in kwargs.items():
             setattr(self, k, v)
             
+        # Elegimos el objeto para voluntario en funcion de lo que dice levels.py
         if self.voluntario is None:
-            self.voluntario = random.choice(cosas.all)
+            if hasattr(cosas, self.objeto):
+                self.voluntario = getattr(cosas, self.objeto)
+            else:
+                self.voluntario = random.choice(cosas.all)
         self.voluntario_error = self.voluntario
         while self.voluntario == self.voluntario_error:
             self.voluntario_error = random.choice(cosas.all)
@@ -250,7 +254,6 @@ class MainMotor(object):
             calor = 1
         if calor < -1:
             calor = -1
-            
             
         # corregimos el calor y el score
         self.calor = calor

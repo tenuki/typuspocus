@@ -59,7 +59,7 @@ textosNiveles = [
         "Teatro prestado",
         [Wardrobe('audiencia/girl/', 'articles0.txt'), 
          Wardrobe('audiencia/boy/', 'articles0.txt')],
-        "Un conejo",
+        "conejo",
         "hocus pocus, disappear now.",
 """Cast the spell 
 as fast and accurately as you can. 
