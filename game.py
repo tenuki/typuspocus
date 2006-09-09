@@ -352,14 +352,20 @@ class Level(Scene):
                                 
 
             self.level_timer.blit( self.game.screen, (770, 50))
+
+            # ponemos el rate de teclas
             rate = self.motor.getRate()
             if rate < self.motor.precision_requerida:
                 color_tx = (255,0,0)
             else:
                 color_tx = (0,255,0)
-                
             rate_sf = hollow.textOutline( self.ratefont, "%i%%"%(int(rate*100)),  color_tx, (0,0,0) )
             self.game.screen.blit( rate_sf, (770-rate_sf.get_width()/2, 35-rate_sf.get_height()/2))
+
+            # y el score
+            score = self.motor.score
+            score_sf = hollow.textOutline(self.ratefont, "Score: %3.1f"%score, (0,0,255), (0,0,0))
+            self.game.screen.blit( score_sf, (790-score_sf.get_width(), 15-score_sf.get_height()/2))
             
             
             self.alarm.blit(self.game.screen)
