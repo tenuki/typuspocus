@@ -53,6 +53,32 @@ fullydressed = {
     "infront":0.85,
 }
 
+enmascarados = {
+    "behind":0.5,
+    "body":1,
+    "hair":0.9,
+    "underware":0.95,
+    "tops":1,
+    "bottoms":1,
+    "shoes":1,
+    "jackets":1,
+    "hats":0.70,
+    "infront":0.85,
+}
+
+enpelotas = {
+    "behind":0.5,
+    "body":1,
+    "hair":0.99,
+    "underware":0.65,
+    "tops":0,
+    "bottoms":0,
+    "shoes":0,
+    "jackets":0,
+    "hats":0.01,
+    "infront":0.12,
+}
+
 
 textosNiveles = [
     (
@@ -188,7 +214,7 @@ casserole out of you.""",
 
     (
         "Tatooine",
-        [Wardrobe('audiencia/boy/', 'articles6.txt')],
+        [Wardrobe('audiencia/boy/', 'articles6.txt', enmascarados)],
         "Aspiradora loca",
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
@@ -253,7 +279,9 @@ come to need one.""",
 
     (
         "EL LUGAR FELIZ",
-        all_wardrobes, #""Todos desnudos",
+        #""Todos desnudos",
+        [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', enpelotas), 
+         Wardrobe('audiencia/boy/', 'articles9.txt', enpelotas)],
         "CUZCO la cabra",
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
