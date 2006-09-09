@@ -11,6 +11,7 @@ from sounds import sounds
 import time, random
 from levels import niveles
 import countries
+import hiscore_client
 DEBUG = 0
 
 CLOCK_TICK = pygame.USEREVENT
@@ -456,7 +457,7 @@ class GameOver(Scene):
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
-                 ["Yes", "No"],
+                 ["No", "Yes",],
                  margin = -40,
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
@@ -467,7 +468,7 @@ class GameOver(Scene):
         self.audiencia = laaudiencia
         
     def do_action(self, sel):
-        if not sel:
+        if sel:
             self.end( True )
         else:
             self.end( False )
@@ -801,6 +802,7 @@ class Ranking(Scene):
             ypos -= 35
             
         yri = self.font.render("Your ranking is:", True, (255,248,144))
+        print "rank", self.rank
         yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
         
         ysi = self.font.render("Score", True, (255,248,144))
@@ -816,8 +818,80 @@ class Ranking(Scene):
             self.game.screen.blit(ys, (670-ys.get_width()/2, 340))
 
         
+class Hiscores(Scene):
+    def init(self):
+        self.client = hiscore_client.HiScoreClient()
+        self._background = pygame.image.load("escenario/screens/highscores.png").convert()
         
+
+        
+    def paint(self):
+        self.game.screen.blit(self.background, (0,0))
+        font = pygame.font.Font("escenario/MagicSchoolOne.ttf",40)
+        font2 = pygame.font.Font("escenario/MagicSchoolOne.ttf",90)
+        font3 = pygame.font.Font("escenario/MagicSchoolOne.ttf",30)
+        scores = self.client.listHiScores()
+        for i in range(8):
+            if i < len(scores):
+                points, when, name, ip = scores[i]
+            else:
+                points, name = "--", ""
+                
+            if not name: name = " "
+            
+            sf1 = hollow.textOutline(font3, str(i),(255,254,232), (0,0,0))
+            sf2 = hollow.textOutline(font, name,(255,254,232), (0,0,0))
+            sf3 = hollow.textOutline(font, str(points),(255,254,232), (0,0,0))
+                
+            ypos = 200 + i*30
+            self.game.screen.blit(sf1, (200-sf1.get_width(), ypos))
+            self.game.screen.blit(sf2, (270, ypos))
+            self.game.screen.blit(sf3, (620, ypos))
+            
+            
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+            sounds.apagarVoces()
+            self.end()
     
+class EnterHiscores(Scene):
+    def init(self, score):
+        self.client = hiscore_client.HiScoreClient()
+        self._background = pygame.image.load("escenario/screens/highscores.png").convert()
+        self.name = ""
+        self.score = score
+        
+    def paint(self):
+        self.game.screen.blit(self.background, (0,0))
+        font = pygame.font.Font("escenario/MagicSchoolOne.ttf",65)
+        font2 = pygame.font.Font("escenario/MagicSchoolOne.ttf",90)
+        
+        sf = hollow.textOutline(font2, "Enter your name",(255,254,232), (0,0,0))
+        self.game.screen.blit(sf, (400-sf.get_width()/2, 200))
+        
+        sf = hollow.textOutline(font2, self.name,(255,254,232), (0,0,0))
+        self.game.screen.blit(sf, (400-sf.get_width()/2, 330))
+            
+            
+    def event(self, evt):
+        if evt.type == KEYDOWN:
+            if evt.key == K_ESCAPE:
+                sounds.apagarVoces()
+                self.end()
+            elif evt.key == K_RETURN:
+                self.client.addHiScore(self.score, self.name)
+                sounds.apagarVoces()
+                self.end()
+                
+            else:
+                letra = evt.unicode #.lower()
+                if letra.isalpha() or (letra and letra in " ,.<>:;1234567890"):
+                    self.name += letra
+                    self.paint()
+                if evt.key == K_BACKSPACE:
+                    self.name = self.name[:-1]
+                    self.paint()
+                
 class GameIntro(Scene):
     sections = [
         ["My son,"," this will be a ","challenging day for you."],
@@ -984,7 +1058,11 @@ class GameIntro(Scene):
             if self.alpha:
                 self.game.screen.blit(self.guy_alpha, self.guy_pos )
             
-
+class TourLevel:
+    def __init__(self, country):
+        self.historyintro = "Touring in "+country
+        self.titulo = "World Tour"
+    
 class MainMenu(Scene):
     def init(self):
         self._background = pygame.image.load("escenario/screens/menu.png").convert()
@@ -1043,7 +1121,7 @@ class MainMenu(Scene):
         elif sel == 1: # freestyle
             self.play_world_tour()
         elif sel == 2: # hiscores
-            self.hiscores()
+            self.runScene( Hiscores(self.game) )
         elif sel == 3: # credits
             self.runScene( Credits( self.game, self.font ) )
         elif sel == 4: #quit            
@@ -1091,6 +1169,8 @@ class MainMenu(Scene):
                     cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
+                        self.runScene(EnterHiscores(self.game, score))
+                        self.runScene(Hiscores(self.game))
                         break
                     else:
                         score = 0
@@ -1105,9 +1185,8 @@ class MainMenu(Scene):
             futech = 0
             while True:
                 laAudiencia = audiencia.Audiencia(level_number=count)
-                subtitle = "Touring "+countries.getCountry()
                 params = dict(tiempo_por_caracter=1.0/(count+3))
-                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia) )
+                self.runScene( LevelIntro( self.game, str(count), "World Tour" , laAudiencia, TourLevel(countries.getCountry())) )
                 laAudiencia.doGame()
                 l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )
@@ -1122,7 +1201,9 @@ class MainMenu(Scene):
                     self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia ) )
                     if not cont:
-                        self.runScene(Ranking(self.game))
+                        self.runScene(Ranking(self.game, score=score))
+                        self.runScene(EnterHiscores(self.game, score))
+                        self.runScene(Hiscores(self.game))
                         break
                     else:
                         score = 0
