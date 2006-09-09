@@ -114,10 +114,12 @@ instead you must vanish the
 drugs to hide them 
 from the cops.""",
 """You got away clean, 
-and kept a lot of famous people out of jail. 
+and kept a lot of famous people
+out of jail. 
 
 You are going to Las Vegas now!!""",
-"""You go to jail charged with drug possession. 
+"""You go to jail charged with 
+drug possession. 
 And become RAUL's new girlfriend.""",
         "Skeletor",
         dict(tiempo_por_caracter=0.41, preferencia_precision=0.1)
