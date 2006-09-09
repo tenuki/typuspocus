@@ -38,12 +38,27 @@ params
 #   El lugar feliz     145      20      0.14    Mas complicado que la mierda
 #
 
-import people
+from people import Wardrobe, all_wardrobes
+
+fullydressed = {
+    "behind":0.5,
+    "body":1,
+    "hair":0.9,
+    "underware":0.95,
+    "tops":1,
+    "bottoms":1,
+    "shoes":1,
+    "jackets":1,
+    "hats":0.01,
+    "infront":0.85,
+}
+
 
 textosNiveles = [
     (
         "Teatro prestado",
-        [people.Wardrobe('audiencia/boy/', 'articles0.txt')],
+        [Wardrobe('audiencia/girl/', 'articles0.txt'), 
+         Wardrobe('audiencia/boy/', 'articles0.txt')],
         "Un conejo",
         "hocus pocus, disappear now.",
 """Cast the spell 
@@ -64,7 +79,10 @@ this demo level.""",
 
     (
         "Opera",
-        people.all_wardrobes, #"Gente vestida bien",
+        #"Gente vestida bien",
+        [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', fullydressed),
+         Wardrobe('audiencia/boy/', 'articles1.txt', fullydressed)],
+
         "La mascara del fantasma de la opera",
         "evanesco simulatio, phantasma spectaculum. initium capere.",
 """Dissapear the Phantom's mask, 
@@ -87,7 +105,7 @@ You get a job coding ruby on rails.""",
 
     (
         "Magic arena",
-        people.all_wardrobes, #""Jugadores de basquet o deportistas",
+        all_wardrobes, #""Jugadores de basquet o deportistas",
         "Zapatillas grandes.",
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
@@ -106,7 +124,7 @@ chases you around the stadium.""",
 
     (
         "Fiesta musical",
-        people.all_wardrobes, #""Hip-hoperos o darkies",
+        all_wardrobes, #""Hip-hoperos o darkies",
         "Alcohol, drogas, hacer un mix",
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
 """You were supposed to dissapear 
@@ -129,7 +147,7 @@ And become RAUL's new girlfriend.""",
 
     (
         "Las Vegas",
-        people.all_wardrobes, #""Gente adinerada",
+        all_wardrobes, #""Gente adinerada",
         "papeles y documentos",
         "factus taxus nulus, nilun actin, evaDus fiscus IRSus, whySaw Elvis Bellagium 11 ocean's cardus impustum disapiros ipsofactum.",
 """You get to Las Vegas 
@@ -152,7 +170,7 @@ all your money playing craps.""",
 
     (
         "Black magic",
-        people.all_wardrobes, #""Africanitos de la tribu",
+        all_wardrobes, #""Africanitos de la tribu",
         "Un muricélago, o algún animal raro",
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
@@ -171,7 +189,7 @@ casserole out of you.""",
 
     (
         "Tatooine",
-        people.all_wardrobes, #""Robots de star wars",
+        [Wardrobe('audiencia/boy/', 'articles6.txt')],
         "Aspiradora loca",
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
@@ -190,7 +208,7 @@ the venusians performed a
 
     (
         "Area 51",
-        people.all_wardrobes, #""Marcianitos y men in black",
+        all_wardrobes, #""Marcianitos y men in black",
         "un marcianito de roswell",
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
 """Your ship was running a pirated 
@@ -212,7 +230,7 @@ never leaving area 51""",
 
     (
         "Graveyard",
-        people.all_wardrobes, #""Esqueletos",
+        all_wardrobes, #""Esqueletos",
         "Estatuilla de Anubis",
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
@@ -236,7 +254,7 @@ come to need one.""",
 
     (
         "EL LUGAR FELIZ",
-        people.all_wardrobes, #""Todos desnudos",
+        all_wardrobes, #""Todos desnudos",
         "CUZCO la cabra",
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
@@ -255,7 +273,7 @@ to console you!!""",
         "Gandalf",
         dict(tiempo_por_caracter=0.14, preferencia_precision=0.5)
     ),
-]
+]#[1:]
 
 class Niveles:
     def __init__(self, keys, values):

@@ -72,44 +72,44 @@ class SampleScene(Scene):
         s = font.render(self.nombre,True,(0,255,255))
         self.game.screen.blit(s, (0,0))
 
+AnyPublic, PG18, Exibisionist = range(3)
+BehaviourDatas = {
+    AnyPublic: {
+        "behind":0.5, 
+        "body":0.995, 
+        "hair":0.9,
+        "underware":0.8,
+        "tops":1,
+        "bottoms":1,
+        "shoes":0.8,
+        "jackets":0.1,
+        "hats":0.1,
+        "infront":0.15},
+    PG18: {
+        "behind":0.5, 
+        "body":0.95, 
+        "hair":0.7,
+        "underware":0.4,
+        "tops":0.9,
+        "bottoms":0.9,
+        "shoes":0.8,
+        "jackets":0.7,
+        "hats":0.5,
+        "infront":0.3},
+    Exibisionist: {
+        "behind":0.8, 
+        "body":0.90, 
+        "hair":0.7,
+        "underware":0.2,
+        "tops":0.05,
+        "bottoms":0.05,
+        "shoes":0.7,
+        "jackets":0.3,
+        "hats":0.5,
+        "infront":0.3}
+    }
 
 class Individual:
-    AnyPublic, PG18, Exibisionist = range(3)
-    BehaviourDatas = {
-        AnyPublic: {
-            "behind":0.5, 
-            "body":0.95, 
-            "hair":0.7,
-            "underware":0.8,
-            "tops":1,
-            "bottoms":1,
-            "shoes":0.8,
-            "jackets":0.7,
-            "hats":0.5,
-            "infront":0.3},
-        PG18: {
-            "behind":0.5, 
-            "body":0.95, 
-            "hair":0.7,
-            "underware":0.4,
-            "tops":0.9,
-            "bottoms":0.9,
-            "shoes":0.8,
-            "jackets":0.7,
-            "hats":0.5,
-            "infront":0.3},
-        Exibisionist: {
-            "behind":0.8, 
-            "body":0.90, 
-            "hair":0.7,
-            "underware":0.2,
-            "tops":0.05,
-            "bottoms":0.05,
-            "shoes":0.7,
-            "jackets":0.3,
-            "hats":0.5,
-            "infront":0.3}
-        }
 
     def __init__(self, wardrobe):
         """Each person must have a wardrobe, Ha!"""
@@ -251,7 +251,8 @@ class Article:
     name=property(getName)
     
 class Wardrobe:
-    def __init__(self, path, articles_txt="articles.txt"):
+    def __init__(self, path, articles_txt="articles.txt", behaviour=BehaviourDatas[AnyPublic] ):
+        self.behaviour = behaviour
         self.articles_txt = articles_txt
         self.articles={}
         self.weights={}
@@ -287,9 +288,12 @@ class Wardrobe:
                 if probDef == -1: standardCount += 1
                 else:  absoluteTotal += probDef
             
-            #so the articles with standard probe will have
-            # (1-absoluteTotal)/standardCount probability eachone           
-            standardArtProb = (1.0-absoluteTotal)/standardCount
+            if standardCount != 0:
+                #so the articles with standard probe will have
+                # (1-absoluteTotal)/standardCount probability eachone           
+                standardArtProb = (1.0-absoluteTotal)/standardCount
+            else:
+                standardArtProb = 0
             
             #now, take articles with standard prob. and setup them
             # with anabsolute Probability!
@@ -370,7 +374,7 @@ def buildIndividual(level, wardrobes):
         wardrobes = all_wardrobes
     wd=random.choice(wardrobes)
     i= Individual(wd)
-    i.random(level=level+1)
+    i.random(level=level+1, clothinBehavior=wd.behaviour)
     return i
     
 if __name__ == "__main__":
