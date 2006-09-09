@@ -24,7 +24,7 @@ class Sounds:
         for s in ["tick1", "tick2", "suspenso"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
-        for s in ["bravo.wav", "bu.wav"]:
+        for s in ["bravo.wav", "bu.wav", "enter", "pasa"]:
             self.sonidoSuelto(s)
 
         self.music_groups  = [
