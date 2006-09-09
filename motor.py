@@ -49,8 +49,9 @@ class MainMotor(object):
             setattr(self, k, v)
             
         # Elegimos el objeto para voluntario en funcion de lo que dice levels.py
+        # sino tenemos objeto, no me queda otra que ir al azar
         if self.voluntario is None:
-            if hasattr(cosas, self.objeto):
+            if hasattr(self, "objeto") and hasattr(cosas, self.objeto):
                 self.voluntario = getattr(cosas, self.objeto)
             else:
                 self.voluntario = random.choice(cosas.all)
