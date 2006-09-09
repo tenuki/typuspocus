@@ -390,12 +390,12 @@ class BannerScene(Scene):
         Yellow = (255,255,160)
         posx=110
         widx=600
-        posy=140
-        widy=300 # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar.. 
+        posy=80
+        widy=385 # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar.. 
         introSurface = surface.subsurface(pygame.Rect(posx,posy,widx,widy))
         fontYsize = 30
                 
-        deltaY = (widy - (len(lines)*fontYsize))/2
+        deltaY = (widy - (len(lines)*fontYsize))/2+20
         nline=0        
         for line in lines:
             s = self.font.render(line, True, Yellow)
