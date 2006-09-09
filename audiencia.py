@@ -108,9 +108,10 @@ class IntroEngine(EnginePersonas):
         for y in range(filasy):
             for x in range(filasx):
                 ## inicializa c/p con inipos, destpos
-                if random.random() <= (level_number/5.0+0.1):
+                #if random.random() <= (level_number/5.0+0.1):
                 #    pass
                 #else:
+                if 1:
                     self.caminando += 1
                     dx = (y%2) * peoplex/2 - peoplex/2 + 6
                     dy = peopley/2 * y                    
