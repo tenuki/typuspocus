@@ -541,7 +541,7 @@ class Credits(Scene):
         ["SpellCaster","PabloZ"],
         ["Druid","FacundoBatista"],
         ["HarryPopperist","NubIs"],
-        ["Voodo","NarrowMind"],
+        ["Voodoo","nrm"],  #andres
         ]
     them = [
         ["Maniqueist", "stortroopers.com"],
