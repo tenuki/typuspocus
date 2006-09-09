@@ -59,7 +59,7 @@ in the "Paris Opera".""",
 """You are not even worthy of 
 this demo level.""",
         "Orko",
-        dict(tiempo_por_caracter=0.77, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.77, preferencia_precision=0.5)
     ),
 
     (
@@ -81,7 +81,7 @@ your father disinherited you.
 
 You get a job coding ruby on rails.""",
         "Lord Zedd",
-        dict(tiempo_por_caracter=0.47, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.47, preferencia_precision=0.5)
     ),
 
 
@@ -99,7 +99,7 @@ and you get invited to do your trick
 at the after party.""",
         "An Angry mob of the local fans chases you around the stadium.",
         "David Copperfield",
-        dict(tiempo_por_caracter=0.49, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.49, preferencia_precision=0.5)
     ),
 
 
@@ -122,7 +122,7 @@ You are going to Las Vegas now!!""",
 drug possession. 
 And become RAUL's new girlfriend.""",
         "Skeletor",
-        dict(tiempo_por_caracter=0.41, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.41, preferencia_precision=0.5)
     ),
 
 
@@ -144,7 +144,7 @@ They send you Africa where they'll never find you""",
 you got wasted and lost 
 all your money playing craps.""",
         "Mumm-Ra",
-        dict(tiempo_por_caracter=0.36, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.36, preferencia_precision=0.5)
     ),
 
 
@@ -164,7 +164,7 @@ you around the jungle.""",
 """The natives made a tasty
 casserole out of you.""",
         "Harry Potter",
-        dict(tiempo_por_caracter=0.34, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.34, preferencia_precision=0.5)
     ),
 
     (
@@ -183,7 +183,7 @@ in an individual spaceship.""",
 the venusians performed a 
 'light saber anal probing' on you.""",
         "Mandrake",
-        dict(tiempo_por_caracter=0.31, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.31, preferencia_precision=0.5)
     ),
 
     (
@@ -205,7 +205,7 @@ But you'll have a lot of time
 to practice since you are
 never leaving area 51""",
         "Harry Houdini",
-        dict(tiempo_por_caracter=0.27, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.27, preferencia_precision=0.5)
     ),
 
     (
@@ -228,7 +228,7 @@ you won't have problems
 finding a lawyer if you ever 
 come to need one.""",
         "Merlyn",
-        dict(tiempo_por_caracter=0.19, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.19, preferencia_precision=0.5)
     ),
 
 
@@ -251,7 +251,7 @@ Too bad you couldn't do it, but hey,
 a horde of naked angels offers 
 to console you!!""",
         "Gandalf",
-        dict(tiempo_por_caracter=0.14, preferencia_precision=0.1)
+        dict(tiempo_por_caracter=0.14, preferencia_precision=0.5)
     ),
 ]
 
