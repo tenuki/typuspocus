@@ -295,7 +295,7 @@ class Level(Scene):
             rate_sf = hollow.textOutline( self.ratefont, "%i%%"%(int(rate*100)),  color_tx, (0,0,0) )
             self.game.screen.blit( rate_sf, (770-rate_sf.get_width()/2, 35-rate_sf.get_height()/2))
         if self.state in [WON, LOST, TOMATO]:
-            im = font.render("[press any key]", True, (30,30,200))
+            im = hollow.textOutline(font, "[press any key]", (30,30,200), (255,255,255))
             ypos = 400
             xpos = (800-im.get_width())/2
             
