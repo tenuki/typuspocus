@@ -92,7 +92,7 @@ visitor's MVP lucky sneakers.""",
 
 """Thanks to your help the locals win
 and you get invited to do your trick at
-the after party.",
+the after party.""",
         "An Angry mob of the local fans chases you around the stadium.",
         "David Copperfield",
         dict(tiempo_por_caracter=0.49, preferencia_precision=0.1)
