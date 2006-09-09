@@ -183,7 +183,6 @@ class Level(Scene):
             if evt.type == KEYDOWN:
                     sounds.apagarSonidos()
                     self.end(PERDIO)
-                
     
     
     
@@ -319,14 +318,6 @@ def test():
     Foreground.convert()
     
 
-#class IntermediateScene(Scene):
-#    def update(self):
-#        self.audiencia.engine.update()
-#        self.game.screen.fill((0,0,0))
-#        surface = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
-#        self.audiencia.render(surface, abs(self.calor)*100)
-#        surface.blit(self.fg, (0,0))
-                       
 class LevelIntro(Scene):
     def init(self, level_number, level_name, audiencia):
         test()
@@ -340,17 +331,14 @@ class LevelIntro(Scene):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
         self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
-        
         self.audiencia.render(self.background, 100) #abs(self.calor)*100)
         self.background.blit(Foreground, (0,0))
-
         #self.game.screen.blit(self.background, (0,0))
-
         self.game.screen.blit(self.overlay, (0,0))
-        s = self.font.render(self.level_name, True, (255,255,255))
-        self.game.screen.blit(s, (100,250))
-        s = self.font.render("Level "+self.level_number, True, (255,255,255))
-        self.background.blit(s, (100,350))
+        #s = self.font.render(self.level_name, True, (255,255,255))
+        #self.game.screen.blit(s, (100,250))
+        #s = self.font.render("Level "+self.level_number, True, (255,255,255))
+        #self.background.blit(s, (100,350))
         
             
     def event(self, evt):

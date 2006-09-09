@@ -21,6 +21,8 @@ filasx, filasy = (800/peoplex,600/peopley)
 MAXPUFFING = 10
 MAXTOMATEANDO = 20
 
+pnormal, pcaminando = range(2)
+
 class Persona:
     def __init__(self, (dx, dy), level_number):
         self.position = (dx,dy)
@@ -29,17 +31,22 @@ class Persona:
         self.state = people.iStates[0]
         self.alive = False
         self.deltay = 0
+        self.estado = pnormal
         
     def subirse(self):
         self.deltay = - peopley/4
     def sentarse(self):
         self.deltay = 0
-    def camina(self):
+    def caminar(self):
         self.deltay = - peopley/6
 
-    def alive(self):
-        self.alive = True
-                        
+    def goOut(self):
+        self.xdir = - self.xdir
+        self.velocidad = - self.velocidad
+        self.inipos, self.destpos = self.destpos, self.inipos
+        self.status=pcaminando        
+        self.start = time.time()
+                                
     def render(self, surface, porcentaje):
         if self.alive and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
@@ -47,7 +54,6 @@ class Persona:
         else:
             gx, gy = 0,0
         dx, dy = self.position
-        
         #get random state
         surface.blit(self.images[0], (dx+gx, dy+gy+self.deltay))
 
@@ -77,9 +83,12 @@ class Fila:
                 persona.render(surface, porcentaje)
 
 class EnginePersonas:
-    def __init__(self, peopleSet):
-        pass
-
+    def __init__(self, peopleSet): pass
+    def update(self): pass
+    def finish(self): pass
+    def setCalor(self, calor):
+        self.calor = calor
+        
 class IntroEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
@@ -95,13 +104,12 @@ class IntroEngine(EnginePersonas):
 
                     final = (x*peoplex+dx,dy)
                     if x < filasx/2:
-                        tx = dx
+                        tx = dx-peoplex
                     else:
-                        tx = filasx*peoplex+dx
-                    #rtx = random.choice( [0+dx, filasx*peoplex+dx] )
-                    inicial = (tx, dy )
+                        tx = (filasx+1)*peoplex+dx
+                    inicial = (tx, dy)
                     p = Persona( inicial, level_number)
-                    p.camina()
+                    p.caminar()
                     p.destpos = final
                     p.inipos = inicial
                     v = (p.destpos[0]-tx)
@@ -142,7 +150,7 @@ class GOEngine(EnginePersonas):
         self.ps = peopleSet
         for persons in self.ps.values():
             for p in persons:
-                p.camina()
+                p.caminar()
                 p.xdir = - p.xdir
                 p.velocidad = -p.velocidad
                 p.inipos, p.destpos = p.destpos, p.inipos
@@ -169,11 +177,36 @@ class GOEngine(EnginePersonas):
 class GameEngine:
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
+        self.calor = 0
+        self.seVan = []
+    def setCalor(self, calor): self.calor = calor
     def finish(self):
         pass        
     def update(self):
-        pass
-    
+        if abs(self.calor)<0.08 and random.random()<0.01:
+            #elegir uno
+            ops = filter(lambda ppl:len(ppl)!=0 ,self.ps.values() )
+            if len(ops)>0:
+                l = random.choice(ops)
+                p=random.choice(l)
+                print "camina ",p
+                p.subirse()
+                #fuiste..
+                p.goOut()
+                self.seVan.append(p)
+                
+        t=time.time()
+        for p in self.seVan:
+            dt=t-p.start
+            npx = p.inipos[0] + p.velocidad * dt
+            x,y = p.destpos
+            if p.xdir>0 and (npx<p.destpos[0]):
+                x = npx
+            elif p.xdir<0 and (npx>p.destpos[0]):
+                x = npx
+            p.position = (x,y)
+            if p.position == p.destpos:
+                p.sentarse()
 
 class Audiencia:
     def __init__(self, level_number):
@@ -211,7 +244,9 @@ class Audiencia:
     def render(self, surface, porcentaje):
         for fila in self.filas:
             fila.render(surface, porcentaje)
-
+    def setCalor(self, calor):
+        self.engine.setCalor(calor)
+        
 class AudienciaScene(Scene):
     def init(self, level_number, audiencia):
         self.finalizar = False
