@@ -95,7 +95,7 @@ enpelotas = {
 
 textosNiveles = [
     (
-        "Teatro prestado",
+        "Lousy Pub",
         [Wardrobe('audiencia/girl/', 'articles0.txt'), 
          Wardrobe('audiencia/boy/', 'articles0.txt')],
         "conejo2",     # conejo
@@ -117,13 +117,13 @@ this demo level.""",
     ),
 
     (
-        "Opera",
+        "Paris Opera",
         #"Gente vestida bien",
         [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', fullydressed),
          Wardrobe('audiencia/boy/', 'articles1.txt', fullydressed)],
         "mask",  # La mascara del fantasma de la opera
         "evanesco simulatio, phantasma spectaculum. initium capere.",
-"""Dissapear the Phantom's mask, 
+"""Disappear the Phantom's mask, 
 
 that will embarass him and 
 make him leave.""",
@@ -147,7 +147,7 @@ You get a job coding ruby on rails.""",
         "zapatillas", # Zapatillas grandes
         "luckyus calceus sneakerus, evanesco consagrus, valius playerus, propugnator turma championus.",
 """The locals are loosing by 12,
-you must dissapear the
+you must disappear the
 visitor's MVP lucky sneakers.""",
 
 """Thanks to your help the locals win
@@ -161,12 +161,12 @@ chases you around the stadium.""",
 
 
     (
-        "Fiesta musical",
+        "Goth party",
         #""Hip-hoperos o darkies",
         [Wardrobe('audiencia/goth/', 'articles3.txt', gothdressed), ],
         "vicios", # Alcohol, drogas, hacer un mix
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
-"""You were supposed to dissapear 
+"""You were supposed to disappear 
 a milli vanilli cd, 
 instead you must vanish the 
 drugs to hide them 
@@ -209,7 +209,9 @@ all your money playing craps.""",
 
     (
         "Black magic",
-        all_wardrobes, #""Africanitos de la tribu",
+        #""Africanitos de la tribu",
+        [Wardrobe('audiencia/girl/', 'articles5.txt', fullydressed),
+         Wardrobe('audiencia/boy/', 'articles5.txt', fullydressed)],
         "mucielago", # Un muricélago, o algún animal raro
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
@@ -217,7 +219,7 @@ in africa, they find out
 you are a wizard and want 
 you to heal their ill 
 sacred animal""",
-"""You dissapeared the sacred animal. 
+"""You disappeared the sacred animal. 
 The angry natives start chasing 
 you around the jungle.""",
 """The natives made a tasty
@@ -274,7 +276,7 @@ the venusians performed a
 """Your ship was running a pirated 
 OS and crashed in new mexico. 
 The FBI captures you and asks you 
-to dissapear some evidence of 
+to disappear some evidence of 
 the alien landings.""",
 """Now that the evidence exists 
 only on your memory,
@@ -306,7 +308,7 @@ never leaving area 51""",
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
 you can escape to heaven by 
-dissapearing Anubis. 
+disappearing Anubis. 
 
 All the dead gather around to watch...""",
 """You did it!!! 
@@ -324,14 +326,14 @@ come to need one.""",
 
 
     (
-        "EL LUGAR FELIZ",
+        "Hugh's Place",
         #""Todos desnudos",
         [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', enpelotas), 
          Wardrobe('audiencia/boy/', 'articles9.txt', enpelotas)],
         "cabra", # CUZCO la cabra
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
-everything that dissapears here goes 
+everything that disappears here goes 
 back to earth, so you are going to 
 revive a lovely goat now!""",
 """Congratulations! 
