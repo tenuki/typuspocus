@@ -397,7 +397,7 @@ class AudienciaScene(Scene):
                 imagen = pygame.transform.rotozoom(self.tomate,rotacion,scale)
 
                 p = self.tomateMB.getAt( 1.0-0.1*self.tomateando )
-                #surface.blit(imagen, imagen.get_rect(center=p))
+                surface.blit(imagen, imagen.get_rect(center=p))
         else:
             surface.blit(self.mano, self.mano.get_rect(center=self.varitaje.nextpos()).move(*DELTAVARITA))
 
