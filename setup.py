@@ -35,8 +35,24 @@ except ImportError:
 try:
     import py2exe
 
+
+    excludes = [ "_xmlplus" ]
+    includes = [
+        "xml", "xml.dom", "xml.dom.minidom"
+    ]
+
+    options = {
+        "py2exe": {
+            #"compressed": 1,
+            #"optimize": 2,
+            "excludes": excludes,
+            #"includes": includes,
+        }
+    }
+
     data_files = [ (x, [os.path.join(x, e) for e in z]) for d in ("audiencia", "escenario", "sounds", "music") for x,y,z in os.walk(d) if not ".svn" in x ] + [ "readme.txt"]
-    setup(console=["game.py"], data_files = data_files)
+
+    setup( console=["game.py"], data_files=data_files, options=options)
 
 except ImportError:
     pass
