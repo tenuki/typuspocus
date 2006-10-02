@@ -62,6 +62,11 @@ class HiScoreData( Singleton ):
             if not l.isalnum():
                 name = name.replace(l,'_')
 
+        print 'addHiScore(%s,%s,%s)' % (score,name,ipaddr)
+        f = file('server.log','a')
+        f.write('%s - addHiScore(%s,%s,%s)\n' % (time.ctime(),score,name,ipaddr) )
+        f.close()
+
         real_when = -time.time()
         self.hiScores.append( (int(score),real_when,name,ipaddr) )
         self.hiScores.sort()
@@ -74,6 +79,7 @@ class HiScoreData( Singleton ):
     def listHiScores( self ):
         # only return the 50 first records
         return self.hiScores[:50]
+#        return self.hiScores
 
 def Handle( x = Singleton ):
     try:
@@ -132,6 +138,11 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
         self.wfile.write('\n' + linestr)
 
     def hs_listHiScoresInXML(self):
+        print "listHiScoresInXML()"
+
+        f = file('server.log','a')
+        f.write('%s - listHiScoresInXML() - %s\n' % (time.ctime(),self.client_address[0]) )
+        f.close()
 
         data = Handle(HiScoreData)
         linestr = '<?xml version="1.0"?>\n'
@@ -147,9 +158,9 @@ class HiScoresHandler( SimpleHTTPServer.SimpleHTTPRequestHandler ):
                     if j % len_i == 1:
                         linestr +="\t\t<when>%f</when>\n" % -i[j]
                     if j % len_i == 2:
-                        linestr +="\t\t<name>%s</name>\n" % i[j]
-                    if j % len_i == 3:
                         linestr +="\t\t<ipaddress>%s</ipaddress>\n" % i[j]
+                    if j % len_i == 3:
+                        linestr +="\t\t<name>%s</name>\n" % i[j]
             except Exception, e:
                 print 'Error:'
                 print str(e)
