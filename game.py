@@ -12,8 +12,10 @@ import time, random
 from levels import niveles
 import countries
 import hiscore_client
-DEBUG = 0
+import internalocal
+import textwrap
 
+DEBUG = 0
 CLOCK_TICK = pygame.USEREVENT
 
 class Timer:
@@ -100,7 +102,7 @@ class Alarm:
         self.armed = False
         self.start = None
         font = pygame.font.Font("escenario/MagicSchoolOne.ttf",50)
-        self.message = hollow.textOutline(font, "Start typing the spell!", (230,100,100), (0,0,0))
+        self.message = hollow.textOutline(font, _("Start typing the spell!"), (230,100,100), (0,0,0))
         self.last_blink = None
         self.blink_state = True
         self.last_sound = None
@@ -307,10 +309,10 @@ class Level(Scene):
                     
                     self.game.screen.blit( i, (xpos, ypos) )
                     xpos += i.get_width()
-                    cursor_img = self.cursorfont.render("^", True, (255,255,255))
-                    self.game.screen.blit(cursor_img, 
-                                          (cursor_xpos,ypos+self.line_manager.height)
-                                          )                    
+                cursor_img = self.cursorfont.render("^", True, (255,255,255))
+                self.game.screen.blit(cursor_img, 
+                                      (cursor_xpos,ypos+self.line_manager.height)
+                                      )                    
             else:
                 # paint forward
                 xpos = 400
@@ -364,13 +366,13 @@ class Level(Scene):
 
             # y el score
             score = self.motor.score
-            score_sf = hollow.textOutline(self.ratefont, "Score: %3.1f"%score, (0,0,255), (0,0,0))
+            score_sf = hollow.textOutline(self.ratefont, _("Score: %3.1f")%score, (0,0,255), (0,0,0))
             self.game.screen.blit( score_sf, (790-score_sf.get_width(), 15-score_sf.get_height()/2))
             
             
             self.alarm.blit(self.game.screen)
         if self.state in [WON, LOST, TOMATO]:
-            im = hollow.textOutline(font, "[press any key]", (30,30,200), (255,255,255))
+            im = hollow.textOutline(font, _("[press any key]"), (30,30,200), (255,255,255))
             ypos = 400
             xpos = (800-im.get_width())/2
             
@@ -456,9 +458,9 @@ class LevelSuccess(BannerScene):
         else:
             self.font =  pygame.font.Font("escenario/VeraMono.ttf",30)
             self.renderOn(self.game.screen, 
-                ["Level Completed","",
-                "Points accumulated:"+str(self.levelscore),"", 
-                "New Score:"+str(self.score) ])
+                [_("Level Completed"),"",
+                _("Points accumulated:")+str(self.levelscore),"", 
+                _("New Score:")+str(self.score) ])
                 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -485,9 +487,9 @@ class LevelFailSuccess(LevelSuccess):
         else:
             self.font =  pygame.font.Font("escenario/VeraMono.ttf",30)
             self.renderOn(self.game.screen, 
-                ["Level Completed","",
-                "Points accumulated:"+str(self.levelscore),"", 
-                "New Score:"+str(self.score) ])
+                [_("Level Completed"),"",
+                _("Points accumulated:")+str(self.levelscore),"", 
+                _("New Score:")+str(self.score) ])
                 
 class GameOver(Scene):
     def init(self, score, laaudiencia, level):
@@ -496,7 +498,7 @@ class GameOver(Scene):
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
-                 ["No", "Yes",],
+                 [_("No"), _("Yes")],
                  margin = -40,
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
@@ -795,7 +797,7 @@ class Credits(Scene):
             self.game.screen.blit(self.hand_img, self.hand_pos )
         
 class Ranking(Scene):
-    rankings = ["Orko","Lord Zedd",  "David Copperfield", "Harry Potter","Skeletor", "Mum-ra",  "Harry Houdini", "Mandrake", "Gandalf", "Merlin",  ]
+    rankings = ["Orko", "Lord Zedd", "David Copperfield", "Harry Potter", "Skeletor", "Mum-ra", "Harry Houdini", "Mandrake", "Gandalf", "Merlin"]
     stages = [10,20,40,60,80,100,120,140,200]
     def init(self, rank=None, score=None):
         
@@ -839,11 +841,11 @@ class Ranking(Scene):
                     break
             ypos -= 35
             
-        yri = self.font.render("Your ranking is:", True, (255,248,144))
+        yri = self.font.render(_("Your ranking is:"), True, (255,248,144))
 #        print "rank", self.rank
         yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
         
-        ysi = self.font.render("Score", True, (255,248,144))
+        ysi = self.font.render(_("Score"), True, (255,248,144))
         ys = self.font3.render(str(self.score), True,  (255,254,232))
         
         if self.paint_info:
@@ -865,8 +867,8 @@ class Locked(Scene):
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.Font("escenario/MagicSchoolOne.ttf",60)
-        sf2 = hollow.textOutline(font, "You must first finish your career",(255,254,232), (0,0,0))
-        sf3 = hollow.textOutline(font, "before touring the world",(255,254,232), (0,0,0))
+        sf2 = hollow.textOutline(font, _("You must first finish your career"),(255,254,232), (0,0,0))
+        sf3 = hollow.textOutline(font, _("before touring the world"),(255,254,232), (0,0,0))
             
         self.game.screen.blit(sf2, (400-sf2.get_width()/2, 350))
         self.game.screen.blit(sf3, (400-sf3.get_width()/2, 420))
@@ -955,13 +957,13 @@ class EnterHiscores(Scene):
                     sounds.pasa()
                 
 class GameIntro(Scene):
-    sections = [
-        ["My son,"," this will be a ","challenging day for you."],
-        ["You have always been","the black sheep of","our great family."],
-        ["But your old man,","the Great Grossini, is","not what he used to be."],
-        ["I'm suffering from","Flaccid Wand, so tonite","you will replace me."],
-        ["Farewell!"],
-        ]
+    sections = [textwrap.wrap(x, 23) for x in (
+        _("My son, this will be a challenging day for you."),
+        _("You have always been the black sheep of our great family."),
+        _("But your old man, the Great Grossini, is not what he used to be."),
+        _("I'm suffering from Flaccid Wand, so tonite you will replace me."),
+        _("Farewell!"),
+        )]
         
     lines_start = [5,10,17.5,23.5,26,0]
     
@@ -1122,11 +1124,11 @@ class GameIntro(Scene):
             
 class TourLevel:
     def __init__(self, country):
-        self.historyintro = "Touring in "+country
-        self.titulo = "World Tour"
-        self.nombre = "World Tour"
-        self.historybad = "You are deported from\n%s"%country
-        self.historygood = "The people at\n%s\nlove you!"%country
+        self.historyintro = _("Touring in ")+country
+        self.titulo = _("World Tour")
+        self.nombre = _("World Tour")
+        self.historybad = _("You are deported from\n%s")%country
+        self.historygood = _("The people at\n%s\nlove you!")%country
     
 class MainMenu(Scene):
     def init(self):
@@ -1135,7 +1137,7 @@ class MainMenu(Scene):
         self.menu = Menu(
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",50),
                  pygame.font.Font("escenario/MagicSchoolOne.ttf",70),
-                 ["Career", "World Tour", "Hiscores", "Credits", "Quit"],
+                 [_("Career"), _("World Tour"), _("Hiscores"), _("Credits"), _("Quit")],
                  margin = -40,
                  normal_color = (173,148,194),
                  selected_color = (244,232,255),
@@ -1222,7 +1224,6 @@ class MainMenu(Scene):
                     #.historyintro
                     #.historygood
                     #.historybad
-                    #.titulo
                     #.params
                 else:
                     self.runScene(Ranking(self.game, score=score))
@@ -1264,7 +1265,7 @@ class MainMenu(Scene):
                 laAudiencia = audiencia.Audiencia(level_number=count)
                 params = dict(tiempo_por_caracter=1.0/(count+3))
                 current_level = TourLevel(countries.getCountry())
-                self.runScene( LevelIntro( self.game, str(count), "World Tour" , laAudiencia, current_level) )
+                self.runScene( LevelIntro( self.game, str(count), _("World Tour") , laAudiencia, current_level) )
                 laAudiencia.doGame()
                 l =  Level(self.game, count, MainMotor(**params), laAudiencia) 
                 result = self.runScene( l )

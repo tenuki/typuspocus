@@ -1,0 +1,129 @@
+# This is the Typus Pocus POT file
+# Copyright (C) PyAr 2007
+# This file is distributed under the same license as the PACKAGE package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-10 01:03-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: game.py:105
+msgid "Start typing the spell!"
+msgstr "¡Comienza a tipear el hechizo!"
+
+#: game.py:369
+#, python-format
+msgid "Score: %3.1f"
+msgstr "Puntaje: %3.1f"
+
+#: game.py:375
+msgid "[press any key]"
+msgstr "[apreta cualquier tecla]"
+
+#: game.py:461 game.py:490
+msgid "Level Completed"
+msgstr "Nivel Completado"
+
+#: game.py:462 game.py:491
+msgid "Points accumulated:"
+msgstr "Puntos acumulados:"
+
+#: game.py:463 game.py:492
+msgid "New Score:"
+msgstr "Nuevo Puntaje:"
+
+#: game.py:501
+msgid "No"
+msgstr "No"
+
+#: game.py:501
+msgid "Yes"
+msgstr "Sí"
+
+#: game.py:844
+msgid "Your ranking is:"
+msgstr "Tu posición es:"
+
+#: game.py:848
+msgid "Score"
+msgstr "Puntaje"
+
+#: game.py:870
+msgid "You must first finish your career"
+msgstr "Primero debes terminar la carrera"
+
+#: game.py:871
+msgid "before touring the world"
+msgstr "antes de girar por el mundo"
+
+#: game.py:961
+msgid "My son, this will be a challenging day for you."
+msgstr "Hijo mio, este será un día clave para ti."
+
+#: game.py:962
+msgid "You have always been the black sheep of our great family."
+msgstr "Siempre has sido la oveja negra de nuestra gran familia."
+
+#: game.py:963
+msgid "But your old man, the Great Grossini, is not what he used to be."
+msgstr "Pero tu padre, el Gran Grossini, no es lo que solía ser."
+
+#: game.py:964
+msgid "I'm suffering from Flaccid Wand, so tonite you will replace me."
+msgstr "Estoy sufriendo de Varita Flácida, entonces esta noche tú me reemplazarás."
+
+#: game.py:965
+msgid "Farewell!"
+msgstr "¡Adiós!"
+
+#: game.py:1127
+msgid "Touring in "
+msgstr "Recorriendo la"
+
+#: game.py:1128 game.py:1129 game.py:1142 game.py:1270
+msgid "World Tour"
+msgstr "Gira Mundial"
+
+#: game.py:1130
+#, python-format
+msgid ""
+"You are deported from\n"
+"%s"
+msgstr ""
+"Has sido deportado desde\n"
+"%s"
+
+#: game.py:1131
+#, python-format
+msgid ""
+"The people at\n"
+"%s\n"
+"love you!"
+msgstr ""
+"La gente en\n"
+"%s\n"
+"te ama!"
+
+#: game.py:1137 game.py:1142
+msgid "Credits"
+msgstr "Créditos"
+
+#: game.py:1142
+msgid "Career"
+msgstr "Carrera"
+
+#: game.py:1142
+msgid "Hiscores"
+msgstr "Puntajes"
+
+#: game.py:1142
+msgid "Quit"
+msgstr "Salir"

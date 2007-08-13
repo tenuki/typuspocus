@@ -72,9 +72,8 @@ class SampleScene(Scene):
         s = font.render(self.nombre,True,(0,255,255))
         self.game.screen.blit(s, (0,0))
 
-AnyPublic, PG18, Exibisionist = range(3)
 BehaviourDatas = {
-    AnyPublic: {
+    "anypublic": {
         "behind":0.5, 
         "body":0.999, 
         "hair":0.9,
@@ -84,30 +83,100 @@ BehaviourDatas = {
         "shoes":1,
         "jackets":0.1,
         "hats":0.1,
-        "infront":0.15},
-    PG18: {
-        "behind":0.5, 
-        "body":0.95, 
-        "hair":0.7,
-        "underware":0.4,
-        "tops":0.9,
-        "bottoms":0.9,
-        "shoes":0.8,
-        "jackets":0.7,
-        "hats":0.5,
-        "infront":0.3},
-    Exibisionist: {
-        "behind":0.8, 
-        "body":0.90, 
-        "hair":0.7,
-        "underware":0.2,
-        "tops":0.05,
-        "bottoms":0.05,
+        "infront":0.15,
+    },
+
+    "fullydressed": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.9,
+        "underware":0.95,
+        "tops":1,
+        "bottoms":1,
+        "shoes":1,
+        "jackets":1,
+        "hats":0.01,
+        "infront":0.85,
+    },
+    
+    "gothdressed": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.95,
+        "underware":0.95,
+        "tops":0.5,
+        "bottoms":0.5,
         "shoes":0.7,
         "jackets":0.3,
-        "hats":0.5,
-        "infront":0.3}
-    }
+        "hats":0.3,
+        "infront":0.40,
+    },
+    
+    "enmascarados": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.9,
+        "underware":0.95,
+        "tops":1,
+        "bottoms":1,
+        "shoes":1,
+        "jackets":1,
+        "hats":0.70,
+        "infront":0.85,
+    },
+    
+    "enpelotas": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.99,
+        "underware":0.65,
+        "tops":0,
+        "bottoms":0,
+        "shoes":0,
+        "jackets":0,
+        "hats":0.01,
+        "infront":0.12,
+    },
+
+    "alien_alien": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.6,
+        "underware":0.30,
+        "tops":0.3,
+        "bottoms":0.3,
+        "shoes":0.3,
+        "jackets":0.05,
+        "hats":0.01,
+        "infront":0.85,
+    },
+
+    "alien_mib": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.90,
+        "underware":0.30,
+        "tops":1,
+        "bottoms":1,
+        "shoes":1,
+        "jackets":1,
+        "hats":0.01,
+        "infront":1,
+    },
+
+    "esqueletos": {
+        "behind":0.5,
+        "body":1,
+        "hair":0.6,
+        "underware":0.30,
+        "tops":0.3,
+        "bottoms":0.3,
+        "shoes":0.3,
+        "jackets":0.05,
+        "hats":0.01,
+        "infront":0.85,
+    },
+}
 
 class Individual:
 
@@ -116,7 +185,10 @@ class Individual:
         self.wardrobe=wardrobe
         self.layers={}
     
-    def random(self, level=1, clothinBehavior=BehaviourDatas[AnyPublic]):
+    def random(self, level=1, clothinBehavior="anypublic"):
+        # let's get the clothing behaviour 
+        clothinBehavior=BehaviourDatas[clothinBehavior]
+
         #choose some layers by it's probe
         sl=[]
         for layer in self.wardrobe.getLayers():
@@ -251,8 +323,9 @@ class Article:
     name=property(getName)
     
 class Wardrobe:
-    def __init__(self, path, articles_txt="articles.txt", behaviour=BehaviourDatas[AnyPublic] ):
-        self.behaviour = behaviour
+    def __init__(self, path, articles_txt="articles.txt", behaviour="anypublic"):
+        self.behaviourname = behaviour
+        self.behaviour = BehaviourDatas[behaviour]
         self.articles_txt = articles_txt
         self.articles={}
         self.weights={}
@@ -373,8 +446,8 @@ def buildIndividual(level, wardrobes):
     if wardrobes is None:
         wardrobes = all_wardrobes
     wd=random.choice(wardrobes)
-    i= Individual(wd)
-    i.random(level=level+1, clothinBehavior=wd.behaviour)
+    i = Individual(wd)
+    i.random(level=level+1, clothinBehavior=wd.behaviourname)
     return i
     
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+Se genera el .pot:
+  xgettext *.py --output=locale/core.pot
+
+Mergeamos el nuevo .pot con el archivo traducido (si es la primera vez, sólo lo copiamos):
+  cd locale
+  msgmerge core_es.po core.pot > es.tmp
+  mv es.tmp core_es.po
+
+Traducimos el core_es.po
+
+Compilamos el .po a .mo:
+  msgfmt core_es.po
+  mv messages.mo es/LC_MESSAGES/core.mo
+ 

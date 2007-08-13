@@ -1,4 +1,7 @@
 # -*- coding: iso-8859-1 -*-
+
+from internalocal import *
+
 claves = """
 nombre
 audiencia
@@ -7,7 +10,6 @@ hechizo
 historyintro
 historygood
 historybad
-titulo
 params
 """.strip().split("\n")
 
@@ -40,58 +42,7 @@ params
 
 from people import Wardrobe, all_wardrobes
 
-fullydressed = {
-    "behind":0.5,
-    "body":1,
-    "hair":0.9,
-    "underware":0.95,
-    "tops":1,
-    "bottoms":1,
-    "shoes":1,
-    "jackets":1,
-    "hats":0.01,
-    "infront":0.85,
-}
-
-gothdressed = {
-    "behind":0.5,
-    "body":1,
-    "hair":0.95,
-    "underware":0.95,
-    "tops":0.5,
-    "bottoms":0.5,
-    "shoes":0.7,
-    "jackets":0.3,
-    "hats":0.3,
-    "infront":0.40,
-}
-
-enmascarados = {
-    "behind":0.5,
-    "body":1,
-    "hair":0.9,
-    "underware":0.95,
-    "tops":1,
-    "bottoms":1,
-    "shoes":1,
-    "jackets":1,
-    "hats":0.70,
-    "infront":0.85,
-}
-
-enpelotas = {
-    "behind":0.5,
-    "body":1,
-    "hair":0.99,
-    "underware":0.65,
-    "tops":0,
-    "bottoms":0,
-    "shoes":0,
-    "jackets":0,
-    "hats":0.01,
-    "infront":0.12,
-}
-
+# FIXME!!!! Falta internacionalizar, porque estos textos van a cambiar todos...
 
 textosNiveles = [
     (
@@ -112,15 +63,14 @@ You receive an offer to perform
 in the "Paris Opera".""",
 """You are not even worthy of 
 this demo level.""",
-        "Orko",
         dict(tiempo_por_caracter=0.77, preferencia_precision=0.5)
     ),
 
     (
         "Paris Opera",
         #"Gente vestida bien",
-        [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', fullydressed),
-         Wardrobe('audiencia/boy/', 'articles1.txt', fullydressed)],
+        [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', "fullydressed"),
+         Wardrobe('audiencia/boy/', 'articles1.txt', "fullydressed")],
         "mask",  # La mascara del fantasma de la opera
         "evanesco simulatio, phantasma spectaculum. initium capere.",
 """Disappear the Phantom's mask, 
@@ -136,7 +86,6 @@ basquetball finals.""",
 your father disinherited you. 
 
 You get a job coding ruby on rails.""",
-        "Lord Zedd",
         dict(tiempo_por_caracter=0.47, preferencia_precision=0.5)
     ),
 
@@ -155,7 +104,6 @@ and you get invited to do your trick
 at the after party.""",
 """An Angry mob of the local fans
 chases you around the stadium.""",
-        "David Copperfield",
         dict(tiempo_por_caracter=0.49, preferencia_precision=0.5)
     ),
 
@@ -163,7 +111,7 @@ chases you around the stadium.""",
     (
         "Goth party",
         #""Hip-hoperos o darkies",
-        [Wardrobe('audiencia/goth/', 'articles3.txt', gothdressed), ],
+        [Wardrobe('audiencia/goth/', 'articles3.txt', "gothdressed"), ],
         "vicios", # Alcohol, drogas, hacer un mix
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
 """You were supposed to disappear 
@@ -179,7 +127,6 @@ You are going to Las Vegas now!!""",
 """You go to jail charged with 
 drug possession. 
 And become RAUL's new girlfriend.""",
-        "Skeletor",
         dict(tiempo_por_caracter=0.41, preferencia_precision=0.5)
     ),
 
@@ -202,7 +149,6 @@ they'll never find you""",
 """Your act was a total failure, 
 you got wasted and lost 
 all your money playing craps.""",
-        "Mumm-Ra",
         dict(tiempo_por_caracter=0.36, preferencia_precision=0.5)
     ),
 
@@ -210,8 +156,8 @@ all your money playing craps.""",
     (
         "Black magic",
         #""Africanitos de la tribu",
-        [Wardrobe('audiencia/girl/', 'articles5.txt', fullydressed),
-         Wardrobe('audiencia/boy/', 'articles5.txt', fullydressed)],
+        [Wardrobe('audiencia/girl/', 'articles5.txt', "fullydressed"),
+         Wardrobe('audiencia/boy/', 'articles5.txt', "fullydressed")],
         "mucielago", # Un muricélago, o algún animal raro
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
 """You go to live with a tribe 
@@ -224,13 +170,12 @@ The angry natives start chasing
 you around the jungle.""",
 """The natives made a tasty
 casserole out of you.""",
-        "Harry Potter",
         dict(tiempo_por_caracter=0.34, preferencia_precision=0.5)
     ),
 
     (
         "Tatooine",
-        [Wardrobe('audiencia/boy/', 'articles6.txt', enmascarados)],
+        [Wardrobe('audiencia/boy/', 'articles6.txt', "enmascarados")],
         "aspiradora", # Aspiradora loca
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
 """While running away from the natives, 
@@ -243,35 +188,14 @@ in an individual spaceship.""",
 """Because you were unwilling to cooperate, 
 the venusians performed a 
 'light saber anal probing' on you.""",
-        "Mandrake",
         dict(tiempo_por_caracter=0.31, preferencia_precision=0.5)
     ),
 
     (
         "Area 51",
-        [Wardrobe('audiencia/boy/', 'articles_alien.txt', {
-    "behind":0.5,
-    "body":1,
-    "hair":0.6,
-    "underware":0.30,
-    "tops":0.3,
-    "bottoms":0.3,
-    "shoes":0.3,
-    "jackets":0.05,
-    "hats":0.01,
-    "infront":0.85,
-}), Wardrobe('audiencia/boy/', 'articles_mib.txt', {
-    "behind":0.5,
-    "body":1,
-    "hair":0.90,
-    "underware":0.30,
-    "tops":1,
-    "bottoms":1,
-    "shoes":1,
-    "jackets":1,
-    "hats":0.01,
-    "infront":1,
-})],"alien", # un marcianito de roswell
+        [Wardrobe('audiencia/boy/', 'articles_alien.txt', "alien_alien"),
+         Wardrobe('audiencia/boy/', 'articles_mib.txt', "alien_mib")],
+        "alien", # un marcianito de roswell
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
 """Your ship was running a pirated 
 OS and crashed in new mexico. 
@@ -286,24 +210,12 @@ by putting a cap in your head""",
 But you'll have a lot of time 
 to practice since you are
 never leaving area 51""",
-        "Harry Houdini",
         dict(tiempo_por_caracter=0.27, preferencia_precision=0.5)
     ),
 
     (
         "Graveyard",
-       [Wardrobe('audiencia/boy/', 'articles8.txt', {
-    "behind":0.5,
-    "body":1,
-    "hair":0.6,
-    "underware":0.30,
-    "tops":0.3,
-    "bottoms":0.3,
-    "shoes":0.3,
-    "jackets":0.05,
-    "hats":0.01,
-    "infront":0.85,
-})], #""Esqueletos",
+        [Wardrobe('audiencia/boy/', 'articles8.txt', "esqueletos")],
         "anubis", # Estatuilla de Anubis
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
 """Ok, you died, and went to hell, 
@@ -320,7 +232,6 @@ love each other.""",
 you won't have problems 
 finding a lawyer if you ever 
 come to need one.""",
-        "Merlyn",
         dict(tiempo_por_caracter=0.19, preferencia_precision=0.5)
     ),
 
@@ -328,8 +239,8 @@ come to need one.""",
     (
         "Hugh's Place",
         #""Todos desnudos",
-        [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', enpelotas), 
-         Wardrobe('audiencia/boy/', 'articles9.txt', enpelotas)],
+        [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', "enpelotas"), 
+         Wardrobe('audiencia/boy/', 'articles9.txt', "enpelotas")],
         "cabra", # CUZCO la cabra
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
 """Here we are, it's beautiful, 
@@ -345,7 +256,6 @@ as a Magician!""",
 Too bad you couldn't do it, but hey, 
 a horde of naked angels offers 
 to console you!!""",
-        "Gandalf",
         dict(tiempo_por_caracter=0.14, preferencia_precision=0.5)
     ),
 ]#[1:]
