@@ -13,15 +13,17 @@ historybad
 params
 """.strip().split("\n")
 
+AUDIENCIA = os.path.join(os.path.dirname(__file__), "audiencia")
+
 #
 # Explicación dificultad de los niveles
-# 
+#
 # La idea es que en algunos casos sea dificil porque el hechizo es largo, y en otros casos
 # tiene que ser dificil porque el tiempo es poco.
-# 
-# En los primeros niveles, tiene que ser facil segun ambos parametros, y en los ultimos 
+#
+# En los primeros niveles, tiene que ser facil segun ambos parametros, y en los ultimos
 # dificiles tambien los dos.
-# 
+#
 # Anote entonces los largos de cada hechizo (que estan buenisimos, no los cambiemos) y le
 # asigne un tiempo total en funcion de el tipo de dificultad y el nro de nivel. A partir de
 # eso calculo el tiempo por letra.
@@ -47,21 +49,21 @@ from people import Wardrobe, all_wardrobes
 textosNiveles = [
     (
         "Lousy Pub",
-        [Wardrobe('audiencia/girl/', 'articles0.txt'), 
-         Wardrobe('audiencia/boy/', 'articles0.txt')],
+        [Wardrobe(AUDIENCIA + '/girl/', 'articles0.txt'),
+         Wardrobe(AUDIENCIA + '/boy/', 'articles0.txt')],
         "conejo2",     # conejo
         "hocus pocus, disappear now, desaparecelo chico.",
-"""Cast the spell 
-as fast and accurately as you can. 
+"""Cast the spell
+as fast and accurately as you can.
 
-You can backspace and fix 
+You can backspace and fix
 your mistakes.""",
 
-"""Great! 
+"""Great!
 
-You receive an offer to perform 
+You receive an offer to perform
 in the "Paris Opera".""",
-"""You are not even worthy of 
+"""You are not even worthy of
 this demo level.""",
         dict(tiempo_por_caracter=0.77, preferencia_precision=0.5)
     ),
@@ -69,21 +71,21 @@ this demo level.""",
     (
         "Paris Opera",
         #"Gente vestida bien",
-        [Wardrobe('audiencia/fashion_girl/', 'articles1.txt', "fullydressed"),
-         Wardrobe('audiencia/boy/', 'articles1.txt', "fullydressed")],
+        [Wardrobe(AUDIENCIA + '/fashion_girl/', 'articles1.txt', "fullydressed"),
+         Wardrobe(AUDIENCIA + '/boy/', 'articles1.txt', "fullydressed")],
         "mask",  # La mascara del fantasma de la opera
         "evanesco simulatio, phantasma spectaculum. initium capere.",
-"""Disappear the Phantom's mask, 
+"""Disappear the Phantom's mask,
 
-that will embarass him and 
+that will embarass him and
 make him leave.""",
-"""Your act was great! 
+"""Your act was great!
 
-You are invited to perform the 
+You are invited to perform the
 Halftime show at the local
 basquetball finals.""",
-"""You blew it, 
-your father disinherited you. 
+"""You blew it,
+your father disinherited you.
 
 You get a job coding ruby on rails.""",
         dict(tiempo_por_caracter=0.47, preferencia_precision=0.5)
@@ -111,21 +113,21 @@ chases you around the stadium.""",
     (
         "Goth party",
         #""Hip-hoperos o darkies",
-        [Wardrobe('audiencia/goth/', 'articles3.txt', "gothdressed"), ],
+        [Wardrobe(AUDIENCIA + '/goth/', 'articles3.txt', "gothdressed"), ],
         "vicios", # Alcohol, drogas, hacer un mix
         "sexus drugus rockanrolus, captivus crowdimus yowasaaap. cops and hardcopy marihuanus boozelion, cocuchus chuchu fuchu.",
-"""You were supposed to disappear 
-a milli vanilli cd, 
-instead you must vanish the 
-drugs to hide them 
+"""You were supposed to disappear
+a milli vanilli cd,
+instead you must vanish the
+drugs to hide them
 from the cops.""",
-"""You got away clean, 
+"""You got away clean,
 and kept a lot of famous people
-out of jail. 
+out of jail.
 
 You are going to Las Vegas now!!""",
-"""You go to jail charged with 
-drug possession. 
+"""You go to jail charged with
+drug possession.
 And become RAUL's new girlfriend.""",
         dict(tiempo_por_caracter=0.41, preferencia_precision=0.5)
     ),
@@ -136,18 +138,18 @@ And become RAUL's new girlfriend.""",
         all_wardrobes, #""Gente adinerada",
         "docs", # papeles y documentos
         "factus taxus nulus, nilun actin, evaDus fiscus IRSus, whySaw Elvis Bellagium 11 ocean's cardus impustum disapiros ipsofactum.",
-"""You get to Las Vegas 
-to perform in a Casino, but 
-the owners want to take 
-advantage of your power 
+"""You get to Las Vegas
+to perform in a Casino, but
+the owners want to take
+advantage of your power
 to evade taxes.""",
-"""The IRS wants you for beeing 
-an accesory to tax evasion. 
+"""The IRS wants you for beeing
+an accesory to tax evasion.
 
 They send you Africa where
 they'll never find you""",
-"""Your act was a total failure, 
-you got wasted and lost 
+"""Your act was a total failure,
+you got wasted and lost
 all your money playing craps.""",
         dict(tiempo_por_caracter=0.36, preferencia_precision=0.5)
     ),
@@ -156,17 +158,17 @@ all your money playing craps.""",
     (
         "Black magic",
         #""Africanitos de la tribu",
-        [Wardrobe('audiencia/girl/', 'articles5.txt', "fullydressed"),
-         Wardrobe('audiencia/boy/', 'articles5.txt', "fullydressed")],
+        [Wardrobe(AUDIENCIA + '/girl/', 'articles5.txt', "fullydressed"),
+         Wardrobe(AUDIENCIA + '/boy/', 'articles5.txt', "fullydressed")],
         "mucielago", # Un muricélago, o algún animal raro
         "Batsimus chicaka aFrIcuN triBuson, ill chikakun medicor, nigrum. comedo. crudus...pain cooking Shutlewor meellon cHuNgo.",
-"""You go to live with a tribe 
+"""You go to live with a tribe
 in africa, they find out
-you are a wizard and want 
-you to heal their ill 
+you are a wizard and want
+you to heal their ill
 sacred animal""",
-"""You disappeared the sacred animal. 
-The angry natives start chasing 
+"""You disappeared the sacred animal.
+The angry natives start chasing
 you around the jungle.""",
 """The natives made a tasty
 casserole out of you.""",
@@ -175,39 +177,39 @@ casserole out of you.""",
 
     (
         "Tatooine",
-        [Wardrobe('audiencia/boy/', 'articles6.txt', "enmascarados")],
+        [Wardrobe(AUDIENCIA + '/boy/', 'articles6.txt', "enmascarados")],
         "aspiradora", # Aspiradora loca
         "Arturitum Vacuumcleanerum Ev4niscum c3p0 venusiun rescusum grossum ph1ll1ps, disapirum spacious robotitus shakulus.",
-"""While running away from the natives, 
-a spaceship abducts 
-you. The venusians ask you to help 
+"""While running away from the natives,
+a spaceship abducts
+you. The venusians ask you to help
 them vanish a hitchhiker.""",
-"""Since you were so helpfull, 
-the venusians send you back to earth 
+"""Since you were so helpfull,
+the venusians send you back to earth
 in an individual spaceship.""",
-"""Because you were unwilling to cooperate, 
-the venusians performed a 
+"""Because you were unwilling to cooperate,
+the venusians performed a
 'light saber anal probing' on you.""",
         dict(tiempo_por_caracter=0.31, preferencia_precision=0.5)
     ),
 
     (
         "Area 51",
-        [Wardrobe('audiencia/boy/', 'articles_alien.txt', "alien_alien"),
-         Wardrobe('audiencia/boy/', 'articles_mib.txt', "alien_mib")],
+        [Wardrobe(AUDIENCIA + '/boy/', 'articles_alien.txt', "alien_alien"),
+         Wardrobe(AUDIENCIA + '/boy/', 'articles_mib.txt', "alien_mib")],
         "alien", # un marcianito de roswell
         "Marcianus 51area alf rosswellin didosong untilyourestingherewithme evanisum marcianus y guarda que viene molderrr.",
-"""Your ship was running a pirated 
-OS and crashed in new mexico. 
-The FBI captures you and asks you 
-to disappear some evidence of 
+"""Your ship was running a pirated
+OS and crashed in new mexico.
+The FBI captures you and asks you
+to disappear some evidence of
 the alien landings.""",
-"""Now that the evidence exists 
+"""Now that the evidence exists
 only on your memory,
-the FBI makes sure you won't talk 
+the FBI makes sure you won't talk
 by putting a cap in your head""",
-"""You couldn't do it. 
-But you'll have a lot of time 
+"""You couldn't do it.
+But you'll have a lot of time
 to practice since you are
 never leaving area 51""",
         dict(tiempo_por_caracter=0.27, preferencia_precision=0.5)
@@ -215,22 +217,22 @@ never leaving area 51""",
 
     (
         "Graveyard",
-        [Wardrobe('audiencia/boy/', 'articles8.txt', "esqueletos")],
+        [Wardrobe(AUDIENCIA + '/boy/', 'articles8.txt', "esqueletos")],
         "anubis", # Estatuilla de Anubis
         "vaderetrum satinus anubisun chungus, transformix this decayed form to Mumm-ra the Everliving and the puwur of christus will savius vox.",
-"""Ok, you died, and went to hell, 
-you can escape to heaven by 
-disappearing Anubis. 
+"""Ok, you died, and went to hell,
+you can escape to heaven by
+disappearing Anubis.
 
 All the dead gather around to watch...""",
-"""You did it!!! 
+"""You did it!!!
 Now you go to heaven, that happy
 place we all dream about as kids,
 that place where men and women
 love each other.""",
-"""You stay in hell. At least 
-you won't have problems 
-finding a lawyer if you ever 
+"""You stay in hell. At least
+you won't have problems
+finding a lawyer if you ever
 come to need one.""",
         dict(tiempo_por_caracter=0.19, preferencia_precision=0.5)
     ),
@@ -239,22 +241,22 @@ come to need one.""",
     (
         "Hugh's Place",
         #""Todos desnudos",
-        [Wardrobe('audiencia/fashion_girl/', 'articles9.txt', "enpelotas"), 
-         Wardrobe('audiencia/boy/', 'articles9.txt', "enpelotas")],
+        [Wardrobe(AUDIENCIA + '/fashion_girl/', 'articles9.txt', "enpelotas"),
+         Wardrobe(AUDIENCIA + '/boy/', 'articles9.txt', "enpelotas")],
         "cabra", # CUZCO la cabra
         "caelum CUZCUS 13 paradisiun, revivisco animalis playboyus housus, pornus sexus gross klunx workus my clunk essta noshi inbolus minusem. miau miau.",
-"""Here we are, it's beautiful, 
-everything that disappears here goes 
-back to earth, so you are going to 
+"""Here we are, it's beautiful,
+everything that disappears here goes
+back to earth, so you are going to
 revive a lovely goat now!""",
-"""Congratulations! 
+"""Congratulations!
 
-You fullfilled your destiny 
+You fullfilled your destiny
 as a Magician!""",
-"""Mmm... 
+"""Mmm...
 
-Too bad you couldn't do it, but hey, 
-a horde of naked angels offers 
+Too bad you couldn't do it, but hey,
+a horde of naked angels offers
 to console you!!""",
         dict(tiempo_por_caracter=0.14, preferencia_precision=0.5)
     ),

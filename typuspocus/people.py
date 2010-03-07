@@ -7,6 +7,8 @@ SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
 
+BASEPATH = os.path.dirname(__file__)
+
 random = Random()
 def resetRandom(level_number):
     global random
@@ -25,12 +27,12 @@ class SampleScene(Scene):
         self.wardrobes = wardrobes
         self.pool = []
         self.level=level
-        
+
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
             some.random(level=self.level) #level between 1 and ..
             self.pool.append(some)
-        
+
         background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
         self.background = background
         for y in range(filasy):
@@ -38,13 +40,13 @@ class SampleScene(Scene):
                 some = Individual(random.choice(self.wardrobes))
                 some.random(level=self.level)
                 self.putIndividualAt(some, x, y)
-                
+
     def putIndividualAt(self, individual, x, y):
         sx,sy = PPLSIZE
         dx = (y%2) * sx/2 - sx/2
         img = individual.render()[random.randint(0,1)]
-        self.background.blit(img,(sx*x+dx, sy/2*y)) 
-    
+        self.background.blit(img,(sx*x+dx, sy/2*y))
+
     def event(self, evt):
         if evt.type == KEYDOWN:
             if evt.key == K_ESCAPE:
@@ -53,20 +55,20 @@ class SampleScene(Scene):
                 self.goscene = True
             elif evt.key == K_RETURN:
                 self.finalizar = True
-    
+
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.goscene:
-            retorno = self.runScene( 
+            retorno = self.runScene(
                         SampleScene(self.game, self.nombre+" hijo ") )
             self.goscene = False
         if self.finalizar:
             self.end( self.nombre )
-                    
+
     def update(self):
         x,y = random.randint(0,filasx-1), random.randint(0,filasy-1)
         self.putIndividualAt(self.pool[random.randint(0,29)], x,y)
-        
+
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.SysFont("Times New Roman",30)
         s = font.render(self.nombre,True,(0,255,255))
@@ -74,8 +76,8 @@ class SampleScene(Scene):
 
 BehaviourDatas = {
     "anypublic": {
-        "behind":0.5, 
-        "body":0.999, 
+        "behind":0.5,
+        "body":0.999,
         "hair":0.9,
         "underware":0.8,
         "tops":1,
@@ -98,7 +100,7 @@ BehaviourDatas = {
         "hats":0.01,
         "infront":0.85,
     },
-    
+
     "gothdressed": {
         "behind":0.5,
         "body":1,
@@ -111,7 +113,7 @@ BehaviourDatas = {
         "hats":0.3,
         "infront":0.40,
     },
-    
+
     "enmascarados": {
         "behind":0.5,
         "body":1,
@@ -124,7 +126,7 @@ BehaviourDatas = {
         "hats":0.70,
         "infront":0.85,
     },
-    
+
     "enpelotas": {
         "behind":0.5,
         "body":1,
@@ -184,9 +186,9 @@ class Individual:
         """Each person must have a wardrobe, Ha!"""
         self.wardrobe=wardrobe
         self.layers={}
-    
+
     def random(self, level=1, clothinBehavior="anypublic"):
-        # let's get the clothing behaviour 
+        # let's get the clothing behaviour
         clothinBehavior=BehaviourDatas[clothinBehavior]
 
         #choose some layers by it's probe
@@ -194,16 +196,16 @@ class Individual:
         for layer in self.wardrobe.getLayers():
             if random.random()<clothinBehavior[layer]:
                 sl.append(layer)
-        
+
         #if this individual is not going to have a body
-        #at least let him be well clothed, for its health!        
+        #at least let him be well clothed, for its health!
         if not 'body' in sl:
             sl=clothinBehavior.keys()
             sl.remove('body')
-        
+
         #let's wardrobe calculate weights for this level
         self.wardrobe.adjustProbForLevel(level)
-        
+
         #choose clothes, please!!
         for layer in sl:
             if not self.wardrobe.articles.has_key(layer):
@@ -215,7 +217,7 @@ class Individual:
                 if r<s or s==1:
                     self.layers[layer]=art
                     break
-                
+
     def __repr__(self):
         return repr(self.layers)
 
@@ -225,7 +227,7 @@ class Individual:
         order = layerorder.keys()
         order.sort()
         MAGENTO = (254,0,254)
-        
+
         img = None
         for k in order:
             layername=layerorder[k]
@@ -255,7 +257,7 @@ class Individual:
         img = img.convert()
         img.set_colorkey(MAGENTO)
         return img
-        
+
 
 
 BasicFieldList = """"0"     "id"
@@ -278,31 +280,31 @@ class FieldSet:
             setattr(self,v.lower(),int(k))
 
 class Article:
-    RE = re.compile('"(.*)" *'*7 + '.*')    
+    RE = re.compile('"(.*)" *'*7 + '.*')
     def __init__(self, dataline, fieldset, path=''):
         self.fieldset = fieldset
         m = Article.RE.match(dataline)
-        if not m : raise Exception('Invalid article data "%s"'%repr(dataline))    
+        if not m : raise Exception('Invalid article data "%s"'%repr(dataline))
         self.data = m.groups()
         self.image = None
         self.path = path
-        
-        self.probByLevel = map(lambda s:float(s), 
+
+        self.probByLevel = map(lambda s:float(s),
                             self.getSome('wearing').split(':') )
         self.probLevels = len(self.probByLevel)
         self.absProbL={}
-        
+
     def absProb(self, level):
         return self.absProbL[level]
-        
+
     def setAbsProbForLevel(self, level, prob):
         self.absProbL[level]=prob
-        
+
     def probLevel(self, level):
         if level>self.probLevels:
             level=self.probLevels
         return self.probByLevel[level-1]
-        
+
     def __repr__(self):
         return self.name
 
@@ -312,7 +314,7 @@ class Article:
         return self.getSome('layer')
     def getName(self):
         return self.getSome('imagename')
-        
+
     def getImage(self):
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name).convert_alpha()
@@ -321,7 +323,7 @@ class Article:
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
     layer=property(getLayer)
     name=property(getName)
-    
+
 class Wardrobe:
     def __init__(self, path, articles_txt="articles.txt", behaviour="anypublic"):
         self.behaviourname = behaviour
@@ -334,40 +336,40 @@ class Wardrobe:
         self.all = {}
         self.parseConfig(path)
         self.parseArticles(path)
-        
+
     def add(self, article):
         layer = article.layer
-        self.layers [ layer ] = None        
+        self.layers [ layer ] = None
         artlist = self.articles.setdefault(layer, [])
         artlist.append(article)
         self.articles[layer]=artlist
         self.all[article.name]=article
-        
+
     def adjustProbForLevel(self, level):
         if self.calculatedLevels.has_key(level):
             #skip if we made calculations beore
             return
-            
+
         for layer in self.layers.keys():
             if not self.articles.has_key(layer): continue
             ##count probability definition
-            ## -1: same as any other article with -1 
+            ## -1: same as any other article with -1
             ##          (let's call the quantity: standardCount)
-            ## x :  0<=x<=1 set x as probability 
+            ## x :  0<=x<=1 set x as probability
             ##          (let's call its sum: absolute total)
             standardCount, absoluteTotal = 0, 0
             for article in self.articles[layer]:
                 probDef = article.probLevel(level)
                 if probDef == -1: standardCount += 1
                 else:  absoluteTotal += probDef
-            
+
             if standardCount != 0:
                 #so the articles with standard probe will have
-                # (1-absoluteTotal)/standardCount probability eachone           
+                # (1-absoluteTotal)/standardCount probability eachone
                 standardArtProb = (1.0-absoluteTotal)/standardCount
             else:
                 standardArtProb = 0
-            
+
             #now, take articles with standard prob. and setup them
             # with anabsolute Probability!
             for article in self.articles[layer]:
@@ -378,13 +380,13 @@ class Wardrobe:
                     article.setAbsProbForLevel(level, prob)
         #calculation complete
         self.calculatedLevels[level]=None
-            
+
     def getLayers(self):
         return self.articles.keys()
-    
+
     def getLayerorder(self):
         return self.ordered
-        
+
     def parseConfig(self,path):
         """get layers"""
         R = re.compile(r'"layer(.*)" *"(.*)".*')
@@ -399,7 +401,7 @@ class Wardrobe:
                 self.layers[v]=int(k)
                 self.ordered[int(k)]=v
         f.close()
-    
+
     def parseArticles(self, path):
         articlelist=[]
         self.fieldlist=[]
@@ -413,7 +415,7 @@ class Wardrobe:
                 self.fieldset = FieldSet() #basic default fieldset
                 if l.startswith('HCDataSetFile_fields'):
                     status=leyendoFields
-                    
+
             elif status==leyendoFields:
                 if l.startswith('HCDataSetFile_data'):
                     self.fieldset = FieldSet(self.fieldlist)
@@ -421,7 +423,7 @@ class Wardrobe:
                 elif l.startswith('#'): pass
                 elif l.startswith('"'):
                     self.fieldlist.append(l)
-                    
+
             elif status==leyendoArticles:
                 if l.startswith('"'):
                     self.add(Article(l, self.fieldset, path+'/data/'))
@@ -431,14 +433,15 @@ class Wardrobe:
             elif status==listo:
                 break
         f.close()
-    
+
+
 def getAllWardrobes():
     return [
-        Wardrobe('audiencia/boy/'),
-        Wardrobe('audiencia/girl/'),
-        Wardrobe('audiencia/fashion_boy/'),
-        Wardrobe('audiencia/fashion_girl/'),
-        Wardrobe('audiencia/goth/'),
+        Wardrobe(os.path.join(BASEPATH, 'audiencia/boy/')),
+        Wardrobe(os.path.join(BASEPATH, 'audiencia/girl/')),
+        Wardrobe(os.path.join(BASEPATH, 'audiencia/fashion_boy/')),
+        Wardrobe(os.path.join(BASEPATH, 'audiencia/fashion_girl/')),
+        Wardrobe(os.path.join(BASEPATH, 'audiencia/goth/')),
     ]
 
 all_wardrobes = getAllWardrobes()
@@ -449,10 +452,10 @@ def buildIndividual(level, wardrobes):
     i = Individual(wd)
     i.random(level=level+1, clothinBehavior=wd.behaviourname)
     return i
-    
+
 if __name__ == "__main__":
     wardrobes = getAllWardrobes() # x,y
     g = Game(*SCREEN_SIZE, **{'framerate': 200})
     g.run( SampleScene(g, "Scene1", wardrobes, level=6) )
-    
-    
+
+

@@ -7,6 +7,10 @@ VOLUMEN_MUSICA = 1 #0.3
 VOLUMEN_TICKTOCK = 0.6
 VOLUMEN_AMBIENTE = 0.6
 
+base = os.path.dirname(__file__)
+MUSIC_DIR = os.path.join(base, 'music')
+SOUND_DIR = os.path.join(base, 'sounds')
+
 class Sounds:
     def init(self):
         pygame.mixer.set_reserved(4)
@@ -38,11 +42,11 @@ class Sounds:
             ]
         self.music_parts = [[pygame.mixer.Sound('music/%s.ogg' % fname) for fname in group] for group in self.music_groups]
         self.music_part_count = len(self.music_parts)
-        
-        self.musicfiles = [f for f in os.listdir('music') if f.startswith('mm') and f.endswith('ogg')]
-        self.musicparts = [pygame.mixer.Sound('music/' + f) for f in self.musicfiles]
-        self.music_end  = pygame.mixer.Sound('music/music_end.ogg')
-                            
+
+        self.musicfiles = [f for f in os.listdir(MUSIC_DIR) if f.startswith('mm') and f.endswith('ogg')]
+        self.musicparts = [pygame.mixer.Sound(os.path.join(MUSIC_DIR, f)) for f in self.musicfiles]
+        self.music_end  = pygame.mixer.Sound(os.path.join(MUSIC_DIR, 'music_end.ogg'))
+
 
     def randomDeeJay(self):
         if not self.canalMusica.get_queue():
@@ -65,7 +69,7 @@ class Sounds:
         #self.canalMusica.play(self.music_end)
         #self.canalMusica.queue(None)
         #self.canalMusica.fadeout(50)
-    
+
     def apagarVoces(self):
         self.canalAmbiente.stop()
         self.canalPalabras.stop()
@@ -77,16 +81,16 @@ class Sounds:
         if "." not in s:
             s += ".ogg"
         if DEBUG: print "Loading sound:", s
-        return pygame.mixer.Sound("sounds/"+s)
+        return pygame.mixer.Sound(os.path.join(SOUND_DIR, s))
 
 
     def multiplesEnCanal(self, s, canal):
-        sonidos = [ self.buildSonido(n) for n in os.listdir("sounds") if n.startswith(s) and "." in n ]
+        sonidos = [ self.buildSonido(n) for n in os.listdir(SOUND_DIR) if n.startswith(s) and "." in n ]
         def play():
             canal.fadeout(50)
             canal.queue(random.choice(sonidos))
         setattr(self, s, play)
-        
+
     def sonidoEnCanal(self, s, canal, loops=0):
         sonido = self.buildSonido(s)
         def play():
@@ -94,9 +98,9 @@ class Sounds:
 
         if s.endswith(".wav"):
             s = s[:-4]
-        
+
         setattr(self, s, play)
-            
+
     def sonidoSuelto(self, s):
         sonido = self.buildSonido(s)
         if s.endswith(".wav"):

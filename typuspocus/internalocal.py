@@ -2,6 +2,8 @@ import locale
 import gettext
 import os
 
+locale_dir = os.path.join(os.path.dirname(__file__), "locale")
+
 def getLanguage():
     '''Returns the language to be used by the system.
 
@@ -13,17 +15,18 @@ def getLanguage():
     except:
         return None
     loc = loc[:2]
-    traducidos = os.listdir('./locale')
+    traducidos = os.listdir(locale_dir)
     if loc in traducidos:
         return loc
     return
 
-gettext.install('core', './locale', unicode=True)
+gettext.install('core', locale_dir, unicode=True)
 idioma = getLanguage()
 if idioma is not None:
-    if not os.access('./locale/%s/LC_MESSAGES/core.mo' % idioma, os.F_OK):
+    mo = os.path.join(locale_dir, '%s/LC_MESSAGES/core.mo' % idioma)
+    if not os.access(mo, os.F_OK):
         raise IOError, "The l10n directory (for language %r) exists but not the core.mo file" % idioma
-    gettext.translation('core', './locale', languages=[idioma]).install()
+    gettext.translation('core', locale_dir, languages=[idioma]).install()
 
 y = _
 def x(s):
