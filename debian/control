@@ -1,0 +1,15 @@
+Source: typuspocus
+Section: games
+Priority: extra
+Maintainer: Facundo Batista <facundo@taniquetil.com.ar>
+Build-Depends: debhelper (>= 5.0.38), python (>= 2.5.4-1~)
+Build-Depends-Indep: python-support
+Standards-Version: 3.8.4
+XS-Python-Version: all
+Homepage: https://launchpad.net/typuspocus
+
+Package: typuspocus
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, python-pygame
+XB-Python-Version: ${python:Versions}
+Description: Game about a magician that needs to cast spells typing them to go through his particular adventure.
