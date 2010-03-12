@@ -32,11 +32,18 @@ install: build
 	# DIRTY! I didn't know how to make setuptools to install in /usr/share, 
 	# so I'm moving it here and cleaning the other stuff
 	mkdir -p $(CURDIR)/debian/typuspocus/usr/share/
-	mkdir -p $(CURDIR)/debian/typuspocus/usr/bin
+	mkdir -p $(CURDIR)/debian/typuspocus/usr/games
 	mv $(CURDIR)/debian/typuspocus/usr/lib/python2.6/dist-packages/typuspocus $(CURDIR)/debian/typuspocus/usr/share/
 	rm -r $(CURDIR)/debian/typuspocus/usr/lib
-	ln -s $(CURDIR)/debian/typuspocus/usr/share/typuspocus/game.py $(CURDIR)/debian/typuspocus/usr/bin/typuspocus
+	ln -s $(CURDIR)/debian/typuspocus/usr/share/typuspocus/game.py $(CURDIR)/debian/typuspocus/usr/games/typuspocus
 	chmod 755 $(CURDIR)/debian/typuspocus/usr/share/typuspocus/game.py
+
+	# put the copyright file by hand (maybe this should be done 
+	# automatically in some other way?)
+	mkdir -p $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus
+	cp $(CURDIR)/debian/copyright $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus/
+	cp $(CURDIR)/debian/changelog $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus/
+	gzip -9 $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus/changelog
 
 
 # Build architecture-independent files here.
@@ -45,7 +52,6 @@ binary-indep: build install
 	dh_testroot 
 	dh_install -i
 	dh_pysupport -i
-	dh_installchangelogs -i ChangeLog
 	dh_link -i
 	dh_compress -i -X.py -X.ini -X.xml -Xtest
 	dh_fixperms -i

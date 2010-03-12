@@ -1,3 +1,5 @@
+#!/bin/bash
+
 :
 VOLUME=0.3
 for n in todo/*.ogg ; do
