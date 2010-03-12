@@ -1,7 +1,8 @@
 import pygame
 import os
 
-base = os.path.join(os.path.dirname(__file__), "escenario/cosas/")
+base = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                    "escenario/cosas/")
 
 all = []
 for i in os.listdir(base):

@@ -13,7 +13,7 @@ historybad
 params
 """.strip().split("\n")
 
-AUDIENCIA = os.path.join(os.path.dirname(__file__), "audiencia")
+AUDIENCIA = os.path.join(os.path.dirname(os.path.realpath(__file__)), "audiencia")
 
 #
 # Explicación dificultad de los niveles

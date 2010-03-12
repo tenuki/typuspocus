@@ -7,7 +7,7 @@ VOLUMEN_MUSICA = 1 #0.3
 VOLUMEN_TICKTOCK = 0.6
 VOLUMEN_AMBIENTE = 0.6
 
-base = os.path.dirname(__file__)
+base = os.path.dirname(os.path.realpath(__file__))
 MUSIC_DIR = os.path.join(base, 'music')
 SOUND_DIR = os.path.join(base, 'sounds')
 

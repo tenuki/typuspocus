@@ -7,7 +7,7 @@ SCREEN_SIZE=(800,600)
 PPLSIZE = (55, 119)
 filasx, filasy = (800/55,600/119)
 
-BASEPATH = os.path.dirname(__file__)
+BASEPATH = os.path.dirname(os.path.realpath(__file__))
 
 random = Random()
 def resetRandom(level_number):

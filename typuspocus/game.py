@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 # -*- coding: iso-8859-1 -*-
+
 import os
 import pygame
 from pygame.locals import *
@@ -19,10 +22,9 @@ import textwrap
 DEBUG = 0
 CLOCK_TICK = pygame.USEREVENT
 
-base = os.path.dirname(__file__)
+base = os.path.dirname(os.path.realpath(__file__))
 ESCENARIO = os.path.join(base, "escenario")
 AUDIENCIA = os.path.join(base, "audiencia")
-
 
 class Timer:
     def __init__(self, total_time):

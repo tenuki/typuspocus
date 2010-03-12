@@ -2,7 +2,7 @@ import locale
 import gettext
 import os
 
-locale_dir = os.path.join(os.path.dirname(__file__), "locale")
+locale_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "locale")
 
 def getLanguage():
     '''Returns the language to be used by the system.
