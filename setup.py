@@ -15,7 +15,8 @@ except ImportError:
 from setuptools import setup, find_packages
 
 __description__ = """
-Game about a magician that needs to cast spells typing them to go through his particular adventure.
+Game about a magician that needs to cast spells typing them to go through
+his particular adventure.
 """
 
 setup(
@@ -27,16 +28,14 @@ setup(
     url = 'https://launchpad.net/typuspocus/',
 
     packages = find_packages(),
-    package_data={'': ['typuspocus/sounds/*']},
 
-#    install_requires=['pyglet>=1.1.1',],
-#    dependency_links=['http://code.google.com/p/pyglet/downloads/list',],
-
-    entry_points = {
-        'console_scripts': [
-            'typuspocus = typuspocus.game:main',
-        ],
-    },
+#    Didn't use this here because I'm fixing by hand the paths, see
+#    debian/rules... somebody who knows this stuff should fix this
+#    entry_points = {
+#        'console_scripts': [
+#            'typuspocus = typuspocus.game:main',
+#        ],
+#    },
 
     include_package_data = True,
     zip_safe = False,
