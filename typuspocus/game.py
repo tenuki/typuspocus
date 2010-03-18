@@ -47,7 +47,7 @@ class LineManager:
     def __init__(self, hechizo, font_size=80,
                  font=os.path.join(ESCENARIO, "MagicSchoolOne.ttf"),
                  altfont_size=80,
-                 altfont = os.path.join(ESCENARIO, "VeraSe.ttf"), width=600):
+                 altfont = os.path.join(ESCENARIO, "DejaVuSerif.ttf"), width=600):
         self.font = pygame.font.Font(font,font_size)
         self.altfont = pygame.font.Font(altfont,altfont_size)
         text = set([ t for t in hechizo ])
@@ -182,8 +182,8 @@ class Level(Scene):
 
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
-        self.messagefont = pygame.font.Font(os.path.join(ESCENARIO, "VeraMono.ttf"), 30)
-        self.ratefont = pygame.font.Font(os.path.join(ESCENARIO, "VeraMono.ttf"), 20)
+        self.messagefont = pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
+        self.ratefont = pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 20)
         self.cursorfont = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 100)
         self.motor.start()
         sounds.volumenDeeJay(1.0)
@@ -449,7 +449,7 @@ class LevelSuccess(BannerScene):
         self.level = level
         self.audiencia = xaudiencia
         self.levelscore = levelscore
-        #self.font =  pygame.font.Font("escenario/VeraMono.ttf",50)
+        #self.font =  pygame.font.Font("escenario/DejaVuSansMono.ttf",50)
         self.overlay = pygame.image.load(os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.status = EstadoMensaje
 
@@ -467,7 +467,7 @@ class LevelSuccess(BannerScene):
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historygood.split('\n'))
         else:
-            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "VeraMono.ttf"), 30)
+            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
             self.renderOn(self.game.screen,
                 [_("Level Completed"),"",
                 _("Points accumulated:")+str(self.levelscore),"",
@@ -496,7 +496,7 @@ class LevelFailSuccess(LevelSuccess):
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historybad.split('\n'))
         else:
-            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "VeraMono.ttf"), 30)
+            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
             self.renderOn(self.game.screen,
                 [_("Level Completed"),"",
                 _("Points accumulated:")+str(self.levelscore),"",
@@ -516,7 +516,7 @@ class GameOver(Scene):
                  )
 
         self.score = score
-        self.font = font =  pygame.font.Font(os.path.join(ESCENARIO, "VeraMono.ttf"), 30)
+        self.font = font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
         self.audiencia = laaudiencia
 
     def do_action(self, sel):

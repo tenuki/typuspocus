@@ -10,7 +10,7 @@ Homepage: https://launchpad.net/typuspocus
 
 Package: typuspocus
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, python-pygame
+Depends: ${python:Depends}, ${misc:Depends}, python-pygame, ttf-dejavu
 XB-Python-Version: ${python:Versions}
 Description: Type spells and be the greatest magician.
  Game about a magician that needs to cast spells typing them to go 

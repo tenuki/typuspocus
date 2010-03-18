@@ -2,6 +2,6 @@ To see how the layout will be:
     fakeroot debian/rules  clean install
 
 To check everything is allright:
-    dpkg-buildpackage -us -uc
+    dpkg-buildpackage -i -I -us -uc
     lintian -i ../typuspocus.<someversion>.changes
 
