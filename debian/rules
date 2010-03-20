@@ -52,6 +52,8 @@ binary-indep: build install
 	dh_testroot 
 	dh_install -i
 	dh_pysupport -i
+	# Remove DejaVu files (the font is replaced by a link)
+	rm -f debian/typospocus/usr/share/typospocus/escenario/DejaVu*.ttf
 	dh_link -i
 	dh_compress -i -X.py -X.ini -X.xml -Xtest
 	dh_fixperms -i
