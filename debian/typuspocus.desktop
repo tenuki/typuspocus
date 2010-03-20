@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Name=Typus Pocus
+GenericName=Typus Pocus
+Comment=Type spells and be the greatest magician.
+Comment[es]=Tipea hechicos para ser el mago más grande.
+Icon=32x32.png
+Exec=typuspocus
+Terminal=false
+StartupNotify=false
+Categories=Application;Game;Education;2DGraphics;
