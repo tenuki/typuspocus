@@ -50,6 +50,8 @@ install: build
 binary-indep: build install
 	dh_testdir 
 	dh_testroot 
+	dh_installman
+	dh_installmenu
 	dh_install -i
 	dh_pysupport -i
 	# Remove DejaVu files (the font is replaced by a link)
