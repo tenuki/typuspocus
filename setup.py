@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
 """setup -- setuptools setup file for Typus Pocus."""
 
 __author__ = "Facundo Batista"
@@ -6,13 +7,7 @@ __author_email__ = "facundo en taniquetil punto com punto ar"
 __version__ = "0.4.2"
 __date__ = "2010-03-07"
 
-try:
-    import setuptools
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-
-from setuptools import setup, find_packages
+from distutils.core import setup
 
 __description__ = """
 Game about a magician that needs to cast spells typing them to go through
@@ -27,16 +22,10 @@ setup(
     description = __description__,
     url = 'https://launchpad.net/typuspocus/',
 
-    packages = find_packages(),
+    packages = ['typuspocus'],
 
-#    Didn't use this here because I'm fixing by hand the paths, see
-#    debian/rules... somebody who knows this stuff should fix this
-#    entry_points = {
-#        'console_scripts': [
-#            'typuspocus = typuspocus.game:main',
-#        ],
-#    },
+    package_data = {'typuspocus': ['audiencia', 'escenario', 'icons', 'locale',
+                                   'music', 'sounds']},
 
-    include_package_data = True,
     zip_safe = False,
     )

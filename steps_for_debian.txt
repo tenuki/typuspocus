@@ -1,3 +1,6 @@
+Create a tarball
+    ./setup.py sdist
+
 To see how the layout will be:
     fakeroot debian/rules  clean install
 
