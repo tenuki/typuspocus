@@ -172,9 +172,6 @@ class Level(Scene):
         self.todasLasTeclas = ""
 
         pygame.time.set_timer(CLOCK_TICK, 1000)
-        #pygame.mixer.music.load("sounds/8bp063-07-dorothys_magic_bag-rondo_alla_turka.mp3")
-        #pygame.mixer.music.set_volume(0.5)
-        #pygame.mixer.music.play(-1)
 
         self.tick_count = True
 
@@ -870,7 +867,7 @@ class Ranking(Scene):
 
 class Locked(Scene):
     def init(self):
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/locked.png").convert())
+        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/locked.png")).convert()
         sounds.bu()
 
 

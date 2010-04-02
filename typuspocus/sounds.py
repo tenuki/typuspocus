@@ -28,11 +28,10 @@ class Sounds:
         for s in ["arenga", "puteada", "intro"]:
             self.multiplesEnCanal(s, self.canalPalabras)
 
-        for s in ["tick1.wav", "tick2.wav", "suspenso", "suspensook.wav", "suspensomal.wav","camina"]:
+        for s in ["tick1.wav", "tick2.wav", "suspensook.wav", "suspensomal.wav","camina"]:
             self.sonidoEnCanal(s, self.canalTickTock)
 
         for s in ["bravo.wav", "bu.wav", "enter.wav", "pasa.wav","farol.wav", "sube.wav", "golpe.wav" ,"MagiaOK.wav", "abucheo", "signal.wav", "tomato.wav"]:
-
             self.sonidoSuelto(s)
 
         self.music_groups  = [
@@ -45,7 +44,6 @@ class Sounds:
 
         self.musicfiles = [f for f in os.listdir(MUSIC_DIR) if f.startswith('mm') and f.endswith('ogg')]
         self.musicparts = [pygame.mixer.Sound(os.path.join(MUSIC_DIR, f)) for f in self.musicfiles]
-        self.music_end  = pygame.mixer.Sound(os.path.join(MUSIC_DIR, 'music_end.ogg'))
 
 
     def randomDeeJay(self):
@@ -65,10 +63,6 @@ class Sounds:
 
     def volumenDeeJay(self, porcentaje):
         self.canalMusica.set_volume(VOLUMEN_MUSICA*float(porcentaje))
-        #self.canalMusica.stop()
-        #self.canalMusica.play(self.music_end)
-        #self.canalMusica.queue(None)
-        #self.canalMusica.fadeout(50)
 
     def apagarVoces(self):
         self.canalAmbiente.stop()
