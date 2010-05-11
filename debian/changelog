@@ -1,3 +1,9 @@
+typuspocus (0.4.3) unstable; urgency=low
+
+  * Lot of cleaning changes.
+
+ -- Facundo Batista <facundo@taniquetil.com.ar>  Tue, 11 May 2010 14:38:51 +0200
+
 typuspocus (0.4.2) unstable; urgency=low
 
   * Initial Release  (Closes LP: #578707)

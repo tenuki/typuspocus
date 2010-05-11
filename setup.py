@@ -4,7 +4,7 @@
 
 __author__ = "Facundo Batista"
 __author_email__ = "facundo en taniquetil punto com punto ar"
-__version__ = "0.4.2"
+__version__ = "0.4.3"
 __date__ = "2010-03-07"
 
 import glob
