@@ -1,5 +1,6 @@
 import random
 import math
+import os
 import pygame
 from pygame.locals import *
 import time
@@ -12,6 +13,8 @@ import interpol
 from sounds import sounds
 
 DEBUG = 0
+
+BASEPATH = os.path.dirname(os.path.realpath(__file__))
 
 DELTAVARITA = (-200,0)
 
@@ -33,7 +36,7 @@ class Persona:
         self.deltay = 0
         self.estado = pnormal
         self.porcentaje = 0
-        
+
     def subirse(self):
         if 1: #self.estado==pnormal:
             self.deltay = - peopley/4
@@ -45,16 +48,16 @@ class Persona:
     def setAlive(self, porcentaje):
         self.porcentaje = porcentaje
         self.alive = True
-        
+
     def goOut(self):
         self.xdir = - self.xdir
         self.velocidad = - self.velocidad
         self.inipos, self.destpos = self.destpos, self.inipos
-        self.status=pcaminando        
+        self.status=pcaminando
         self.start = time.time()
-                                
+
     def render(self, surface, porcentaje=None):
-        if self.porcentaje: 
+        if self.porcentaje:
             porcentaje = self.porcentaje
         if self.alive and random.randint(0,1000)<porcentaje:
             gx = random.choice([-1,0,1])
@@ -75,7 +78,7 @@ class Fila:
 
     def construirSillas(self):
         MAGENTO = (254,0,254)
-        img = pygame.image.load('escenario/butaca.png')
+        img = pygame.image.load(os.path.join(BASEPATH, 'escenario/butaca.png'))
         base = pygame.Surface((800, peopley))
         base.fill(MAGENTO)
         for x in range(filasx):
@@ -107,7 +110,7 @@ class EnginePersonas:
         elif p.xdir<0 and (npx>p.destpos[0]):
             x = npx
         p.position = (x,y)
-        
+
 class IntroEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number, wardrobe):
         self.ps = peopleSet
@@ -121,7 +124,7 @@ class IntroEngine(EnginePersonas):
                 #else:
                     self.caminando += 1
                     dx = (y%2) * peoplex/2 - peoplex/2 + 6
-                    dy = peopley/2 * y                    
+                    dy = peopley/2 * y
 
                     final = (x*peoplex+dx,dy)
                     if x < filasx/2:
@@ -137,12 +140,12 @@ class IntroEngine(EnginePersonas):
                     v = (p.destpos[0]-tx)
                     if v==0: v=1
                     p.xdir = v/abs(v)
-                    p.velocidad = random.randint(20,80) * (p.xdir) 
+                    p.velocidad = random.randint(20,80) * (p.xdir)
                     peopleSet[y].append( p )
 
     def update(self):
         self.caminarUpdate()
-        
+
     def caminarUpdate(self):
         self.now = time.time()
         for persons in self.ps.values():
@@ -151,13 +154,13 @@ class IntroEngine(EnginePersonas):
                 if p.position == p.destpos:
                     self.caminando -= 1
                     p.sentarse()
-                    
+
     def finish(self):
         for persons in self.ps.values():
             for p in persons:
                 p.position = p.destpos
                 p.sentarse()
-        
+
 class GOEngine(EnginePersonas):
     def __init__(self, peopleSet, level_number):
         self.ps = peopleSet
@@ -168,10 +171,10 @@ class GOEngine(EnginePersonas):
                 p.velocidad = -p.velocidad
                 p.frompos, p.topos = p.destpos, p.inipos
         self.startTime = time.time()
-        
+
     def update(self):
         self.caminarUpdate()
-        
+
     def caminarUpdate(self):
         self.now = time.time()
         for persons in self.ps.values():
@@ -188,19 +191,19 @@ class GameEngine(EnginePersonas):
         self.seVan = []
         self.up = []
         self.alive=[]
-        
+
     def setCalor(self, calor):
-        if DEBUG: print 'engine calor:',calor 
+        if DEBUG: print 'engine calor:',calor
         self.calor = calor
-        
+
     def levantar(self, p):
         p.subirse()
         self.up.append(p)
-    
+
     def bajar(self, p):
         p.sentarse()
         self.up.remove(p)
-        
+
     def setAlive(self, p, por=20):
         if por>=10:
             p.setAlive(por)
@@ -209,7 +212,7 @@ class GameEngine(EnginePersonas):
         else:
             p.alive=0
             self.alive.remove(p)
-            
+
     def update(self):
         def getOneAtRandom():
             ops = filter(lambda ppl:len(ppl)!=0 ,self.ps.values() )
@@ -217,30 +220,30 @@ class GameEngine(EnginePersonas):
                 l = random.choice(ops)
                 return random.choice(l)
             return False
-        
-        #irse..    
+
+        #irse..
         if self.calor<0.1 and random.random()<0.005:
             p=getOneAtRandom()
             if p:
                 p.goOut()
                 self.seVan.append(p)
-                
+
         #levantarse
         if self.calor>0.3 :# and random.random()<0.01:
             p=getOneAtRandom()
             if p:
                 self.levantar(p)
-                
+
         #moverse
         if self.calor>0.0 :# and random.random()<0.01:
             p=getOneAtRandom()
             if p:
                 self.setAlive(p)
-                
+
         self.now = t=time.time()
         for p in self.seVan:
             #self.moverTipito(p)
-            #continue 
+            #continue
             dt=t-p.start
             npx = p.inipos[0] + p.velocidad * dt
             x,y = p.destpos
@@ -251,16 +254,16 @@ class GameEngine(EnginePersonas):
             p.position = (x,y)
             if p.position == p.destpos:
                 p.sentarse()
-                
+
         if len(self.up)>0 and random.random()>0.7:
             p=random.choice(self.up)
             self.bajar(p)
-            
+
         if len(self.alive)>0 and random.random()>0.8:
             p=random.choice(self.alive)
             if p.porcentaje > 10:
                 self.setAlive(p, p.porcentaje-10)
-            
+
 class Audiencia:
     def __init__(self, level_number, wardrobe=None):
         people.resetRandom(level_number)
@@ -276,7 +279,7 @@ class Audiencia:
             dy = peopley/2 * y
             self.filas.append(Fila(level_number,(dx,dy), self.personas[y]))
     def update(self):
-        self.engine.update()    
+        self.engine.update()
     def doGame(self):
         self.engine.finish()
         self.engine = GameEngine(self.personas, self.level)
@@ -289,7 +292,7 @@ class Audiencia:
         self.engine.finish()
         self.engine = GOEngine(self.personas, self.level)
         if DEBUG: print  '\n\nG.O. ENGINE\n\n\n'
-    
+
     def getRandomPersonPosition(self):
         fila = random.randrange(filasy)
         dx = (fila%2) * peoplex/2 - peoplex/2 + 6
@@ -302,7 +305,7 @@ class Audiencia:
             fila.render(surface, porcentaje)
     def setCalor(self, calor):
         self.engine.setCalor(calor)
-        
+
 class AudienciaScene(Scene):
     def init(self, level_number, audiencia):
         self.finalizar = False
@@ -311,13 +314,13 @@ class AudienciaScene(Scene):
         self.lastbravo = time.time()
         self.calor = 0
         self.level_number = level_number
-        self.fg = pygame.image.load("escenario/foreground.png").convert_alpha()
+        self.fg = pygame.image.load(os.path.join(BASEPATH, "escenario/foreground.png")).convert_alpha()
         self.varitaje = varitaje.Varitaje()
-        self.mano = pygame.image.load("escenario/manos/mano1.png").convert_alpha()
+        self.mano = pygame.image.load(os.path.join(BASEPATH, "escenario/manos/mano1.png")).convert_alpha()
         self.puffing = 0
-        self.nubes = [ pygame.image.load("escenario/nube/nube%d.png"%(n+1)).convert_alpha() for n in range(5) ]
-        self.tomate = pygame.image.load("escenario/tomates/tomate.png").convert_alpha()
-        self.tomate_aplastado = pygame.image.load("escenario/tomates/tomate_aplastado.png").convert_alpha()
+        self.nubes = [ pygame.image.load(os.path.join(BASEPATH, "escenario/nube/nube%d.png"%(n+1))).convert_alpha() for n in range(5) ]
+        self.tomate = pygame.image.load(os.path.join(BASEPATH, "escenario/tomates/tomate.png")).convert_alpha()
+        self.tomate_aplastado = pygame.image.load(os.path.join(BASEPATH, "escenario/tomates/tomate_aplastado.png")).convert_alpha()
 
         self.tomateando = None
         self.sound_tomate = True
@@ -332,13 +335,13 @@ class AudienciaScene(Scene):
                 self.end()
             elif evt.key == K_RETURN:
                 self.finalizar = True
-                
+
     def gameEvent(self, evt):
         Threshold=0.20
-        aLittleProb = 0.1 
-        
+        aLittleProb = 0.1
+
         channel=None
-        
+
         if evt == motor.Eventos.PALOK:
             sounds.arenga()
         elif evt == motor.Eventos.PALMAL:
@@ -347,30 +350,30 @@ class AudienciaScene(Scene):
             r = random.random()
             if self.calor>r:
                 if time.time()-self.lastbravo>1.5:
-                    self.lastbravo = time.time()            
+                    self.lastbravo = time.time()
                     sounds.bravo()
         elif evt == motor.Eventos.MAL:
             sounds.bu()
 
-            
+
         if channel:
             cabs = abs(self.calor)
             r = random.random()
-            if (cabs>Threshold) or (r<aLittleProb): 
+            if (cabs>Threshold) or (r<aLittleProb):
                 channel.set_volume(cabs,cabs)
             else:
                 channel.stop()
-        
+
     def setCalor(self, calor):
         if DEBUG: print  'audscene calor:',calor
         self.calor = calor
         self.audiencia.setCalor(calor)
-        
+
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.finalizar:
             self.end( )
-                    
+
     def update(self):
         self.audiencia.update()
         self.game.screen.fill((0,0,0))
@@ -405,12 +408,12 @@ class AudienciaScene(Scene):
             if self.sound_tomate:
                 self.sound_tomate = None
                 sounds.tomato()
-                
+
             imagen = self.tomate_aplastado
             surface.blit(imagen, imagen.get_rect(center=surface.get_rect().center))
 
     def doEasterEgg(self):
-        self.mano = pygame.image.load("escenario/manos/mano-easteregg.png").convert_alpha()
+        self.mano = pygame.image.load(os.path.join(BASEPATH, "escenario/manos/mano-easteregg.png")).convert_alpha()
 
     def setVoluntario(self, voluntario, hacerPuff):
         """cambia el voluntario. Si hacerPuff es true, entonces baja la varita y hace aparecer el humito"""
@@ -422,8 +425,8 @@ class AudienciaScene(Scene):
     def tomateame(self):
         self.tomateando = MAXTOMATEANDO
         self.tomateMB = interpol.MadamBezier(
-                            self.audiencia.getRandomPersonPosition(),(400,300)) 
-        
+                            self.audiencia.getRandomPersonPosition(),(400,300))
+
 if __name__ == "__main__":
     g = Game(800, 600, framerate = 200)
     g.run( AudienciaScene(g, 10) )
