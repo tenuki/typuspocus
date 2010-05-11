@@ -45,6 +45,11 @@ install: build
 	cp $(CURDIR)/debian/changelog $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus/
 	gzip -9 $(CURDIR)/debian/typuspocus/usr/share/doc/typuspocus/changelog
 
+	# icons and applications stuff
+	mkdir -p $(CURDIR)/debian/typuspocus/usr/share/icons
+	cp $(CURDIR)/typuspocus/icons/32x32.png $(CURDIR)/debian/typuspocus/usr/share/icons/typuspocus.png
+	mkdir -p $(CURDIR)/debian/typuspocus/usr/share/applications
+	cp $(CURDIR)/typuspocus.desktop $(CURDIR)/debian/typuspocus/usr/share/applications
 
 # Build architecture-independent files here.
 binary-indep: build install
