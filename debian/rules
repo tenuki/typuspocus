@@ -33,7 +33,7 @@ install: build
 	# so I'm moving it here and cleaning the other stuff
 	mkdir -p $(CURDIR)/debian/typuspocus/usr/share/
 	mkdir -p $(CURDIR)/debian/typuspocus/usr/games
-	mv $(CURDIR)/debian/typuspocus/usr/lib/python2.6/dist-packages/typuspocus $(CURDIR)/debian/typuspocus/usr/share/
+	mv $(CURDIR)/debian/typuspocus/usr/lib/python*/dist-packages/typuspocus $(CURDIR)/debian/typuspocus/usr/share/
 	rm -r $(CURDIR)/debian/typuspocus/usr/lib
 	ln -s $(CURDIR)/debian/typuspocus/usr/share/typuspocus/game.py $(CURDIR)/debian/typuspocus/usr/games/typuspocus
 	chmod 755 $(CURDIR)/debian/typuspocus/usr/share/typuspocus/game.py
