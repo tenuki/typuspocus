@@ -3,21 +3,24 @@
 # pyweek - PyAr2 - Typos Pocus
 #
 
+import os
 import urllib2
+import user
 import xml.dom.minidom
+
 import hiscore_server
 
 HISCORE_SERVER = 'typospocus.servegame.org'
 HISCORE_PORT = 8080
 
-hiscore_server.HiScoreData.HISCORE_FILENAME = 'hi_scores_local.txt'
+hiscore_server.HiScoreData.HISCORE_FILENAME = os.path.join(user.home, ".local/share/typuspocus/hiscores")
 
 class HiScoreClient:
 
     def __init__(self):
         self.__dom = None
         self.__hiscores = []
-        self.__internet = True
+        self.__internet = False
 
     #
     #  add Hi Scores
