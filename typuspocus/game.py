@@ -26,6 +26,11 @@ base = os.path.dirname(os.path.realpath(__file__))
 ESCENARIO = os.path.join(base, "escenario")
 AUDIENCIA = os.path.join(base, "audiencia")
 
+# fonts
+FONT_MAGIC = os.path.join(ESCENARIO, 'MagicSchoolOne.ttf')
+FONT_SERIF = os.path.join(ESCENARIO, "papercuts-2.ttf")
+FONT_MONO  = os.path.join(ESCENARIO, "AurulentSansMono-Regular.otf")
+
 class Timer:
     def __init__(self, total_time):
         self.total_time = total_time
@@ -45,9 +50,8 @@ class Timer:
 
 class LineManager:
     def __init__(self, hechizo, font_size=80,
-                 font=os.path.join(ESCENARIO, "MagicSchoolOne.ttf"),
-                 altfont_size=80,
-                 altfont = os.path.join(ESCENARIO, "DejaVuSerif.ttf"), width=600):
+                 font=FONT_MAGIC, altfont_size=80,
+                 altfont = FONT_SERIF, width=600):
         self.font = pygame.font.Font(font,font_size)
         self.altfont = pygame.font.Font(altfont,altfont_size)
         text = set([ t for t in hechizo ])
@@ -112,7 +116,7 @@ class Alarm:
     def __init__(self):
         self.armed = False
         self.start = None
-        font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50)
+        font = pygame.font.Font(FONT_MAGIC, 50)
         self.message = hollow.textOutline(font, _("Start typing the spell!"), (230,100,100), (0,0,0))
         self.last_blink = None
         self.blink_state = True
@@ -179,9 +183,9 @@ class Level(Scene):
 
         self.level_timer = Timer(self.motor.getTimeLeft())
         self.audiencia.setVoluntario(self.motor.voluntario, False)
-        self.messagefont = pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
-        self.ratefont = pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 20)
-        self.cursorfont = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 100)
+        self.messagefont = pygame.font.Font(FONT_MONO, 30)
+        self.ratefont = pygame.font.Font(FONT_MONO, 20)
+        self.cursorfont = pygame.font.Font(FONT_MAGIC, 100)
         self.motor.start()
         sounds.volumenDeeJay(1.0)
         self.alarm = Alarm()
@@ -419,7 +423,7 @@ class LevelIntro(BannerScene):
         self.level_number = level_number
         self.audiencia = audiencia
         self.level_name = level_name
-        self.font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50)
+        self.font = pygame.font.Font(FONT_MAGIC, 50)
         self.overlay = pygame.image.load(os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.level = level
 
@@ -446,7 +450,6 @@ class LevelSuccess(BannerScene):
         self.level = level
         self.audiencia = xaudiencia
         self.levelscore = levelscore
-        #self.font =  pygame.font.Font("escenario/DejaVuSansMono.ttf",50)
         self.overlay = pygame.image.load(os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.status = EstadoMensaje
 
@@ -460,11 +463,11 @@ class LevelSuccess(BannerScene):
 
         self.game.screen.blit(self.overlay, (0,0))
         if self.status == EstadoMensaje:
-            self.font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50)
+            self.font = pygame.font.Font(FONT_MAGIC, 50)
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historygood.split('\n'))
         else:
-            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
+            self.font =  pygame.font.Font(FONT_MONO, 30)
             self.renderOn(self.game.screen,
                 [_("Level Completed"),"",
                 _("Points accumulated:")+str(self.levelscore),"",
@@ -489,11 +492,11 @@ class LevelFailSuccess(LevelSuccess):
 
         self.game.screen.blit(self.overlay, (0,0))
         if self.status == EstadoMensaje:
-            self.font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50)
+            self.font = pygame.font.Font(FONT_MAGIC, 50)
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historybad.split('\n'))
         else:
-            self.font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
+            self.font =  pygame.font.Font(FONT_MONO, 30)
             self.renderOn(self.game.screen,
                 [_("Level Completed"),"",
                 _("Points accumulated:")+str(self.levelscore),"",
@@ -504,8 +507,8 @@ class GameOver(Scene):
         self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/gameover.png")).convert()
         self.level=level
         self.menu = Menu(
-                 pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50),
-                 pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 70),
+                 pygame.font.Font(FONT_MAGIC, 50),
+                 pygame.font.Font(FONT_MAGIC, 70),
                  [_("No"), _("Yes")],
                  margin = -40,
                  normal_color = (173,148,194),
@@ -513,7 +516,7 @@ class GameOver(Scene):
                  )
 
         self.score = score
-        self.font = font =  pygame.font.Font(os.path.join(ESCENARIO, "DejaVuSansMono.ttf"), 30)
+        self.font = font =  pygame.font.Font(FONT_MONO, 30)
         self.audiencia = laaudiencia
 
     def do_action(self, sel):
@@ -821,11 +824,11 @@ class Ranking(Scene):
         self.score = score
         self.rank = rank
         self.kaping = True
-        self.font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 65)
-        self.font2 = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 90)
-        self.font3 = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 110)
+        self.font = pygame.font.Font(FONT_MAGIC, 65)
+        self.font2 = pygame.font.Font(FONT_MAGIC, 90)
+        self.font3 = pygame.font.Font(FONT_MAGIC, 110)
 
-        font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 30)
+        font = pygame.font.Font(FONT_MAGIC, 30)
         self.textos = [ font.render("%2i:"%(10-i)+line, True, (255,255,255)) for (i,line) in enumerate(self.rankings) ]
 
         self.start_time = time.time()
@@ -874,7 +877,7 @@ class Locked(Scene):
 
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 60)
+        font = pygame.font.Font(FONT_MAGIC, 60)
         sf2 = hollow.textOutline(font, _("You must first finish your career"),(255,254,232), (0,0,0))
         sf3 = hollow.textOutline(font, _("before touring the world"),(255,254,232), (0,0,0))
 
@@ -897,9 +900,9 @@ class Hiscores(Scene):
 
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 40)
-        font2 = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 90)
-        font3 = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 30)
+        font = pygame.font.Font(FONT_MAGIC, 40)
+        font2 = pygame.font.Font(FONT_MAGIC, 90)
+        font3 = pygame.font.Font(FONT_MAGIC, 30)
         scores = self.client.listHiScores()
         for i in range(8):
             if i < len(scores):
@@ -933,8 +936,8 @@ class EnterHiscores(Scene):
 
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 65)
-        font2 = pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 90)
+        font = pygame.font.Font(FONT_MAGIC, 65)
+        font2 = pygame.font.Font(FONT_MAGIC, 90)
 
         sf = hollow.textOutline(font2, "Enter your name",(255,254,232), (0,0,0))
         self.game.screen.blit(sf, (400-sf.get_width()/2, 200))
@@ -1141,10 +1144,10 @@ class TourLevel:
 class MainMenu(Scene):
     def init(self):
         self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/menu.png")).convert()
-        self.font = font =  pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 90)
+        self.font = font =  pygame.font.Font(FONT_MAGIC, 90)
         self.menu = Menu(
-                 pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 50),
-                 pygame.font.Font(os.path.join(ESCENARIO, "MagicSchoolOne.ttf"), 70),
+                 pygame.font.Font(FONT_MAGIC, 50),
+                 pygame.font.Font(FONT_MAGIC, 70),
                  [_("Career"), _("World Tour"), _("Hiscores"), _("Credits"), _("Quit")],
                  margin = -40,
                  normal_color = (173,148,194),
@@ -1301,7 +1304,7 @@ class MainMenu(Scene):
 def main():
     g = Game(800, 525, framerate = 20, title = "Typus Pocus",
              icon=os.path.join(ESCENARIO, "icono.png"))
-    font_path = os.path.join(ESCENARIO, "MagicSchoolOne.ttf")
+    font_path = FONT_MAGIC
     g.run( GameIntro(g, pygame.font.Font(font_path, 50)) )
     g.run( MainMenu(g) )
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Hollow/Outline text module 
+# Hollow/Outline text module
 # based on code by: Pete Shinners
 # http://www.pygame.org/pcr/hollow_outline/index.php
 
@@ -8,7 +8,7 @@ two text rendering styles. outlined and hollow. both
 use a single pixel border around the text. you might be
 able to cheat a bigger border by fooling with it some.
 """
-import os, sys, pygame, pygame.font, pygame.image
+import os, sys, pygame
 from pygame.locals import *
 
 def textOutline(font, message, fontcolor, outlinecolor):
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     win.blit(text2, text2.get_rect(center=win.get_rect().center))
     pygame.display.flip()
-    
+
     #wait for the finish
     while 1:
         event = pygame.event.wait()
