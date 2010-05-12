@@ -1,3 +1,12 @@
 #!/usr/bin/make -f
 %:
 	dh $@
+
+override_dh_install:
+	dh_install
+
+	# icons and applications stuff
+	mkdir -p debian/typuspocus/usr/share/icons
+	cp typuspocus/icons/32x32.png debian/typuspocus/usr/share/icons/typuspocus.png
+	mkdir -p debian/typuspocus/usr/share/applications
+	cp typuspocus.desktop debian/typuspocus/usr/share/applications
