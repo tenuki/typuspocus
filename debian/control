@@ -1,7 +1,7 @@
 Source: typuspocus
 Section: games
 Priority: extra
-Maintainer: Facundo Batista <facundo@taniquetil.com.ar>
+Maintainer: Facundo Batista <facundo@ubuntu.com>
 Build-Depends: debhelper (>= 7.0.50), python (>= 2.5.4-1~)
 Build-Depends-Indep: python-support
 Standards-Version: 3.8.4
