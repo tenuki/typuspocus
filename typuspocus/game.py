@@ -222,7 +222,7 @@ class Level(Scene):
                 else:
                     sounds.tick2()
                 self.tick_count = not self.tick_count
-                pygame.time.set_timer(CLOCK_TICK, tick_rate)
+                pygame.time.set_timer(CLOCK_TICK, int(tick_rate+.5))
                 if DEBUG: print "tickrate", tick_rate
 
 
