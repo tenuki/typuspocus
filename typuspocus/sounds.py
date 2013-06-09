@@ -39,7 +39,7 @@ class Sounds:
             ['mmbas1', 'mmbas2', 'mmin1', 'mmin2', 'mmin3', 'mmin4', 'mmin5', 'mmin6', 'mmin7', 'mmin8'],
             ['mmdnza1', 'mmdnza2', 'mmdnza3', 'mmdnza4', 'mmdnzb1', 'mmdnzb2', 'mmdnzb3', 'mmdnzb4', 'mmdnzb5', 'mmdnzb6', 'mmdnzb7'],
             ]
-        self.music_parts = [[pygame.mixer.Sound('music/%s.ogg' % fname) for fname in group] for group in self.music_groups]
+        self.music_parts = [[pygame.mixer.Sound(os.path.join(MUSIC_DIR, '%s.ogg' % fname)) for fname in group] for group in self.music_groups]
         self.music_part_count = len(self.music_parts)
 
         self.musicfiles = [f for f in os.listdir(MUSIC_DIR) if f.startswith('mm') and f.endswith('ogg')]
