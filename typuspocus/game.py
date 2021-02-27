@@ -1,23 +1,23 @@
-#!/usr/bin/env python
-
-# -*- coding: iso-8859-1 -*-
+"""Main entry point for the game."""
 
 import os
+import gettext
+import random
+import textwrap
+import time
+
 import pygame
 from pygame.locals import *
-from engine import Game, Scene
-from audiencia import AudienciaScene
+
 import audiencia
-import cosas
-from motor import MainMotor, Estados
-import hollow
-from sounds import sounds
-import time, random
-from levels import niveles
 import countries
 import hiscore_client
-import internalocal
-import textwrap
+import hollow
+from audiencia import AudienciaScene
+from engine import Game, Scene
+from levels import niveles
+from motor import MainMotor
+from sounds import sounds
 
 DEBUG = 0
 CLOCK_TICK = pygame.USEREVENT
@@ -26,10 +26,15 @@ base = os.path.dirname(os.path.realpath(__file__))
 ESCENARIO = os.path.join(base, "escenario")
 AUDIENCIA = os.path.join(base, "audiencia")
 
+# install the translation service
+locale_dir = os.path.join(base, "locale")
+gettext.install('core', locale_dir)
+
 # fonts
 FONT_MAGIC = os.path.join(ESCENARIO, 'MagicSchoolOne.ttf')
 FONT_SERIF = os.path.join(ESCENARIO, "papercuts-2.ttf")
-FONT_MONO  = os.path.join(ESCENARIO, "AurulentSansMono-Regular.otf")
+FONT_MONO = os.path.join(ESCENARIO, "AurulentSansMono-Regular.otf")
+
 
 class Timer:
     def __init__(self, total_time):
@@ -39,29 +44,29 @@ class Timer:
     def setTimeLeft(self, time):
         self.time_left = time
 
-    def blit(self, surface, (x, y)):
+    def blit(self, surface, coords):
+        x, y = coords
         full = 300
         width = 20
-        current = (self.time_left*full)/self.total_time
-        pygame.draw.rect(surface, (0,0,0), Rect(x-1,y-1,width+3,full+2))
-        pygame.draw.rect(surface, (30,255,30), Rect(x,y+full-current,width,
-                current))
+        current = (self.time_left * full) / self.total_time
+        pygame.draw.rect(surface, (0, 0, 0), Rect(x - 1, y - 1, width + 3, full + 2))
+        pygame.draw.rect(surface, (30, 255, 30), Rect(x, y + full - current, width, current))
 
 
 class LineManager:
-    def __init__(self, hechizo, font_size=80,
-                 font=FONT_MAGIC, altfont_size=80,
-                 altfont = FONT_SERIF, width=600):
-        self.font = pygame.font.Font(font,font_size)
-        self.altfont = pygame.font.Font(altfont,altfont_size)
-        text = set([ t for t in hechizo ])
+    def __init__(
+            self, hechizo, font_size=80, font=FONT_MAGIC, altfont_size=80,
+            altfont=FONT_SERIF, width=600):
+        self.font = pygame.font.Font(font, font_size)
+        self.altfont = pygame.font.Font(altfont, altfont_size)
+        text = {t for t in hechizo}
         self.cache = {}
         colores = [
-            [(130,130,170), (0,0,255)],
-            [(255,255,0),(255,0,0)],
-            [(170,170,100),(170,0,0)],
-            [(255,0,0),(128,0,0)],
-            ]
+            [(130, 130, 170), (0, 0, 255)],
+            [(255, 255, 0), (255, 0, 0)],
+            [(170, 170, 100), (170, 0, 0)],
+            [(255, 0, 0), (128, 0, 0)],
+        ]
         for t in text:
             if t in " ,.<>:;":
                 font = self.altfont
@@ -69,13 +74,13 @@ class LineManager:
                 font = self.font
             if t == " ":
                 self.cache[t] = [
-                    hollow.textOutline(font,t,*colores[0]),
-                    hollow.textOutline(font,t,*colores[1]),
-                    hollow.textOutline(font,"_",*colores[2]),
-                    hollow.textOutline(font,"_",*colores[3])
-                    ]
+                    hollow.textOutline(font, t, *colores[0]),
+                    hollow.textOutline(font, t, *colores[1]),
+                    hollow.textOutline(font, "_", *colores[2]),
+                    hollow.textOutline(font, "_", *colores[3]),
+                ]
             else:
-                self.cache[t] = [ hollow.textOutline(font,t,*c) for c in colores ]
+                self.cache[t] = [hollow.textOutline(font, t, *c) for c in colores]
 
             self.height = self.cache[t][0].get_height()
 
@@ -84,15 +89,15 @@ class LineManager:
         current = ""
         line_len = 0
         for word in words:
-            word_len = sum([ self.get(l,0).get_width() for l in word ])
+            word_len = sum(self.get(char, 0).get_width() for char in word)
             if line_len + word_len > width:
-                lines.append( current[1:]+" " )
+                lines.append(current[1:] + " ")
                 current = ""
                 line_len = 0
 
-            current += " "+word
-            line_len += 1+word_len
-        lines.append( current[1:] )
+            current += " " + word
+            line_len += 1 + word_len
+        lines.append(current[1:])
 
         self.lines = lines
 
@@ -102,10 +107,10 @@ class LineManager:
     def getLineFromCursor(self, cursor):
         offset = 0
         for line in self.lines:
-            if len(line)+offset>cursor:
-                return (offset,line)
+            if len(line) + offset > cursor:
+                return offset, line
             offset += len(line)
-        return 0,0
+        return 0, 0
 
 
 class Alarm:
@@ -117,7 +122,8 @@ class Alarm:
         self.armed = False
         self.start = None
         font = pygame.font.Font(FONT_MAGIC, 50)
-        self.message = hollow.textOutline(font, _("Start typing the spell!"), (230,100,100), (0,0,0))
+        self.message = hollow.textOutline(
+            font, _("Start typing the spell!"), (230, 100, 100), (0, 0, 0))
         self.last_blink = None
         self.blink_state = True
         self.last_sound = None
@@ -131,26 +137,23 @@ class Alarm:
 
     def blit(self, screen):
         if self.armed:
-            if time.time()-self.start>self.alarm_time:
+            if time.time() - self.start > self.alarm_time:
                 if self.last_blink is None:
                     self.last_blink = time.time()
 
-                if time.time()-self.last_blink > self.blink_time:
+                if time.time() - self.last_blink > self.blink_time:
                     self.blink_state = not self.blink_state
                     self.last_blink = time.time()
 
                 if self.blink_state:
-                    screen.blit(self.message, (400-self.message.get_width()/2, 430))
+                    screen.blit(self.message, (400 - self.message.get_width() // 2, 430))
                 if self.last_sound is None:
                     self.last_sound = time.time()
                     sounds.signal()
 
-                if time.time()-self.last_sound > self.sound_time:
+                if time.time() - self.last_sound > self.sound_time:
                     sounds.signal()
                     self.last_sound = time.time()
-
-
-
 
 
 PERDIO, GANO = range(2)
@@ -164,15 +167,15 @@ class Level(Scene):
         self.audiencia = laAudiencia
         self.motor = motor
         self.line_manager = LineManager(self.motor.hechizo)
-        self.offset_cache = [None]*len(self.motor.hechizo)
-        self.style_cache = [None]*len(self.motor.hechizo)
+        self.offset_cache = [None] * len(self.motor.hechizo)
+        self.style_cache = [None] * len(self.motor.hechizo)
         self.last_cursor = 0
         self.level_number = level_number
 
         self.line_group = pygame.sprite.OrderedUpdates()
         self.line = None
         self.audiencia = AudienciaScene(self.game, self.level_number, self.audiencia)
-        self.subscenes.append( self.audiencia )
+        self.subscenes.append(self.audiencia)
         self.todasLasTeclas = ""
 
         pygame.time.set_timer(CLOCK_TICK, 1000)
@@ -191,7 +194,6 @@ class Level(Scene):
         self.alarm = Alarm()
         self.alarm.arm()
 
-
     def event(self, evt):
         if self.state == PLAYING:
             if evt.type == KEYDOWN:
@@ -200,9 +202,9 @@ class Level(Scene):
 
                 self.alarm.disarm()
                 res = None
-                letra = evt.unicode #.lower()
+                letra = evt.unicode  # .lower()
                 if letra.isalpha() or (letra and letra in " ,.<>:;1234567890'-"):
-                    res, event = self.motor.hitLetra( letra )
+                    res, event = self.motor.hitLetra(letra)
                     self.checkEaster(letra)
                 if evt.key == K_BACKSPACE:
                     self.motor.hitBackspace()
@@ -210,21 +212,21 @@ class Level(Scene):
                     res, event = self.motor.hitLetra(" ")
 
                 if res:
-                    self.audiencia.gameEvent( event )
+                    self.audiencia.gameEvent(event)
 
             elif evt.type == CLOCK_TICK:
                 sound_len = 100
                 timeleft = self.motor.getTimeLeft()
                 total_time = self.motor._getTiempoJuego()
-                tick_rate = sound_len + timeleft * (1000-sound_len)/total_time
+                tick_rate = sound_len + timeleft * (1000 - sound_len) / total_time
                 if self.tick_count:
                     sounds.tick1()
                 else:
                     sounds.tick2()
                 self.tick_count = not self.tick_count
-                pygame.time.set_timer(CLOCK_TICK, int(tick_rate+.5))
-                if DEBUG: print "tickrate", tick_rate
-
+                pygame.time.set_timer(CLOCK_TICK, int(tick_rate + .5))
+                if DEBUG:
+                    print("tickrate", tick_rate)
 
             if self.motor.cursor >= len(self.motor.hechizo):
                 sounds.apagarVoces()
@@ -237,17 +239,14 @@ class Level(Scene):
                     sounds.suspensomal()
                 self.wintime = pygame.time.get_ticks()
 
-
-        elif self.state in [ WON ]:
+        elif self.state in [WON]:
             if evt.type == KEYDOWN:
-                    sounds.apagarSonidos()
-                    self.end(GANO)
-        elif self.state in [ LOST, TOMATO ]:
+                sounds.apagarSonidos()
+                self.end(GANO)
+        elif self.state in [LOST, TOMATO]:
             if evt.type == KEYDOWN:
-                    sounds.apagarSonidos()
-                    self.end(PERDIO)
-
-
+                sounds.apagarSonidos()
+                self.end(PERDIO)
 
     def loop(self):
         sounds.heatDeeJay(self.motor.calor)
@@ -259,28 +258,26 @@ class Level(Scene):
                 self.audiencia.tomateame()
                 self.wintime = pygame.time.get_ticks()
 
-            self.level_timer.setTimeLeft( self.motor.getTimeLeft() )
-
+            self.level_timer.setTimeLeft(self.motor.getTimeLeft())
 
             evt = self.motor.tick()
-            self.audiencia.setCalor( self.motor.calor )
+            self.audiencia.setCalor(self.motor.calor)
 
             if evt:
-                self.audiencia.gameEvent( evt )
+                self.audiencia.gameEvent(evt)
         elif self.state == WINNING:
-            if pygame.time.get_ticks() -self.wintime > 2000:
+            if pygame.time.get_ticks() - self.wintime > 2000:
                 self.state = WON
                 self.audiencia.setVoluntario(None, True)
                 sounds.gritosfelicitacion()
         elif self.state == LOSING:
-            if pygame.time.get_ticks() -self.wintime > 2000:
+            if pygame.time.get_ticks() - self.wintime > 2000:
                 self.state = LOST
                 self.audiencia.setVoluntario(self.motor.voluntario_error, True)
                 sounds.gritosmalaonda()
         elif self.state == TOMATOING:
-            if pygame.time.get_ticks() -self.wintime > 2000:
+            if pygame.time.get_ticks() - self.wintime > 2000:
                 self.state = TOMATO
-
 
     def checkEaster(self, letra):
         self.todasLasTeclas += letra
@@ -298,100 +295,104 @@ class Level(Scene):
             self.state = WINNING
             self.wintime = pygame.time.get_ticks()
 
-
     def update(self):
         font = self.messagefont
 
         if self.state == PLAYING:
-            #self.game.screen.blit(self.background, (0,0))
+            # self.game.screen.blit(self.background, (0,0))
             if self.linebyline:
                 cursor = self.motor.cursor
-                offset, line = self.line_manager.getLineFromCursor( cursor )
+                offset, line = self.line_manager.getLineFromCursor(cursor)
 
                 ypos = 540
-                xpos = (800-sum([ self.line_manager.get(l,0).get_width() for l in line ]))/2
+                xpos = (
+                    800 - sum(self.line_manager.get(char, 0).get_width() for char in line)) // 2
                 cursor_xpos = xpos
                 for position, letter in enumerate(line):
-                    style = self.motor.estado[position+offset]
+                    style = self.motor.estado[position + offset]
 
-                    if position+offset == cursor:
+                    if position + offset == cursor:
                         cursor_xpos = xpos
 
-                    i = self.line_manager.get(letter, self.motor.estado[position+offset])
+                    i = self.line_manager.get(letter, self.motor.estado[position + offset])
 
-                    self.game.screen.blit( i, (xpos, ypos) )
+                    self.game.screen.blit(i, (xpos, ypos))
                     xpos += i.get_width()
-                cursor_img = self.cursorfont.render("^", True, (255,255,255))
-                self.game.screen.blit(cursor_img,
-                                      (cursor_xpos,ypos+self.line_manager.height)
-                                      )
+                cursor_img = self.cursorfont.render("^", True, (255, 255, 255))
+                self.game.screen.blit(cursor_img, (cursor_xpos, ypos + self.line_manager.height))
             else:
                 # paint forward
                 xpos = 400
                 ypos = 300
                 cursor = self.motor.cursor
-                if DEBUG: print "falta == ",self.motor.hechizo[cursor:]
+                if DEBUG:
+                    print("falta == ", self.motor.hechizo[cursor:])
                 for position, letter in enumerate(self.motor.hechizo[cursor:]):
-                    style = self.motor.estado[position+cursor]
+                    style = self.motor.estado[position + cursor]
 
+                    i = self.line_manager.get(letter, self.motor.estado[position + cursor])
 
-                    i = self.line_manager.get(letter, self.motor.estado[position+cursor])
-
-                    self.game.screen.blit( i, (xpos, ypos) )
+                    self.game.screen.blit(i, (xpos, ypos))
                     xpos += i.get_width()
-                    if xpos > 800: break
+                    if xpos > 800:
+                        break
 
-                surface= self.line_manager.get(self.motor.hechizo[cursor], self.motor.estado[cursor])
+                surface = self.line_manager.get(
+                    self.motor.hechizo[cursor], self.motor.estado[cursor])
                 width = surface.get_width()
                 height = surface.get_height()
 
-                cursor_sf = hollow.textOutline(self.cursorfont, "^", (150,150,250), (0,0,0))
-                self.game.screen.blit( cursor_sf, (400+width/2-cursor_sf.get_width()/2,370))
+                cursor_sf = hollow.textOutline(self.cursorfont, "^", (150, 150, 250), (0, 0, 0))
+                self.game.screen.blit(
+                    cursor_sf, (400 + width // 2 - cursor_sf.get_width() // 2, 370))
 
-
-                #pain backwards
+                # paint backwards
                 xpos = 400
-                letters = [l for l in self.motor.hechizo[:cursor]]
-                if DEBUG: print "done==", self.motor.hechizo[:cursor]
+                letters = list(self.motor.hechizo[:cursor])
+                if DEBUG:
+                    print("done==", self.motor.hechizo[:cursor])
                 letters.reverse()
                 for position, letter in enumerate(letters):
-                    style = self.motor.estado[-position+cursor]
+                    style = self.motor.estado[-position + cursor]
 
-
-                    i = self.line_manager.get(letter, self.motor.estado[-1-position+cursor])
+                    i = self.line_manager.get(letter, self.motor.estado[-1 - position + cursor])
                     width = i.get_width()
-                    if xpos - width < 0: break
+                    if xpos - width < 0:
+                        break
                     xpos -= width
-                    self.game.screen.blit( i, (xpos, ypos) )
+                    self.game.screen.blit(i, (xpos, ypos))
 
-
-            self.level_timer.blit( self.game.screen, (770, 50))
+            self.level_timer.blit(self.game.screen, (770, 50))
 
             # ponemos el rate de teclas
             rate = self.motor.getRate()
             if rate < self.motor.precision_requerida:
-                color_tx = (255,0,0)
+                color_tx = (255, 0, 0)
             else:
-                color_tx = (0,255,0)
-            rate_sf = hollow.textOutline( self.ratefont, "%i%%"%(int(rate*100)),  color_tx, (0,0,0) )
-            self.game.screen.blit( rate_sf, (770-rate_sf.get_width()/2, 35-rate_sf.get_height()/2))
+                color_tx = (0, 255, 0)
+            rate_sf = hollow.textOutline(
+                self.ratefont, "%i%%" % (int(rate * 100)), color_tx, (0, 0, 0))
+            self.game.screen.blit(
+                rate_sf, (770 - rate_sf.get_width() // 2, 35 - rate_sf.get_height() // 2))
 
             # y el score
             score = self.motor.score
-            score_sf = hollow.textOutline(self.ratefont, _("Score: %3.1f")%score, (0,0,255), (0,0,0))
-            self.game.screen.blit( score_sf, (790-score_sf.get_width(), 15-score_sf.get_height()/2))
-
+            score_sf = hollow.textOutline(
+                self.ratefont, _("Score: %3.1f") % score, (0, 0, 255), (0, 0, 0))
+            self.game.screen.blit(
+                score_sf, (790 - score_sf.get_width(), 15 - score_sf.get_height() // 2))
 
             self.alarm.blit(self.game.screen)
         if self.state in [WON, LOST, TOMATO]:
-            im = hollow.textOutline(font, _("[press any key]"), (30,30,200), (255,255,255))
+            im = hollow.textOutline(font, _("[press any key]"), (30, 30, 200), (255, 255, 255))
             ypos = 400
-            xpos = (800-im.get_width())/2
+            xpos = (800 - im.get_width()) // 2
 
-            self.game.screen.blit( im, (xpos, ypos) )
+            self.game.screen.blit(im, (xpos, ypos))
 
 
-Foreground = None #= pygame.image.load("escenario/foreground.png")
+Foreground = None  # = pygame.image.load("escenario/foreground.png")
+
 
 def test():
     global Foreground
@@ -401,21 +402,22 @@ def test():
 
 class BannerScene(Scene):
     def renderOn(self, surface, lines=[]):
-        Yellow = (255,255,160)
-        posx=110
-        widx=600
-        posy=80
-        widy=385 # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar..
-        introSurface = surface.subsurface(pygame.Rect(posx,posy,widx,widy))
+        Yellow = (255, 255, 160)
+        posx = 110
+        widx = 600
+        posy = 80
+        widy = 385  # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar..
+        introSurface = surface.subsurface(pygame.Rect(posx, posy, widx, widy))
         fontYsize = 30
 
-        deltaY = (widy - (len(lines)*fontYsize))/2+20
-        nline=0
+        deltaY = (widy - (len(lines) * fontYsize)) // 2 + 20
+        nline = 0
         for line in lines:
             s = self.font.render(line, True, Yellow)
-            tx,ty =s.get_size()
-            introSurface.blit(s, ((widx-tx)/2, deltaY+nline*fontYsize))
-            nline+=1
+            tx, ty = s.get_size()
+            introSurface.blit(s, ((widx - tx) // 2, deltaY + nline * fontYsize))
+            nline += 1
+
 
 class LevelIntro(BannerScene):
     def init(self, level_number, level_name, audiencia, level=None):
@@ -424,25 +426,29 @@ class LevelIntro(BannerScene):
         self.audiencia = audiencia
         self.level_name = level_name
         self.font = pygame.font.Font(FONT_MAGIC, 50)
-        self.overlay = pygame.image.load(os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
+        self.overlay = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.level = level
 
     def update(self):
         self.audiencia.update()
-        self.game.screen.fill((0,0,0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        self.game.screen.fill((0, 0, 0))
+        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
         self.audiencia.render(self.background)
-        self.background.blit(Foreground, (0,0))
-        self.game.screen.blit(self.overlay, (0,0))
-        if self.level<>None:
-            self.renderOn(self.game.screen, [self.level.nombre, '',''] +
-                                    self.level.historyintro.split('\n') )
+        self.background.blit(Foreground, (0, 0))
+        self.game.screen.blit(self.overlay, (0, 0))
+        if self.level is not None:
+            self.renderOn(
+                self.game.screen,
+                [self.level.nombre, '', ''] + self.level.historyintro.split('\n'))
 
     def event(self, evt):
         if evt.type == KEYDOWN:
-                self.end()
+            self.end()
+
 
 EstadoMensaje, EstadoContinuar = range(2)
+
 
 class LevelSuccess(BannerScene):
     def init(self, score, levelscore, xaudiencia, level):
@@ -450,13 +456,14 @@ class LevelSuccess(BannerScene):
         self.level = level
         self.audiencia = xaudiencia
         self.levelscore = levelscore
-        self.overlay = pygame.image.load(os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
+        self.overlay = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.status = EstadoMensaje
 
     def update(self):
         self.audiencia.update()
-        self.game.screen.fill((0,0,0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        self.game.screen.fill((0, 0, 0))
+        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
 
         self.audiencia.render(self.background)
         self.background.blit(Foreground, (0,0))
@@ -1302,11 +1309,12 @@ class MainMenu(Scene):
 
 
 def main():
-    g = Game(800, 525, framerate = 20, title = "Typus Pocus",
-             icon=os.path.join(ESCENARIO, "icono.png"))
+    icon = os.path.join(ESCENARIO, "icono.png")
+    g = Game(800, 525, framerate=20, title="Typus Pocus", icon=icon)
     font_path = FONT_MAGIC
-    g.run( GameIntro(g, pygame.font.Font(font_path, 50)) )
-    g.run( MainMenu(g) )
+    g.run(GameIntro(g, pygame.font.Font(font_path, 50)))
+    g.run(MainMenu(g))
+
 
 if __name__ == "__main__":
     main()

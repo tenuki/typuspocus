@@ -1,6 +1,4 @@
-# -*- coding: iso-8859-1 -*-
-
-from internalocal import *
+import os
 
 claves = """
 nombre
@@ -260,15 +258,16 @@ a horde of naked angels offers
 to console you!!""",
         dict(tiempo_por_caracter=0.14, preferencia_precision=0.5)
     ),
-]#[1:]
+]
+
 
 class Niveles:
     def __init__(self, keys, values):
-        for k,v in zip(keys, values):
+        for k, v in zip(keys, values):
             setattr(self, k, v)
 
-niveles = [ Niveles(claves, values) for values in textosNiveles ]
+niveles = [Niveles(claves, values) for values in textosNiveles]
 
 if __name__ == "__main__":
     for n in niveles:
-        print dir(n)
+        print(dir(n))

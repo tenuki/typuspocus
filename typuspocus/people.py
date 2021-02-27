@@ -1,18 +1,21 @@
-import os, re, time
+import os
+import re
+import time
 import pygame
 from random import Random
 from pygame.locals import *
 from engine import Game, Scene
-SCREEN_SIZE=(800,600)
+
+SCREEN_SIZE = (800, 600)
 PPLSIZE = (55, 119)
-filasx, filasy = (800/55,600/119)
+filasx, filasy = (800 / 55, 600 / 119)
 
 BASEPATH = os.path.dirname(os.path.realpath(__file__))
 
 random = Random()
 def resetRandom(level_number):
     global random
-    random.seed(int(time.time()/60/15)+level_number*100)
+    random.seed(int(time.time() / 60 / 15) + level_number * 100)
 
 states = normal, amboslevantados = range(2)
 
@@ -26,7 +29,7 @@ class SampleScene(Scene):
         self.finalizar = False
         self.wardrobes = wardrobes
         self.pool = []
-        self.level=level
+        self.level = level
 
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
@@ -42,10 +45,10 @@ class SampleScene(Scene):
                 self.putIndividualAt(some, x, y)
 
     def putIndividualAt(self, individual, x, y):
-        sx,sy = PPLSIZE
-        dx = (y%2) * sx/2 - sx/2
-        img = individual.render()[random.randint(0,1)]
-        self.background.blit(img,(sx*x+dx, sy/2*y))
+        sx, sy = PPLSIZE
+        dx = (y % 2) * sx / 2 - sx / 2
+        img = individual.render()[random.randint(0, 1)]
+        self.background.blit(img, (sx * x + dx, sy / 2 * y))
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -59,124 +62,124 @@ class SampleScene(Scene):
     def loop(self):
         # aca updateamos el mundo cada paso
         if self.goscene:
-            retorno = self.runScene(
-                        SampleScene(self.game, self.nombre+" hijo ") )
+            self.runScene(SampleScene(self.game, self.nombre + " hijo "))
             self.goscene = False
         if self.finalizar:
-            self.end( self.nombre )
+            self.end(self.nombre)
 
     def update(self):
-        x,y = random.randint(0,filasx-1), random.randint(0,filasy-1)
-        self.putIndividualAt(self.pool[random.randint(0,29)], x,y)
+        x, y = random.randint(0, filasx - 1), random.randint(0, filasy - 1)
+        self.putIndividualAt(self.pool[random.randint(0, 29)], x, y)
 
-        self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.SysFont("Times New Roman",30)
-        s = font.render(self.nombre,True,(0,255,255))
-        self.game.screen.blit(s, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
+        font = pygame.font.SysFont("Times New Roman", 30)
+        s = font.render(self.nombre, True, (0, 255, 255))
+        self.game.screen.blit(s, (0, 0))
+
 
 BehaviourDatas = {
     "anypublic": {
-        "behind":0.5,
-        "body":0.999,
-        "hair":0.9,
-        "underware":0.8,
-        "tops":1,
-        "bottoms":1,
-        "shoes":1,
-        "jackets":0.1,
-        "hats":0.1,
-        "infront":0.15,
+        "behind": 0.5,
+        "body": 0.999,
+        "hair": 0.9,
+        "underware": 0.8,
+        "tops": 1,
+        "bottoms": 1,
+        "shoes": 1,
+        "jackets": 0.1,
+        "hats": 0.1,
+        "infront": 0.15,
     },
 
     "fullydressed": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.9,
-        "underware":0.95,
-        "tops":1,
-        "bottoms":1,
-        "shoes":1,
-        "jackets":1,
-        "hats":0.01,
-        "infront":0.85,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.9,
+        "underware": 0.95,
+        "tops": 1,
+        "bottoms": 1,
+        "shoes": 1,
+        "jackets": 1,
+        "hats": 0.01,
+        "infront": 0.85,
     },
 
     "gothdressed": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.95,
-        "underware":0.95,
-        "tops":0.5,
-        "bottoms":0.5,
-        "shoes":0.7,
-        "jackets":0.3,
-        "hats":0.3,
-        "infront":0.40,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.95,
+        "underware": 0.95,
+        "tops": 0.5,
+        "bottoms": 0.5,
+        "shoes": 0.7,
+        "jackets": 0.3,
+        "hats": 0.3,
+        "infront": 0.40,
     },
 
     "enmascarados": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.9,
-        "underware":0.95,
-        "tops":1,
-        "bottoms":1,
-        "shoes":1,
-        "jackets":1,
-        "hats":0.70,
-        "infront":0.85,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.9,
+        "underware": 0.95,
+        "tops": 1,
+        "bottoms": 1,
+        "shoes": 1,
+        "jackets": 1,
+        "hats": 0.70,
+        "infront": 0.85,
     },
 
     "enpelotas": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.99,
-        "underware":0.65,
-        "tops":0,
-        "bottoms":0,
-        "shoes":0,
-        "jackets":0,
-        "hats":0.01,
-        "infront":0.12,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.99,
+        "underware": 0.65,
+        "tops": 0,
+        "bottoms": 0,
+        "shoes": 0,
+        "jackets": 0,
+        "hats": 0.01,
+        "infront": 0.12,
     },
 
     "alien_alien": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.6,
-        "underware":0.30,
-        "tops":0.3,
-        "bottoms":0.3,
-        "shoes":0.3,
-        "jackets":0.05,
-        "hats":0.01,
-        "infront":0.85,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.6,
+        "underware": 0.30,
+        "tops": 0.3,
+        "bottoms": 0.3,
+        "shoes": 0.3,
+        "jackets": 0.05,
+        "hats": 0.01,
+        "infront": 0.85,
     },
 
     "alien_mib": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.90,
-        "underware":0.30,
-        "tops":1,
-        "bottoms":1,
-        "shoes":1,
-        "jackets":1,
-        "hats":0.01,
-        "infront":1,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.90,
+        "underware": 0.30,
+        "tops": 1,
+        "bottoms": 1,
+        "shoes": 1,
+        "jackets": 1,
+        "hats": 0.01,
+        "infront": 1,
     },
 
     "esqueletos": {
-        "behind":0.5,
-        "body":1,
-        "hair":0.6,
-        "underware":0.30,
-        "tops":0.3,
-        "bottoms":0.3,
-        "shoes":0.3,
-        "jackets":0.05,
-        "hats":0.01,
-        "infront":0.85,
+        "behind": 0.5,
+        "body": 1,
+        "hair": 0.6,
+        "underware": 0.30,
+        "tops": 0.3,
+        "bottoms": 0.3,
+        "shoes": 0.3,
+        "jackets": 0.05,
+        "hats": 0.01,
+        "infront": 0.85,
     },
 }
 
@@ -184,26 +187,26 @@ class Individual:
 
     def __init__(self, wardrobe):
         """Each person must have a wardrobe, Ha!"""
-        self.wardrobe=wardrobe
-        self.layers={}
+        self.wardrobe = wardrobe
+        self.layers = {}
 
     def random(self, level=1, clothinBehavior="anypublic"):
         # let's get the clothing behaviour
         clothinBehavior=BehaviourDatas[clothinBehavior]
 
-        #choose some layers by it's probe
-        sl=[]
+        # choose some layers by it's probe
+        sl = []
         for layer in self.wardrobe.getLayers():
-            if random.random()<clothinBehavior[layer]:
+            if random.random() < clothinBehavior[layer]:
                 sl.append(layer)
 
-        #if this individual is not going to have a body
-        #at least let him be well clothed, for its health!
+        # if this individual is not going to have a body
+        # at least let him be well clothed, for its health!
         if not 'body' in sl:
-            sl=clothinBehavior.keys()
+            sl = clothinBehavior.keys()
             sl.remove('body')
 
-        #let's wardrobe calculate weights for this level
+        # let's wardrobe calculate weights for this level
         self.wardrobe.adjustProbForLevel(level)
 
         #choose clothes, please!!
@@ -259,7 +262,6 @@ class Individual:
         return img
 
 
-
 BasicFieldList = """"0"     "id"
 "1"     "imageName"
 "2"     "category"
@@ -269,30 +271,36 @@ BasicFieldList = """"0"     "id"
 "6" "wearing"
 "7" "waldrobe" """.split('\n')
 
+
 class FieldSet:
+
     RE = re.compile(r'"(.*)"[ \t]*"(.*)".*')
+
     def __init__(self, fields=BasicFieldList):
         for f in fields:
             g = FieldSet.RE.match(f)
             if not g:
-                raise Exception('Invalid fields "%s"'%repr(f))
-            k,v=g.groups()
-            setattr(self,v.lower(),int(k))
+                raise Exception('Invalid fields "%s"' % repr(f))
+            k, v = g.groups()
+            setattr(self, v.lower(), int(k))
+
 
 class Article:
-    RE = re.compile('"(.*)" *'*7 + '.*')
+
+    RE = re.compile('"(.*)" *' * 7 + '.*')
+
     def __init__(self, dataline, fieldset, path=''):
         self.fieldset = fieldset
         m = Article.RE.match(dataline)
-        if not m : raise Exception('Invalid article data "%s"'%repr(dataline))
+        if not m:
+            raise Exception('Invalid article data "%s"'%repr(dataline))
         self.data = m.groups()
         self.image = None
         self.path = path
 
-        self.probByLevel = map(lambda s:float(s),
-                            self.getSome('wearing').split(':') )
+        self.probByLevel = [float(s) for s in self.getSome('wearing').split(':')]
         self.probLevels = len(self.probByLevel)
-        self.absProbL={}
+        self.absProbL = {}
 
     def absProb(self, level):
         return self.absProbL[level]
@@ -301,8 +309,8 @@ class Article:
         self.absProbL[level]=prob
 
     def probLevel(self, level):
-        if level>self.probLevels:
-            level=self.probLevels
+        if level > self.probLevels:
+            level = self.probLevels
         return self.probByLevel[level-1]
 
     def __repr__(self):
@@ -310,8 +318,10 @@ class Article:
 
     def getSome(self,some):
         return self.data[getattr(self.fieldset,some)]
+
     def getLayer(self):
         return self.getSome('layer')
+
     def getName(self):
         return self.getSome('imagename')
 
@@ -319,18 +329,22 @@ class Article:
         if self.image==None:
             self.image=pygame.image.load(self.path+self.name).convert_alpha()
         return self.image
+
     def SnapPos(self):
         return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
-    layer=property(getLayer)
-    name=property(getName)
+
+    layer = property(getLayer)
+    name = property(getName)
+
 
 class Wardrobe:
+
     def __init__(self, path, articles_txt="articles.txt", behaviour="anypublic"):
         self.behaviourname = behaviour
         self.behaviour = BehaviourDatas[behaviour]
         self.articles_txt = articles_txt
-        self.articles={}
-        self.weights={}
+        self.articles = {}
+        self.weights = {}
         self.calculatedLevels = {}
         self.layers = {}
         self.all = {}
@@ -339,15 +353,15 @@ class Wardrobe:
 
     def add(self, article):
         layer = article.layer
-        self.layers [ layer ] = None
+        self.layers[layer] = None
         artlist = self.articles.setdefault(layer, [])
         artlist.append(article)
-        self.articles[layer]=artlist
-        self.all[article.name]=article
+        self.articles[layer] = artlist
+        self.all[article.name] = article
 
     def adjustProbForLevel(self, level):
         if self.calculatedLevels.has_key(level):
-            #skip if we made calculations beore
+            # skip if we made calculations beore
             return
 
         for layer in self.layers.keys():

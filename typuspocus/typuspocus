@@ -1,2 +1,1 @@
-#!/bin/sh
-python `dirname $0`/../share/pyshared/typuspocus/game.py
+fades -r requirements.txt game.py
