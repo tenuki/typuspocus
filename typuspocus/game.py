@@ -7,7 +7,18 @@ import textwrap
 import time
 
 import pygame
-from pygame.locals import *
+from pygame.locals import (
+    KEYDOWN,
+    K_BACKSPACE,
+    K_DOWN,
+    K_ESCAPE,
+    K_RETURN,
+    K_SPACE,
+    K_UP,
+    MOUSEBUTTONUP,
+    MOUSEMOTION,
+    Rect,
+)
 
 import audiencia
 import countries
@@ -299,7 +310,6 @@ class Level(Scene):
         font = self.messagefont
 
         if self.state == PLAYING:
-            # self.game.screen.blit(self.background, (0,0))
             if self.linebyline:
                 cursor = self.motor.cursor
                 offset, line = self.line_manager.getLineFromCursor(cursor)
@@ -309,8 +319,6 @@ class Level(Scene):
                     800 - sum(self.line_manager.get(char, 0).get_width() for char in line)) // 2
                 cursor_xpos = xpos
                 for position, letter in enumerate(line):
-                    style = self.motor.estado[position + offset]
-
                     if position + offset == cursor:
                         cursor_xpos = xpos
 
@@ -328,8 +336,6 @@ class Level(Scene):
                 if DEBUG:
                     print("falta == ", self.motor.hechizo[cursor:])
                 for position, letter in enumerate(self.motor.hechizo[cursor:]):
-                    style = self.motor.estado[position + cursor]
-
                     i = self.line_manager.get(letter, self.motor.estado[position + cursor])
 
                     self.game.screen.blit(i, (xpos, ypos))
@@ -340,7 +346,6 @@ class Level(Scene):
                 surface = self.line_manager.get(
                     self.motor.hechizo[cursor], self.motor.estado[cursor])
                 width = surface.get_width()
-                height = surface.get_height()
 
                 cursor_sf = hollow.textOutline(self.cursorfont, "^", (150, 150, 250), (0, 0, 0))
                 self.game.screen.blit(
@@ -353,8 +358,6 @@ class Level(Scene):
                     print("done==", self.motor.hechizo[:cursor])
                 letters.reverse()
                 for position, letter in enumerate(letters):
-                    style = self.motor.estado[-position + cursor]
-
                     i = self.line_manager.get(letter, self.motor.estado[-1 - position + cursor])
                     width = i.get_width()
                     if xpos - width < 0:
@@ -429,11 +432,11 @@ class LevelIntro(BannerScene):
         self.overlay = pygame.image.load(
             os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.level = level
+        self._background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
 
     def update(self):
         self.audiencia.update()
         self.game.screen.fill((0, 0, 0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
         self.audiencia.render(self.background)
         self.background.blit(Foreground, (0, 0))
         self.game.screen.blit(self.overlay, (0, 0))
@@ -466,19 +469,20 @@ class LevelSuccess(BannerScene):
         self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
 
         self.audiencia.render(self.background)
-        self.background.blit(Foreground, (0,0))
+        self.background.blit(Foreground, (0, 0))
 
-        self.game.screen.blit(self.overlay, (0,0))
+        self.game.screen.blit(self.overlay, (0, 0))
         if self.status == EstadoMensaje:
             self.font = pygame.font.Font(FONT_MAGIC, 50)
             self.renderOn(self.game.screen,[self.level.nombre, '',''] +
                                     self.level.historygood.split('\n'))
         else:
             self.font =  pygame.font.Font(FONT_MONO, 30)
-            self.renderOn(self.game.screen,
-                [_("Level Completed"),"",
-                _("Points accumulated:")+str(self.levelscore),"",
-                _("New Score:")+str(self.score) ])
+            self.renderOn(self.game.screen, [
+                _("Level Completed"), "",
+                _("Points accumulated:") + str(self.levelscore), "",
+                _("New Score:") + str(self.score),
+            ])
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -488,42 +492,41 @@ class LevelSuccess(BannerScene):
                 self.end()
 
 class LevelFailSuccess(LevelSuccess):
-    ## please make me simpler!
+    # please make me simpler!
     def update(self):
         self.audiencia.update()
-        self.game.screen.fill((0,0,0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0,0,800,525))
+        self.game.screen.fill((0, 0, 0))
+        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
 
         self.audiencia.render(self.background)
-        self.background.blit(Foreground, (0,0))
+        self.background.blit(Foreground, (0, 0))
 
-        self.game.screen.blit(self.overlay, (0,0))
+        self.game.screen.blit(self.overlay, (0, 0))
         if self.status == EstadoMensaje:
             self.font = pygame.font.Font(FONT_MAGIC, 50)
-            self.renderOn(self.game.screen,[self.level.nombre, '',''] +
-                                    self.level.historybad.split('\n'))
+            self.renderOn(
+                self.game.screen, [self.level.nombre, '', ''] + self.level.historybad.split('\n'))
         else:
             self.font =  pygame.font.Font(FONT_MONO, 30)
-            self.renderOn(self.game.screen,
-                [_("Level Completed"),"",
-                _("Points accumulated:")+str(self.levelscore),"",
-                _("New Score:")+str(self.score) ])
+            self.renderOn(self.game.screen, [
+                _("Level Completed"), "",
+                _("Points accumulated:") + str(self.levelscore), "",
+                _("New Score:") + str(self.score),
+            ])
+
 
 class GameOver(Scene):
     def init(self, score, laaudiencia, level):
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/gameover.png")).convert()
-        self.level=level
+        self._background = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/gameover.png")).convert()
+        self.level = level
         self.menu = Menu(
-                 pygame.font.Font(FONT_MAGIC, 50),
-                 pygame.font.Font(FONT_MAGIC, 70),
-                 [_("No"), _("Yes")],
-                 margin = -40,
-                 normal_color = (173,148,194),
-                 selected_color = (244,232,255),
-                 )
+            pygame.font.Font(FONT_MAGIC, 50), pygame.font.Font(FONT_MAGIC, 70),
+            [_("No"), _("Yes")], margin=-40,
+            normal_color=(173, 148, 194), selected_color=(244, 232, 255))
 
         self.score = score
-        self.font = font =  pygame.font.Font(FONT_MONO, 30)
+        self.font =  pygame.font.Font(FONT_MONO, 30)
         self.audiencia = laaudiencia
 
     def do_action(self, sel):
@@ -594,15 +597,18 @@ levels = [
 
 
 class Menu:
-    def __init__(self, font, font_selected, opts, margin=0, normal_color=(255,255,255), selected_color=(255,255,255), selected_border_color=None, normal_border_color=None):
+    def __init__(
+            self, font, font_selected, opts, margin=0,
+            normal_color=(255, 255, 255), selected_color=(255, 255, 255),
+            selected_border_color=None, normal_border_color=None):
         self.font = font
         self.font_selected = font_selected
-        if selected_border_color == None:
-            selected_border_color = (0,0,0)
-        if normal_border_color == None:
-            normal_border_color = (0,0,0)
+        if selected_border_color is None:
+            selected_border_color = (0, 0, 0)
+        if normal_border_color is None:
+            normal_border_color = (0, 0, 0)
         self.margin = margin
-        self.color = color
+        self.color = normal_color
         self.opts = opts
         self.selected = 0
         self.selected_img = []
@@ -610,10 +616,10 @@ class Menu:
 
         line_step = 0
         for text in self.opts:
-            sel = hollow.textOutline(font_selected, text, selected_color, selected_border_color )
-            unsel = hollow.textOutline(font, text, normal_color, normal_border_color )
-            self.selected_img.append( sel )
-            self.unselected_img.append( unsel )
+            sel = hollow.textOutline(font_selected, text, selected_color, selected_border_color)
+            unsel = hollow.textOutline(font, text, normal_color, normal_border_color)
+            self.selected_img.append(sel)
+            self.unselected_img.append(unsel)
             line_step = max(max(sel.get_height(), unsel.get_height())+self.margin, line_step)
 
         self.line_step = line_step
@@ -627,13 +633,13 @@ class Menu:
             else:
                 img = self.unselected_img[i]
 
-            x = center_x-img.get_width()/2
-            y = start_y + self.line_step * i - img.get_height()/2
+            x = center_x-img.get_width() // 2
+            y = start_y + self.line_step * i - img.get_height() // 2
 
-            surface.blit( img, (x,y) )
+            surface.blit(img, (x, y))
 
     def next(self):
-        self.selected = (self.selected + 1)%len(self.opts)
+        self.selected = (self.selected + 1) % len(self.opts)
 
     def prev(self):
         self.selected = (self.selected - 1)%len(self.opts)
@@ -648,35 +654,36 @@ class Menu:
         for i in range(len(self.opts)):
             img = self.selected_img[i]
 
-            tx = 0-img.get_width()/2
-            ty = 0 + self.line_step * i - img.get_height()/2
+            tx = 0 - img.get_width() // 2
+            ty = 0 + self.line_step * i - img.get_height() // 2
 
-            if tx <= x <= tx+img.get_width():
-                if ty+10 <= y <= ty+img.get_height()-10:
+            if tx <= x <= tx + img.get_width():
+                if ty + 10 <= y <= ty + img.get_height() - 10:
                     return i
         return None
 
     def click_mouse(self, x, y):
-        i = self.get_mouse_over(x,y)
+        i = self.get_mouse_over(x, y)
         if i is not None:
             return i
 
+
 class Credits(Scene):
     us = [
-        ["Doppelganger","Alecu"],
+        ["Doppelganger", "Alecu"],
         ["Nigromante", "LucioTorre"],
         ["Alchemist", "Riq"],
-        ["Medium","LeitoMonk"],
+        ["Medium", "LeitoMonk"],
         ["FortuneTeller", "Tenuki"],
-        ["SpellCaster","PabloZ"],
-        ["Druid","FacundoBatista"],
-        ["HarryPopperist","NubIs"],
-        ["Voodoo","nrm"],  #andres
-        ]
+        ["SpellCaster", "PabloZ"],
+        ["Druid", "FacundoBatista"],
+        ["HarryPopperist", "NubIs"],
+        ["Voodoo", "nrm"],  #andres
+    ]
     them = [
         ["Maniqueist", "stortroopers.com"],
-        ["Snake Wranglers","Python Argentina"]
-        ]
+        ["Snake Wranglers", "Python Argentina"]
+    ]
     sections = []
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
 
@@ -690,7 +697,9 @@ class Credits(Scene):
     done_duration = 0
     loop_duration = 5
 
-    def init(self, font, color=[(255,255,255), (255,255,0)], outline_color=[(0,0,0)]*2, line_step=40):
+    def init(
+            self, font, color=[(255, 255, 255), (255, 255, 0)],
+            outline_color=[(0, 0, 0)] * 2, line_step=40):
         self.line_step = line_step
         random.shuffle(self.us)
         random.shuffle(self.them)
@@ -698,10 +707,10 @@ class Credits(Scene):
         self.section_imgs = []
         for section in self.sections:
             lines = []
-            for n,line in enumerate(section):
+            for n, line in enumerate(section):
                 img = hollow.textOutline(font, line, color[n], outline_color[n])
-                lines.append( img )
-            self.section_imgs.append( lines )
+                lines.append(img)
+            self.section_imgs.append(lines)
 
         self.section_number = 0
         self.state = self.BEGIN
@@ -712,7 +721,9 @@ class Credits(Scene):
         self.puff_pos = None
         self.text = None
 
-        self.nubes = [ pygame.image.load(os.path.join(ESCENARIO, "nube/nube%d.png"%(n+1))).convert_alpha() for n in range(5) ]
+        self.nubes = [
+            pygame.image.load(os.path.join(ESCENARIO, "nube/nube%d.png" % (n + 1))).convert_alpha()
+            for n in range(5)]
         self.hand = pygame.image.load(os.path.join(ESCENARIO, "manos/mano1.png")).convert_alpha()
         self.hand2 = pygame.image.load(os.path.join(ESCENARIO, "manos/mano2.png")).convert_alpha()
         sounds.gritosfelicitacion()
@@ -721,7 +732,6 @@ class Credits(Scene):
         if evt.type == KEYDOWN:
             sounds.apagarVoces()
             self.end()
-
 
     def loop(self):
         if self.state == self.BEGIN:
@@ -745,7 +755,6 @@ class Credits(Scene):
             self.puff = True
             sounds.MagiaOK()
             self.state = self.RETREAT
-
 
         elif self.state == self.RETREAT:
             if time.time() - self.state_start >= self.retreat_duration:
@@ -786,8 +795,6 @@ class Credits(Scene):
                 self.state_start = time.time()
                 self.section_number = 0
 
-
-
     def update(self):
         self.game.screen.blit(self.background, (0,0))
 
@@ -813,6 +820,7 @@ class Credits(Scene):
                 self.game.screen.blit(self.nubes[pos], (300,150) )
         if self.hand_pos:
             self.game.screen.blit(self.hand_img, self.hand_pos )
+
 
 class Ranking(Scene):
     rankings = ["Orko", "Lord Zedd", "David Copperfield", "Harry Potter", "Skeletor", "Mum-ra", "Harry Houdini", "Mandrake", "Gandalf", "Merlin"]
@@ -880,8 +888,6 @@ class Locked(Scene):
         self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/locked.png")).convert()
         sounds.bu()
 
-
-
     def paint(self):
         self.game.screen.blit(self.background, (0,0))
         font = pygame.font.Font(FONT_MAGIC, 60)
@@ -890,7 +896,6 @@ class Locked(Scene):
 
         self.game.screen.blit(sf2, (400-sf2.get_width()/2, 350))
         self.game.screen.blit(sf3, (400-sf3.get_width()/2, 420))
-
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -1092,16 +1097,14 @@ class GameIntro(Scene):
             else:
                 pass
 
-
-
     def update(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
 
         if self.lamp_on:
-            self.game.screen.blit(self.lampara, (0,0))
+            self.game.screen.blit(self.lampara, (0, 0))
 
         if self.ballon_on:
-            self.game.screen.blit(self.globo, (30,30))
+            self.game.screen.blit(self.globo, (30, 30))
 
         if self.text:
             delta = time.time()-self.state_start
@@ -1142,35 +1145,35 @@ class GameIntro(Scene):
 
 class TourLevel:
     def __init__(self, country):
-        self.historyintro = _("Touring in ")+country
+        self.historyintro = _("Touring in ") + country
         self.titulo = _("World Tour")
         self.nombre = _("World Tour")
-        self.historybad = _("You are deported from\n%s")%country
-        self.historygood = _("The people at\n%s\nlove you!")%country
+        self.historybad = _("You are deported from\n%s") % country
+        self.historygood = _("The people at\n%s\nlove you!") % country
+
 
 class MainMenu(Scene):
     def init(self):
         self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/menu.png")).convert()
-        self.font = font =  pygame.font.Font(FONT_MAGIC, 90)
+        self.font = pygame.font.Font(FONT_MAGIC, 90)
         self.menu = Menu(
-                 pygame.font.Font(FONT_MAGIC, 50),
-                 pygame.font.Font(FONT_MAGIC, 70),
-                 [_("Career"), _("World Tour"), _("Hiscores"), _("Credits"), _("Quit")],
-                 margin = -40,
-                 normal_color = (173,148,194),
-                 selected_color = (244,232,255),
-                 )
+            pygame.font.Font(FONT_MAGIC, 50),
+            pygame.font.Font(FONT_MAGIC, 70),
+            [_("Career"), _("World Tour"), _("Hiscores"), _("Credits"), _("Quit")],
+            margin=-40,
+            normal_color=(173,148,194),
+            selected_color=(244,232,255),
+        )
         sounds.menu()
 
         try:
             open("unlock_tour.key")
             self.tour_locked = False
-
         except IOError:
             self.tour_locked = True
 
     def paint(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
         self.menu.blit(self.game.screen, 400, 180)
 
     def event(self, evt):
@@ -1226,7 +1229,6 @@ class MainMenu(Scene):
             result = GANO
             count = 0
             score = 0
-            futech = 0
             while True:
                 if count < len(niveles):
                     nivel = niveles[count]
@@ -1273,30 +1275,31 @@ class MainMenu(Scene):
                     else:
                         score = 0
 
-
     def play_world_tour(self):
             result = GANO
             count = 0
             score = 0
-            futech = 0
             while True:
                 laAudiencia = audiencia.Audiencia(level_number=count)
-                params = dict(tiempo_por_caracter=1.0/(count+3))
+                params = dict(tiempo_por_caracter=1.0 / (count + 3))
                 current_level = TourLevel(countries.getCountry())
-                self.runScene( LevelIntro( self.game, str(count), _("World Tour") , laAudiencia, current_level) )
+                self.runScene(
+                    LevelIntro(self.game, str(count), _("World Tour"), laAudiencia, current_level))
                 laAudiencia.doGame()
-                l =  Level(self.game, count, MainMotor(**params), laAudiencia)
-                result = self.runScene( l )
-                newscore = int(l.motor.score)
+                level =  Level(self.game, count, MainMotor(**params), laAudiencia)
+                result = self.runScene( level )
+                newscore = int(level.motor.score)
                 score += newscore
                 if result == GANO:
                     laAudiencia.doWin()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
+                    self.runScene(
+                        LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelFailSuccess(self.game, score, newscore, laAudiencia, current_level))
-                    cont = self.runScene( GameOver( self.game, score, laAudiencia,current_level ) )
+                    self.runScene(
+                        LevelFailSuccess(self.game, score, newscore, laAudiencia, current_level))
+                    cont = self.runScene(GameOver(self.game, score, laAudiencia,current_level))
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
                         self.runScene(EnterHiscores(self.game, score))
@@ -1304,8 +1307,6 @@ class MainMenu(Scene):
                         break
                     else:
                         score = 0
-
-
 
 
 def main():

@@ -3,7 +3,7 @@ import re
 import time
 import pygame
 from random import Random
-from pygame.locals import *
+from pygame.locals import KEYDOWN, K_SPACE, K_ESCAPE, K_RETURN
 from engine import Game, Scene
 
 SCREEN_SIZE = (800, 600)
@@ -13,13 +13,17 @@ filasx, filasy = (800 / 55, 600 / 119)
 BASEPATH = os.path.dirname(os.path.realpath(__file__))
 
 random = Random()
+
+
 def resetRandom(level_number):
     global random
     random.seed(int(time.time() / 60 / 15) + level_number * 100)
 
+
 states = normal, amboslevantados = range(2)
 
 iStates = states
+
 
 class SampleScene(Scene):
     """simply makes a lot of people"""
@@ -33,10 +37,10 @@ class SampleScene(Scene):
 
         for i in range(30):
             some = Individual(random.choice(self.wardrobes))
-            some.random(level=self.level) #level between 1 and ..
+            some.random(level=self.level)  # level between 1 and ..
             self.pool.append(some)
 
-        background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA|pygame.HWSURFACE)
+        background = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA | pygame.HWSURFACE)
         self.background = background
         for y in range(filasy):
             for x in range(filasx):
@@ -183,6 +187,7 @@ BehaviourDatas = {
     },
 }
 
+
 class Individual:
 
     def __init__(self, wardrobe):
@@ -192,7 +197,7 @@ class Individual:
 
     def random(self, level=1, clothinBehavior="anypublic"):
         # let's get the clothing behaviour
-        clothinBehavior=BehaviourDatas[clothinBehavior]
+        clothinBehavior = BehaviourDatas[clothinBehavior]
 
         # choose some layers by it's probe
         sl = []
@@ -202,23 +207,23 @@ class Individual:
 
         # if this individual is not going to have a body
         # at least let him be well clothed, for its health!
-        if not 'body' in sl:
+        if 'body' not in sl:
             sl = clothinBehavior.keys()
             sl.remove('body')
 
         # let's wardrobe calculate weights for this level
         self.wardrobe.adjustProbForLevel(level)
 
-        #choose clothes, please!!
+        # choose clothes, please!!
         for layer in sl:
-            if not self.wardrobe.articles.has_key(layer):
+            if layer not in self.wardrobe.articles:
                 continue
             r = random.random()
             s = 0
             for art in self.wardrobe.articles[layer]:
                 s += art.absProb(level)
-                if r<s or s==1:
-                    self.layers[layer]=art
+                if r < s or s == 1:
+                    self.layers[layer] = art
                     break
 
     def __repr__(self):
@@ -227,36 +232,33 @@ class Individual:
     def render(self, state):
         LayerHandsUp = ['body', "tops", "shoes", "bottoms", 'jackets']
         layerorder = self.wardrobe.getLayerorder()
-        order = layerorder.keys()
-        order.sort()
-        MAGENTO = (254,0,254)
+        order = sorted(layerorder.keys())
+        MAGENTO = (254, 0, 254)
 
         img = None
         for k in order:
-            layername=layerorder[k]
+            layername = layerorder[k]
             if layername in self.layers.keys():
-                #we use that layer!
+                # we use that layer!
                 article = self.layers[layername]
-                #check variants:
-                if state==amboslevantados and layername in LayerHandsUp:
-                    xname = article.name
+                # check variants:
+                if state == amboslevantados and layername in LayerHandsUp:
                     try:
-                        nname=article.name[:-4]+'_brazos_arriba.gif'
+                        nname = article.name[:-4] + '_brazos_arriba.gif'
                         article = self.wardrobe.all[nname]
-                    except:
+                    except Exception:
                         pass
-                if img==None:
-                    #img = pygame.image.load('escenario/sinbutaca.png')
+                if img is None:
                     img = pygame.Surface((91, 139))
                     img.fill(MAGENTO)
-                    nx,ny = article.SnapPos()
+                    nx, ny = article.SnapPos()
                     img.blit(article.getImage(), article.SnapPos())
-                    x,y=img.get_size()
+                    x, y = img.get_size()
                 else:
                     nimg = article.getImage()
                     x, y = article.SnapPos()
                     xsize, ysize = img.get_size()
-                    img.blit(nimg, (x,y))
+                    img.blit(nimg, (x, y))
         img = img.convert()
         img.set_colorkey(MAGENTO)
         return img
@@ -293,7 +295,7 @@ class Article:
         self.fieldset = fieldset
         m = Article.RE.match(dataline)
         if not m:
-            raise Exception('Invalid article data "%s"'%repr(dataline))
+            raise Exception('Invalid article data "%r"' % dataline)
         self.data = m.groups()
         self.image = None
         self.path = path
@@ -306,18 +308,18 @@ class Article:
         return self.absProbL[level]
 
     def setAbsProbForLevel(self, level, prob):
-        self.absProbL[level]=prob
+        self.absProbL[level] = prob
 
     def probLevel(self, level):
         if level > self.probLevels:
             level = self.probLevels
-        return self.probByLevel[level-1]
+        return self.probByLevel[level - 1]
 
     def __repr__(self):
         return self.name
 
-    def getSome(self,some):
-        return self.data[getattr(self.fieldset,some)]
+    def getSome(self, some):
+        return self.data[getattr(self.fieldset, some)]
 
     def getLayer(self):
         return self.getSome('layer')
@@ -326,12 +328,12 @@ class Article:
         return self.getSome('imagename')
 
     def getImage(self):
-        if self.image==None:
-            self.image=pygame.image.load(self.path+self.name).convert_alpha()
+        if self.image is None:
+            self.image = pygame.image.load(self.path + self.name).convert_alpha()
         return self.image
 
     def SnapPos(self):
-        return int(self.getSome('snapposx')),int(self.getSome('snapposy'))
+        return int(self.getSome('snapposx')), int(self.getSome('snapposy'))
 
     layer = property(getLayer)
     name = property(getName)
@@ -360,40 +362,43 @@ class Wardrobe:
         self.all[article.name] = article
 
     def adjustProbForLevel(self, level):
-        if self.calculatedLevels.has_key(level):
+        if level in self.calculatedLevels:
             # skip if we made calculations beore
             return
 
         for layer in self.layers.keys():
-            if not self.articles.has_key(layer): continue
-            ##count probability definition
-            ## -1: same as any other article with -1
-            ##          (let's call the quantity: standardCount)
-            ## x :  0<=x<=1 set x as probability
-            ##          (let's call its sum: absolute total)
+            if layer not in self.articles:
+                continue
+            # count probability definition
+            #  -1: same as any other article with -1
+            #           (let's call the quantity: standardCount)
+            #  x :  0<=x<=1 set x as probability
+            #           (let's call its sum: absolute total)
             standardCount, absoluteTotal = 0, 0
             for article in self.articles[layer]:
                 probDef = article.probLevel(level)
-                if probDef == -1: standardCount += 1
-                else:  absoluteTotal += probDef
+                if probDef == -1:
+                    standardCount += 1
+                else:
+                    absoluteTotal += probDef
 
             if standardCount != 0:
-                #so the articles with standard probe will have
+                # so the articles with standard probe will have
                 # (1-absoluteTotal)/standardCount probability eachone
-                standardArtProb = (1.0-absoluteTotal)/standardCount
+                standardArtProb = (1.0 - absoluteTotal) / standardCount
             else:
                 standardArtProb = 0
 
-            #now, take articles with standard prob. and setup them
+            # now, take articles with standard prob. and setup them
             # with anabsolute Probability!
             for article in self.articles[layer]:
                 prob = article.probLevel(level)
-                if prob==-1:
+                if prob == -1:
                     article.setAbsProbForLevel(level, standardArtProb)
                 else:
                     article.setAbsProbForLevel(level, prob)
-        #calculation complete
-        self.calculatedLevels[level]=None
+        # calculation complete
+        self.calculatedLevels[level] = None
 
     def getLayers(self):
         return self.articles.keys()
@@ -401,52 +406,53 @@ class Wardrobe:
     def getLayerorder(self):
         return self.ordered
 
-    def parseConfig(self,path):
+    def parseConfig(self, path):
         """get layers"""
         R = re.compile(r'"layer(.*)" *"(.*)".*')
-        self.layers={}
+        self.layers = {}
         self.ordered = {}
-        f = open(path+'config.txt')
-        for l in f:
-            if l[0]=='#': continue
-            m = R.match(l)
+        fh = open(path + 'config.txt')
+        for line in fh:
+            if line[0] == '#':
+                continue
+            m = R.match(line)
             if m:
-                k,v = m.groups()
-                self.layers[v]=int(k)
-                self.ordered[int(k)]=v
-        f.close()
+                k, v = m.groups()
+                self.layers[v] = int(k)
+                self.ordered[int(k)] = v
+        fh.close()
 
     def parseArticles(self, path):
-        articlelist=[]
-        self.fieldlist=[]
+        self.fieldlist = []
         buscando, leyendoFields, leyendoArticles, listo = range(4)
         status = buscando
-        fpath=path+r'/data/'
-        f = open(path+'/'+self.articles_txt)
-        for l in f:
-            l = l.strip('\n')
-            if status==buscando:
-                self.fieldset = FieldSet() #basic default fieldset
-                if l.startswith('HCDataSetFile_fields'):
-                    status=leyendoFields
+        fh = open(path + '/' + self.articles_txt)
+        for line in fh:
+            line = line.strip('\n')
+            if status == buscando:
+                self.fieldset = FieldSet()  # basic default fieldset
+                if line.startswith('HCDataSetFile_fields'):
+                    status = leyendoFields
 
-            elif status==leyendoFields:
-                if l.startswith('HCDataSetFile_data'):
+            elif status == leyendoFields:
+                if line.startswith('HCDataSetFile_data'):
                     self.fieldset = FieldSet(self.fieldlist)
-                    status=leyendoArticles
-                elif l.startswith('#'): pass
-                elif l.startswith('"'):
-                    self.fieldlist.append(l)
-
-            elif status==leyendoArticles:
-                if l.startswith('"'):
-                    self.add(Article(l, self.fieldset, path+'/data/'))
-                elif l.startswith('#'):
+                    status = leyendoArticles
+                elif line.startswith('#'):
                     pass
-                else: pass
-            elif status==listo:
+                elif line.startswith('"'):
+                    self.fieldlist.append(line)
+
+            elif status == leyendoArticles:
+                if line.startswith('"'):
+                    self.add(Article(line, self.fieldset, path + '/data/'))
+                elif line.startswith('#'):
+                    pass
+                else:
+                    pass
+            elif status == listo:
                 break
-        f.close()
+        fh.close()
 
 
 def getAllWardrobes():
@@ -458,18 +464,20 @@ def getAllWardrobes():
         Wardrobe(os.path.join(BASEPATH, 'audiencia/goth/')),
     ]
 
+
 all_wardrobes = getAllWardrobes()
+
+
 def buildIndividual(level, wardrobes):
     if wardrobes is None:
         wardrobes = all_wardrobes
-    wd=random.choice(wardrobes)
+    wd = random.choice(wardrobes)
     i = Individual(wd)
-    i.random(level=level+1, clothinBehavior=wd.behaviourname)
+    i.random(level=level + 1, clothinBehavior=wd.behaviourname)
     return i
 
+
 if __name__ == "__main__":
-    wardrobes = getAllWardrobes() # x,y
+    wardrobes = getAllWardrobes()  # x,y
     g = Game(*SCREEN_SIZE, **{'framerate': 200})
-    g.run( SampleScene(g, "Scene1", wardrobes, level=6) )
-
-
+    g.run(SampleScene(g, "Scene1", wardrobes, level=6))

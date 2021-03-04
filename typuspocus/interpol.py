@@ -3,8 +3,8 @@ import random
 
 class PInterpolator:
     def __init__(self, pinicio, pfin):
-        self.inicio = complex(pinicio[0],pinicio[1])
-        self.fin = complex(pfin[0],pfin[1])
+        self.inicio = complex(pinicio[0], pinicio[1])
+        self.fin = complex(pfin[0], pfin[1])
 
 
 class MadamBezier(PInterpolator):
@@ -43,16 +43,17 @@ class MadamBezier(PInterpolator):
             self.m2 = self.fin - d / 4 + complex(0, random.randint(-ycoef, ycoef))
 
     def getAt(self, t):
-        c = sum(
+        c = sum((
             ((1 - t) ** 3) * self.inicio,
-            3 * t * ((1 - t) ** 2 ) * self.m1,
+            3 * t * ((1 - t) ** 2) * self.m1,
             3 * (t ** 2) * (1 - t) * self.m2,
             (t ** 3) * self.fin,
-        )
+        ))
         return c.real, c.imag
 
     def getPrev(self):
         return self.m2
+
 
 if __name__ == "__main__":
     inter = MadamBezier((0, 0), (4, 4))

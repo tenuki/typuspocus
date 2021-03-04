@@ -17,17 +17,17 @@ class Game:
         self.y_size = y_size
         if icon:
             icon = pygame.image.load(icon)
-            icon.set_colorkey((255,0,255))
-            pygame.display.set_icon( icon )
+            icon.set_colorkey((255, 0, 255))
+            pygame.display.set_icon(icon)
         self.screen = pygame.display.set_mode((x_size, y_size))
         if title:
-            pygame.display.set_caption( title )
+            pygame.display.set_caption(title)
         pygame.mixer.set_reserved(3)
         self.framerate = framerate
         self.clock = pygame.time.Clock()
 
     def run(self, scene):
-        scene.run( )
+        scene.run()
         if DEBUG:
             print("FPS:", self.clock.get_fps())
 
@@ -73,7 +73,7 @@ class Scene:
     def run(self):
         if DEBUG:
             print("Entering Scene:", str(self))
-        self.game.screen.blit(self.background, (0, 0))
+        #self.game.screen.blit(self.background, (0, 0))
         for s in self.subscenes:
             s.paint()
         self.paint()

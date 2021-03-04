@@ -5,7 +5,7 @@ import pygame
 from pygame.locals import *
 import time
 
-from engine import Game, Scene
+from engine import Scene
 import people
 import varitaje
 import motor
@@ -16,21 +16,22 @@ DEBUG = 0
 
 BASEPATH = os.path.dirname(os.path.realpath(__file__))
 
-DELTAVARITA = (-200,0)
+DELTAVARITA = (-200, 0)
 
-peoplex,peopley = (55, 119)
-filasx, filasy = (800/peoplex,600/peopley)
+peoplex, peopley = (55, 119)
+filasx, filasy = (800 // peoplex, 600 // peopley)
 
 MAXPUFFING = 10
 MAXTOMATEANDO = 20
 
 pnormal, pcaminando = range(2)
 
+
 class Persona:
     def __init__(self, delta_xy, level_number, wardrobe):
         self.position = delta_xy
         individuo = people.buildIndividual(level_number, wardrobe)
-        self.images = map(lambda state: individuo.render(state), people.iStates)
+        self.images = [individuo.render(state) for state in people.iStates]
         self.state = people.iStates[0]
         self.alive = False
         self.deltay = 0
@@ -61,7 +62,7 @@ class Persona:
     def render(self, surface, porcentaje=None):
         if self.porcentaje:
             porcentaje = self.porcentaje
-        if self.alive and random.randint(0,1000)<porcentaje:
+        if self.alive and random.randint(0, 1000) < porcentaje:
             gx = random.choice([-1, 0, 1])
             gy = random.choice([-1, -2, 0])
         else:
@@ -97,6 +98,7 @@ class Fila:
         for x, persona in enumerate(self.personas):
             if persona is not None:
                 persona.render(surface, porcentaje)
+
 
 class EnginePersonas:
     def __init__(self, peopleSet):
@@ -219,53 +221,53 @@ class GameEngine(EnginePersonas):
         self.up.remove(p)
 
     def setAlive(self, p, por=20):
-        if por>=10:
+        if por >= 10:
             p.setAlive(por)
             if not p in self.alive:
                 self.alive.append(p)
         else:
-            p.alive=0
+            p.alive = 0
             self.alive.remove(p)
 
     def update(self):
         def getOneAtRandom():
-            ops = filter(lambda ppl:len(ppl)!=0 ,self.ps.values() )
-            if len(ops)>0:
+            ops = filter(lambda ppl:len(ppl)!=0, self.ps.values())
+            if len(ops) > 0:
                 l = random.choice(ops)
                 return random.choice(l)
             return False
 
-        #irse..
-        if self.calor<0.1 and random.random()<0.005:
-            p=getOneAtRandom()
+        # irse..
+        if self.calor < 0.1 and random.random() < 0.005:
+            p = getOneAtRandom()
             if p:
                 p.goOut()
                 self.seVan.append(p)
 
         #levantarse
         if self.calor>0.3 :# and random.random()<0.01:
-            p=getOneAtRandom()
+            p = getOneAtRandom()
             if p:
                 self.levantar(p)
 
         #moverse
         if self.calor>0.0 :# and random.random()<0.01:
-            p=getOneAtRandom()
+            p = getOneAtRandom()
             if p:
                 self.setAlive(p)
 
         self.now = t=time.time()
         for p in self.seVan:
-            #self.moverTipito(p)
-            #continue
-            dt=t-p.start
+            # self.moverTipito(p)
+            # continue
+            dt = t - p.start
             npx = p.inipos[0] + p.velocidad * dt
-            x,y = p.destpos
+            x, y = p.destpos
             if p.xdir>0 and (npx<p.destpos[0]):
                 x = npx
-            elif p.xdir<0 and (npx>p.destpos[0]):
+            elif p.xdir < 0 and (npx > p.destpos[0]):
                 x = npx
-            p.position = (x,y)
+            p.position = (x, y)
             if p.position == p.destpos:
                 p.sentarse()
 
