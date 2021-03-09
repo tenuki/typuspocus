@@ -454,7 +454,7 @@ EstadoMensaje, EstadoContinuar = range(2)
 
 
 class LevelSuccess(BannerScene):
-    def init(self, score, levelscore, xaudiencia, level):
+    def init(self, score, levelscore, xaudiencia, level, success):
         self.score = score
         self.level = level
         self.audiencia = xaudiencia
@@ -462,22 +462,21 @@ class LevelSuccess(BannerScene):
         self.overlay = pygame.image.load(
             os.path.join(ESCENARIO, "screens/overlay.png")).convert_alpha()
         self.status = EstadoMensaje
+        self.success = success
+        self._background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
 
     def update(self):
         self.audiencia.update()
-        self.game.screen.fill((0, 0, 0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
-
         self.audiencia.render(self.background)
         self.background.blit(Foreground, (0, 0))
-
         self.game.screen.blit(self.overlay, (0, 0))
+
         if self.status == EstadoMensaje:
             self.font = pygame.font.Font(FONT_MAGIC, 50)
-            self.renderOn(self.game.screen,[self.level.nombre, '',''] +
-                                    self.level.historygood.split('\n'))
+            history = self.level.historygood if self.success else self.level.historybad
+            self.renderOn(self.game.screen, [self.level.nombre, '', ''] + history.split('\n'))
         else:
-            self.font =  pygame.font.Font(FONT_MONO, 30)
+            self.font = pygame.font.Font(FONT_MONO, 30)
             self.renderOn(self.game.screen, [
                 _("Level Completed"), "",
                 _("Points accumulated:") + str(self.levelscore), "",
@@ -490,29 +489,6 @@ class LevelSuccess(BannerScene):
                 self.status=EstadoContinuar
             else:
                 self.end()
-
-class LevelFailSuccess(LevelSuccess):
-    # please make me simpler!
-    def update(self):
-        self.audiencia.update()
-        self.game.screen.fill((0, 0, 0))
-        self.background = self.game.screen.subsurface(pygame.Rect(0, 0, 800, 525))
-
-        self.audiencia.render(self.background)
-        self.background.blit(Foreground, (0, 0))
-
-        self.game.screen.blit(self.overlay, (0, 0))
-        if self.status == EstadoMensaje:
-            self.font = pygame.font.Font(FONT_MAGIC, 50)
-            self.renderOn(
-                self.game.screen, [self.level.nombre, '', ''] + self.level.historybad.split('\n'))
-        else:
-            self.font =  pygame.font.Font(FONT_MONO, 30)
-            self.renderOn(self.game.screen, [
-                _("Level Completed"), "",
-                _("Points accumulated:") + str(self.levelscore), "",
-                _("New Score:") + str(self.score),
-            ])
 
 
 class GameOver(Scene):
@@ -1265,7 +1241,9 @@ class MainMenu(Scene):
                     count += 1
                 else:
                     laAudiencia.doGameOver()
-                    self.runScene( LevelFailSuccess(self.game, score, newscore, laAudiencia, nivel))
+                    self.runScene(
+                        LevelSuccess(
+                            self.game, score, newscore, laAudiencia, nivel, success=False))
                     cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel ) )
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
@@ -1293,12 +1271,14 @@ class MainMenu(Scene):
                 if result == GANO:
                     laAudiencia.doWin()
                     self.runScene(
-                        LevelSuccess(self.game, score, newscore, laAudiencia,current_level))
+                        LevelSuccess(
+                            self.game, score, newscore, laAudiencia, current_level, success=True))
                     count += 1
                 else:
                     laAudiencia.doGameOver()
                     self.runScene(
-                        LevelFailSuccess(self.game, score, newscore, laAudiencia, current_level))
+                        LevelSuccess(
+                            self.game, score, newscore, laAudiencia, current_level, success=False))
                     cont = self.runScene(GameOver(self.game, score, laAudiencia,current_level))
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))

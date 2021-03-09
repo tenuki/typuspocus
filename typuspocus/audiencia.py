@@ -231,10 +231,9 @@ class GameEngine(EnginePersonas):
 
     def update(self):
         def getOneAtRandom():
-            ops = filter(lambda ppl:len(ppl)!=0, self.ps.values())
+            ops = [ppl for ppl in self.ps.values() if len(ppl)]
             if len(ops) > 0:
-                l = random.choice(ops)
-                return random.choice(l)
+                return random.choice(ops)
             return False
 
         # irse..
@@ -244,26 +243,26 @@ class GameEngine(EnginePersonas):
                 p.goOut()
                 self.seVan.append(p)
 
-        #levantarse
-        if self.calor>0.3 :# and random.random()<0.01:
+        # levantarse
+        if self.calor > 0.3:  # and random.random()<0.01:
             p = getOneAtRandom()
             if p:
                 self.levantar(p)
 
-        #moverse
-        if self.calor>0.0 :# and random.random()<0.01:
+        # moverse
+        if self.calor > 0.0:  # and random.random()<0.01:
             p = getOneAtRandom()
             if p:
                 self.setAlive(p)
 
-        self.now = t=time.time()
+        self.now = t = time.time()
         for p in self.seVan:
             # self.moverTipito(p)
             # continue
             dt = t - p.start
             npx = p.inipos[0] + p.velocidad * dt
             x, y = p.destpos
-            if p.xdir>0 and (npx<p.destpos[0]):
+            if p.xdir > 0 and (npx < p.destpos[0]):
                 x = npx
             elif p.xdir < 0 and (npx > p.destpos[0]):
                 x = npx
@@ -271,21 +270,22 @@ class GameEngine(EnginePersonas):
             if p.position == p.destpos:
                 p.sentarse()
 
-        if len(self.up)>0 and random.random()>0.7:
+        if len(self.up) > 0 and random.random() > 0.7:
             p=random.choice(self.up)
             self.bajar(p)
 
-        if len(self.alive)>0 and random.random()>0.8:
+        if len(self.alive)>0 and random.random() > 0.8:
             p=random.choice(self.alive)
             if p.porcentaje > 10:
-                self.setAlive(p, p.porcentaje-10)
+                self.setAlive(p, p.porcentaje - 10)
+
 
 class Audiencia:
     def __init__(self, level_number, wardrobe=None):
         people.resetRandom(level_number)
         self.personas = {}
         for y in range(filasy):
-            self.personas[y]=[]
+            self.personas[y] = []
         self.level = level_number
         self.engine = IntroEngine(self.personas, level_number, wardrobe)
 
