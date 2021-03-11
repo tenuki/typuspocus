@@ -1,7 +1,6 @@
 """Main entry point for the game."""
 
 import os
-import gettext
 import random
 import textwrap
 import time
@@ -26,6 +25,7 @@ import hiscore_client
 import hollow
 from audiencia import AudienciaScene
 from engine import Game, Scene
+from i18n import tr
 from levels import niveles
 from motor import MainMotor
 from sounds import sounds
@@ -36,10 +36,6 @@ CLOCK_TICK = pygame.USEREVENT
 base = os.path.dirname(os.path.realpath(__file__))
 ESCENARIO = os.path.join(base, "escenario")
 AUDIENCIA = os.path.join(base, "audiencia")
-
-# install the translation service
-locale_dir = os.path.join(base, "locale")
-gettext.install('core', locale_dir)
 
 # fonts
 FONT_MAGIC = os.path.join(ESCENARIO, 'MagicSchoolOne.ttf')
@@ -134,7 +130,7 @@ class Alarm:
         self.start = None
         font = pygame.font.Font(FONT_MAGIC, 50)
         self.message = hollow.textOutline(
-            font, _("Start typing the spell!"), (230, 100, 100), (0, 0, 0))
+            font, tr("Start typing the spell!"), (230, 100, 100), (0, 0, 0))
         self.last_blink = None
         self.blink_state = True
         self.last_sound = None
@@ -381,13 +377,13 @@ class Level(Scene):
             # y el score
             score = self.motor.score
             score_sf = hollow.textOutline(
-                self.ratefont, _("Score: %3.1f") % score, (0, 0, 255), (0, 0, 0))
+                self.ratefont, tr("Score: %3.1f") % score, (0, 0, 255), (0, 0, 0))
             self.game.screen.blit(
                 score_sf, (790 - score_sf.get_width(), 15 - score_sf.get_height() // 2))
 
             self.alarm.blit(self.game.screen)
         if self.state in [WON, LOST, TOMATO]:
-            im = hollow.textOutline(font, _("[press any key]"), (30, 30, 200), (255, 255, 255))
+            im = hollow.textOutline(font, tr("[press any key]"), (30, 30, 200), (255, 255, 255))
             ypos = 400
             xpos = (800 - im.get_width()) // 2
 
@@ -478,15 +474,15 @@ class LevelSuccess(BannerScene):
         else:
             self.font = pygame.font.Font(FONT_MONO, 30)
             self.renderOn(self.game.screen, [
-                _("Level Completed"), "",
-                _("Points accumulated:") + str(self.levelscore), "",
-                _("New Score:") + str(self.score),
+                tr("Level Completed"), "",
+                tr("Points accumulated:") + str(self.levelscore), "",
+                tr("New Score:") + str(self.score),
             ])
 
     def event(self, evt):
         if evt.type == KEYDOWN:
             if self.status == EstadoMensaje:
-                self.status=EstadoContinuar
+                self.status = EstadoContinuar
             else:
                 self.end()
 
@@ -498,21 +494,21 @@ class GameOver(Scene):
         self.level = level
         self.menu = Menu(
             pygame.font.Font(FONT_MAGIC, 50), pygame.font.Font(FONT_MAGIC, 70),
-            [_("No"), _("Yes")], margin=-40,
+            [tr("No"), tr("Yes")], margin=-40,
             normal_color=(173, 148, 194), selected_color=(244, 232, 255))
 
         self.score = score
-        self.font =  pygame.font.Font(FONT_MONO, 30)
+        self.font = pygame.font.Font(FONT_MONO, 30)
         self.audiencia = laaudiencia
 
     def do_action(self, sel):
         if sel:
-            self.end( True )
+            self.end(True)
         else:
-            self.end( False )
+            self.end(False)
 
     def paint(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
         self.menu.blit(self.game.screen, 400, 320)
 
     def event(self, evt):
@@ -527,7 +523,7 @@ class GameOver(Scene):
             x, y = pygame.mouse.get_pos()
             x -= 400
             y -= 180
-            sel = self.menu.click_mouse(x,y)
+            sel = self.menu.click_mouse(x, y)
             if sel is not None:
                 sounds.enter()
                 self.do_action(sel)
@@ -548,28 +544,25 @@ class GameOver(Scene):
                 self.do_action(sel)
 
 
-levels = [
-          # title, parameters
-          ("Starting out..", dict(cantidad_palabras =5)),
-          ("Getting better..", dict(
-                        cantidad_palabras=30,
-                        tiempo_por_caracter=0.4)
-                      ),
-          ("This guys want speed..", dict(
-                      cantidad_palabras=40,
-                      tiempo_por_caracter=0.35,
-                      preferencia_precision=0.1)
-                      ),
-          ("Perfectionism is king..", dict(
-                       cantidad_palabras=40,
-                       tiempo_por_caracter=0.30,
-                       preferencia_precision=0.9
-                       )),
-          ("Mixed emotions..", dict(
-                        cantidad_palabras=30,
-                        tiempo_por_caracter=0.25
-                        )),
-      ]
+#levels = [
+#    # title, parameters
+#    ("Starting out..", dict(cantidad_palabras=5)),
+#    ("Getting better..", dict(cantidad_palabras=30, tiempo_por_caracter=0.4)),
+#    ("This guys want speed..", dict(
+#                cantidad_palabras=40,
+#                tiempo_por_caracter=0.35,
+#                preferencia_precision=0.1)
+#                ),
+#    ("Perfectionism is king..", dict(
+#                 cantidad_palabras=40,
+#                 tiempo_por_caracter=0.30,
+#                 preferencia_precision=0.9
+#                 )),
+#    ("Mixed emotions..", dict(
+#                  cantidad_palabras=30,
+#                  tiempo_por_caracter=0.25
+#                  )),
+#      ]
 
 
 class Menu:
@@ -843,35 +836,39 @@ class Ranking(Scene):
                     break
             ypos -= 35
 
-        yri = self.font.render(_("Your ranking is:"), True, (255,248,144))
+        yri = self.font.render(tr("Your ranking is:"), True, (255,248,144))
 #        print "rank", self.rank
         yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
 
-        ysi = self.font.render(_("Score"), True, (255,248,144))
+        ysi = self.font.render(tr("Score"), True, (255,248,144))
         ys = self.font3.render(str(self.score), True,  (255,254,232))
 
         if self.paint_info:
             if self.kaping:
                 self.kaping = False
                 sounds.golpe()
-            self.game.screen.blit(yri, (480-yri.get_width()/2, 150))
-            self.game.screen.blit(yr, (480-yr.get_width()/2, 205))
-            self.game.screen.blit(ysi, (680-ysi.get_width()/2, 300))
-            self.game.screen.blit(ys, (670-ys.get_width()/2, 340))
+            self.game.screen.blit(yri, (480 - yri.get_width() // 2, 150))
+            self.game.screen.blit(yr, (480 - yr.get_width() // 2, 205))
+            self.game.screen.blit(ysi, (680 - ysi.get_width() // 2, 300))
+            self.game.screen.blit(ys, (670 - ys.get_width() // 2, 340))
+
 
 class Locked(Scene):
     def init(self):
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/locked.png")).convert()
+        self._background = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/locked.png")).convert()
         sounds.bu()
 
     def paint(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
         font = pygame.font.Font(FONT_MAGIC, 60)
-        sf2 = hollow.textOutline(font, _("You must first finish your career"),(255,254,232), (0,0,0))
-        sf3 = hollow.textOutline(font, _("before touring the world"),(255,254,232), (0,0,0))
+        sf2 = hollow.textOutline(
+            font, tr("You must first finish your career"), (255, 254, 232), (0, 0, 0))
+        sf3 = hollow.textOutline(
+            font, tr("before touring the world"), (255, 254, 232), (0, 0, 0))
 
-        self.game.screen.blit(sf2, (400-sf2.get_width()/2, 350))
-        self.game.screen.blit(sf3, (400-sf3.get_width()/2, 420))
+        self.game.screen.blit(sf2, (400 - sf2.get_width() // 2, 350))
+        self.game.screen.blit(sf3, (400 - sf3.get_width() // 2, 420))
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -882,14 +879,12 @@ class Locked(Scene):
 class Hiscores(Scene):
     def init(self):
         self.client = hiscore_client.HiScoreClient()
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/highscores.png")).convert()
-
-
+        self._background = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/highscores.png")).convert()
 
     def paint(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
         font = pygame.font.Font(FONT_MAGIC, 40)
-        font2 = pygame.font.Font(FONT_MAGIC, 90)
         font3 = pygame.font.Font(FONT_MAGIC, 30)
         scores = self.client.listHiScores()
         for i in range(8):
@@ -898,41 +893,41 @@ class Hiscores(Scene):
             else:
                 points, name = "--", ""
 
-            if not name: name = " "
+            if not name:
+                name = " "
 
-            sf1 = hollow.textOutline(font3, str(i),(255,254,232), (0,0,0))
-            sf2 = hollow.textOutline(font, name,(255,254,232), (0,0,0))
-            sf3 = hollow.textOutline(font, str(points),(255,254,232), (0,0,0))
+            sf1 = hollow.textOutline(font3, str(i), (255, 254, 232), (0, 0 ,0))
+            sf2 = hollow.textOutline(font, name,(255,254,232), (0, 0, 0))
+            sf3 = hollow.textOutline(font, str(points), (255, 254, 232), (0, 0, 0))
 
-            ypos = 200 + i*30
-            self.game.screen.blit(sf1, (200-sf1.get_width(), ypos))
+            ypos = 200 + i * 30
+            self.game.screen.blit(sf1, (200 - sf1.get_width(), ypos))
             self.game.screen.blit(sf2, (270, ypos))
             self.game.screen.blit(sf3, (620, ypos))
-
 
     def event(self, evt):
         if evt.type == KEYDOWN:
             sounds.apagarVoces()
             self.end()
 
+
 class EnterHiscores(Scene):
     def init(self, score):
         self.client = hiscore_client.HiScoreClient()
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/highscores.png")).convert()
+        self._background = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/highscores.png")).convert()
         self.name = ""
         self.score = score
 
     def paint(self):
-        self.game.screen.blit(self.background, (0,0))
-        font = pygame.font.Font(FONT_MAGIC, 65)
+        self.game.screen.blit(self.background, (0, 0))
         font2 = pygame.font.Font(FONT_MAGIC, 90)
 
-        sf = hollow.textOutline(font2, "Enter your name",(255,254,232), (0,0,0))
-        self.game.screen.blit(sf, (400-sf.get_width()/2, 200))
+        sf = hollow.textOutline(font2, "Enter your name", (255, 254, 232), (0, 0, 0))
+        self.game.screen.blit(sf, (400 - sf.get_width() // 2, 200))
 
-        sf = hollow.textOutline(font2, self.name,(255,254,232), (0,0,0))
-        self.game.screen.blit(sf, (400-sf.get_width()/2, 330))
-
+        sf = hollow.textOutline(font2, self.name, (255, 254, 232), (0, 0, 0))
+        self.game.screen.blit(sf, (400 - sf.get_width() // 2, 330))
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -957,11 +952,11 @@ class EnterHiscores(Scene):
 
 class GameIntro(Scene):
     sections = [textwrap.wrap(x, 23) for x in (
-        _("My son, this will be a challenging day for you."),
-        _("You have always been the black sheep of our great family."),
-        _("But your old man, the Great Grossini, is not what he used to be."),
-        _("I'm suffering from Flaccid Wand, so tonite you will replace me."),
-        _("Farewell!"),
+        tr("My son, this will be a challenging day for you."),
+        tr("You have always been the black sheep of our great family."),
+        tr("But your old man, the Great Grossini, is not what he used to be."),
+        tr("I'm suffering from Flaccid Wand, so tonite you will replace me."),
+        tr("Farewell!"),
         )]
 
     lines_start = [5,10,17.5,23.5,26,0]
@@ -1121,11 +1116,11 @@ class GameIntro(Scene):
 
 class TourLevel:
     def __init__(self, country):
-        self.historyintro = _("Touring in ") + country
-        self.titulo = _("World Tour")
-        self.nombre = _("World Tour")
-        self.historybad = _("You are deported from\n%s") % country
-        self.historygood = _("The people at\n%s\nlove you!") % country
+        self.historyintro = tr("Touring in ") + country
+        self.titulo = tr("World Tour")
+        self.nombre = tr("World Tour")
+        self.historybad = tr("You are deported from\n%s") % country
+        self.historygood = tr("The people at\n%s\nlove you!") % country
 
 
 class MainMenu(Scene):
@@ -1135,7 +1130,7 @@ class MainMenu(Scene):
         self.menu = Menu(
             pygame.font.Font(FONT_MAGIC, 50),
             pygame.font.Font(FONT_MAGIC, 70),
-            [_("Career"), _("World Tour"), _("Hiscores"), _("Credits"), _("Quit")],
+            [tr("Career"), tr("World Tour"), tr("Hiscores"), tr("Credits"), tr("Quit")],
             margin=-40,
             normal_color=(173,148,194),
             selected_color=(244,232,255),
@@ -1237,14 +1232,15 @@ class MainMenu(Scene):
                 score += newscore
                 if result == GANO:
                     laAudiencia.doWin()
-                    self.runScene( LevelSuccess(self.game, score, newscore, laAudiencia, nivel))
+                    self.runScene(
+                        LevelSuccess(self.game, score, newscore, laAudiencia, nivel, success=True))
                     count += 1
                 else:
                     laAudiencia.doGameOver()
                     self.runScene(
                         LevelSuccess(
                             self.game, score, newscore, laAudiencia, nivel, success=False))
-                    cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel ) )
+                    cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel))
                     if not cont:
                         self.runScene(Ranking(self.game, score=score))
                         self.runScene(EnterHiscores(self.game, score))
@@ -1254,39 +1250,39 @@ class MainMenu(Scene):
                         score = 0
 
     def play_world_tour(self):
-            result = GANO
-            count = 0
-            score = 0
-            while True:
-                laAudiencia = audiencia.Audiencia(level_number=count)
-                params = dict(tiempo_por_caracter=1.0 / (count + 3))
-                current_level = TourLevel(countries.getCountry())
+        result = GANO
+        count = 0
+        score = 0
+        while True:
+            laAudiencia = audiencia.Audiencia(level_number=count)
+            params = dict(tiempo_por_caracter=1.0 / (count + 3))
+            current_level = TourLevel(countries.getCountry())
+            self.runScene(
+                LevelIntro(self.game, str(count), tr("World Tour"), laAudiencia, current_level))
+            laAudiencia.doGame()
+            level = Level(self.game, count, MainMotor(**params), laAudiencia)
+            result = self.runScene(level)
+            newscore = int(level.motor.score)
+            score += newscore
+            if result == GANO:
+                laAudiencia.doWin()
                 self.runScene(
-                    LevelIntro(self.game, str(count), _("World Tour"), laAudiencia, current_level))
-                laAudiencia.doGame()
-                level =  Level(self.game, count, MainMotor(**params), laAudiencia)
-                result = self.runScene( level )
-                newscore = int(level.motor.score)
-                score += newscore
-                if result == GANO:
-                    laAudiencia.doWin()
-                    self.runScene(
-                        LevelSuccess(
-                            self.game, score, newscore, laAudiencia, current_level, success=True))
-                    count += 1
+                    LevelSuccess(
+                        self.game, score, newscore, laAudiencia, current_level, success=True))
+                count += 1
+            else:
+                laAudiencia.doGameOver()
+                self.runScene(
+                    LevelSuccess(
+                        self.game, score, newscore, laAudiencia, current_level, success=False))
+                cont = self.runScene(GameOver(self.game, score, laAudiencia,current_level))
+                if not cont:
+                    self.runScene(Ranking(self.game, score=score))
+                    self.runScene(EnterHiscores(self.game, score))
+                    self.runScene(Hiscores(self.game))
+                    break
                 else:
-                    laAudiencia.doGameOver()
-                    self.runScene(
-                        LevelSuccess(
-                            self.game, score, newscore, laAudiencia, current_level, success=False))
-                    cont = self.runScene(GameOver(self.game, score, laAudiencia,current_level))
-                    if not cont:
-                        self.runScene(Ranking(self.game, score=score))
-                        self.runScene(EnterHiscores(self.game, score))
-                        self.runScene(Hiscores(self.game))
-                        break
-                    else:
-                        score = 0
+                    score = 0
 
 
 def main():

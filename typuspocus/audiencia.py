@@ -2,7 +2,7 @@ import random
 import math
 import os
 import pygame
-from pygame.locals import *
+from pygame.locals import KEYDOWN, K_ESCAPE, K_RETURN
 import time
 
 from engine import Scene
@@ -223,7 +223,7 @@ class GameEngine(EnginePersonas):
     def setAlive(self, p, por=20):
         if por >= 10:
             p.setAlive(por)
-            if not p in self.alive:
+            if p not in self.alive:
                 self.alive.append(p)
         else:
             p.alive = 0
@@ -233,7 +233,7 @@ class GameEngine(EnginePersonas):
         def getOneAtRandom():
             ops = [ppl for ppl in self.ps.values() if len(ppl)]
             if len(ops) > 0:
-                return random.choice(ops)
+                return random.choice(random.choice(ops))
             return False
 
         # irse..
@@ -271,11 +271,11 @@ class GameEngine(EnginePersonas):
                 p.sentarse()
 
         if len(self.up) > 0 and random.random() > 0.7:
-            p=random.choice(self.up)
+            p = random.choice(self.up)
             self.bajar(p)
 
-        if len(self.alive)>0 and random.random() > 0.8:
-            p=random.choice(self.alive)
+        if len(self.alive) > 0 and random.random() > 0.8:
+            p = random.choice(self.alive)
             if p.porcentaje > 10:
                 self.setAlive(p, p.porcentaje - 10)
 
@@ -334,18 +334,25 @@ class Audiencia:
 class AudienciaScene(Scene):
     def init(self, level_number, audiencia):
         self.finalizar = False
-        self.audiencia = audiencia #Audiencia(level_number)
+        self.audiencia = audiencia
         self.voluntario = None
         self.lastbravo = time.time()
         self.calor = 0
         self.level_number = level_number
-        self.fg = pygame.image.load(os.path.join(BASEPATH, "escenario/foreground.png")).convert_alpha()
+        self.fg = pygame.image.load(
+            os.path.join(BASEPATH, "escenario/foreground.png")).convert_alpha()
         self.varitaje = varitaje.Varitaje()
-        self.mano = pygame.image.load(os.path.join(BASEPATH, "escenario/manos/mano1.png")).convert_alpha()
+        self.mano = pygame.image.load(
+            os.path.join(BASEPATH, "escenario/manos/mano1.png")).convert_alpha()
         self.puffing = 0
-        self.nubes = [ pygame.image.load(os.path.join(BASEPATH, "escenario/nube/nube%d.png"%(n+1))).convert_alpha() for n in range(5) ]
-        self.tomate = pygame.image.load(os.path.join(BASEPATH, "escenario/tomates/tomate.png")).convert_alpha()
-        self.tomate_aplastado = pygame.image.load(os.path.join(BASEPATH, "escenario/tomates/tomate_aplastado.png")).convert_alpha()
+        self.nubes = [
+            pygame.image.load(
+                os.path.join(BASEPATH, "escenario/nube/nube%d.png" % (n + 1))).convert_alpha()
+            for n in range(5)]
+        self.tomate = pygame.image.load(
+            os.path.join(BASEPATH, "escenario/tomates/tomate.png")).convert_alpha()
+        self.tomate_aplastado = pygame.image.load(
+            os.path.join(BASEPATH, "escenario/tomates/tomate_aplastado.png")).convert_alpha()
 
         self.tomateando = None
         self.sound_tomate = True
@@ -362,10 +369,10 @@ class AudienciaScene(Scene):
                 self.finalizar = True
 
     def gameEvent(self, evt):
-        Threshold=0.20
+        Threshold = 0.20
         aLittleProb = 0.1
 
-        channel=None
+        channel = None
 
         if evt == motor.Eventos.PALOK:
             sounds.arenga()
