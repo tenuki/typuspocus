@@ -516,7 +516,7 @@ class GameOver(Scene):
             x, y = pygame.mouse.get_pos()
             x -= 400
             y -= 180
-            if self.menu.set_mouse(x,y):
+            if self.menu.set_mouse(x, y):
                 sounds.pasa()
                 self.paint()
         elif evt.type == MOUSEBUTTONUP:
@@ -544,27 +544,6 @@ class GameOver(Scene):
                 self.do_action(sel)
 
 
-#levels = [
-#    # title, parameters
-#    ("Starting out..", dict(cantidad_palabras=5)),
-#    ("Getting better..", dict(cantidad_palabras=30, tiempo_por_caracter=0.4)),
-#    ("This guys want speed..", dict(
-#                cantidad_palabras=40,
-#                tiempo_por_caracter=0.35,
-#                preferencia_precision=0.1)
-#                ),
-#    ("Perfectionism is king..", dict(
-#                 cantidad_palabras=40,
-#                 tiempo_por_caracter=0.30,
-#                 preferencia_precision=0.9
-#                 )),
-#    ("Mixed emotions..", dict(
-#                  cantidad_palabras=30,
-#                  tiempo_por_caracter=0.25
-#                  )),
-#      ]
-
-
 class Menu:
     def __init__(
             self, font, font_selected, opts, margin=0,
@@ -589,10 +568,9 @@ class Menu:
             unsel = hollow.textOutline(font, text, normal_color, normal_border_color)
             self.selected_img.append(sel)
             self.unselected_img.append(unsel)
-            line_step = max(max(sel.get_height(), unsel.get_height())+self.margin, line_step)
+            line_step = max(max(sel.get_height(), unsel.get_height()) + self.margin, line_step)
 
         self.line_step = line_step
-
 
     def blit(self, surface, center_x, start_y):
         for i in range(len(self.opts)):
@@ -602,7 +580,7 @@ class Menu:
             else:
                 img = self.unselected_img[i]
 
-            x = center_x-img.get_width() // 2
+            x = center_x - img.get_width() // 2
             y = start_y + self.line_step * i - img.get_height() // 2
 
             surface.blit(img, (x, y))
@@ -611,11 +589,11 @@ class Menu:
         self.selected = (self.selected + 1) % len(self.opts)
 
     def prev(self):
-        self.selected = (self.selected - 1)%len(self.opts)
+        self.selected = (self.selected - 1) % len(self.opts)
 
     def set_mouse(self, x, y):
-        i = self.get_mouse_over(x,y)
-        if i is not None and  i != self.selected:
+        i = self.get_mouse_over(x, y)
+        if i is not None and i != self.selected:
             self.selected = i
             return True
 
@@ -647,7 +625,7 @@ class Credits(Scene):
         ["SpellCaster", "PabloZ"],
         ["Druid", "FacundoBatista"],
         ["HarryPopperist", "NubIs"],
-        ["Voodoo", "nrm"],  #andres
+        ["Voodoo", "nrm"],  # andres
     ]
     them = [
         ["Maniqueist", "stortroopers.com"],
@@ -656,9 +634,9 @@ class Credits(Scene):
     sections = []
     BEGIN, HIT, RETREAT, HANDOUT, DONE, LOOP = range(6)
 
-    hand_start = -647,-200
-    hand_end = -300,250
-    puff_position = 400,250
+    hand_start = -647, -200
+    hand_end = -300, 250
+    puff_position = 400, 250
     begin_duration = 1.5
     hit_duration = 0.0
     retreat_duration = 1.5
@@ -708,18 +686,18 @@ class Credits(Scene):
                 self.state = self.HIT
                 self.state_start = time.time()
             else:
-                p = ((time.time()-self.state_start)/self.begin_duration)**2
+                p = ((time.time() - self.state_start) / self.begin_duration) ** 2
 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
-                nx = sx + (ex-sx)*p
-                ny = sy + (ey-sy)*p
+                nx = sx + (ex - sx) * p
+                ny = sy + (ey - sy) * p
 
                 self.hand_pos = nx, ny
                 self.hand_img = self.hand
 
         elif self.state == self.HIT:
-            self.text = self.section_imgs[ self.section_number ]
+            self.text = self.section_imgs[self.section_number]
             self.section_number += 1
             self.puff = True
             sounds.MagiaOK()
@@ -730,12 +708,12 @@ class Credits(Scene):
                 self.state = self.HANDOUT
                 self.state_start = time.time()
             else:
-                p = (1-(time.time()-self.state_start)/self.begin_duration)**2+0.1
+                p = (1 - (time.time() - self.state_start) / self.begin_duration) ** 2 + 0.1
 
                 sx, sy = self.hand_start
                 ex, ey = self.hand_end
-                nx = sx + (ex-sx)*p
-                ny = sy + (ey-sy)*p
+                nx = sx + (ex - sx) * p
+                ny = sy + (ey - sy) * p
 
                 self.hand_pos = nx, ny
                 self.hand_img = self.hand2
@@ -765,41 +743,51 @@ class Credits(Scene):
                 self.section_number = 0
 
     def update(self):
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
 
         if self.text:
             lineas = len(self.text)
             space = lineas * self.line_step
-            start = 320-space/2
+            start = 320 - space // 2
 
-            for i,line in enumerate(self.text):
+            for i, line in enumerate(self.text):
                 self.game.screen.blit(line, (
-                        400-line.get_width()/2,
-                        start + self.line_step*i - line.get_height()
-                        ))
+                    400 - line.get_width() // 2,
+                    start + self.line_step * i - line.get_height()))
         if self.puff:
-            delta = time.time()-self.state_start
+            delta = time.time() - self.state_start
             if delta >= 1:
                 self.puff = None
                 sounds.arenga()
 
             else:
-                pos = int(delta*5)
+                pos = int(delta * 5)
                 pos = min(pos, 4)
-                self.game.screen.blit(self.nubes[pos], (300,150) )
+                self.game.screen.blit(self.nubes[pos], (300, 150))
         if self.hand_pos:
-            self.game.screen.blit(self.hand_img, self.hand_pos )
+            self.game.screen.blit(self.hand_img, self.hand_pos)
 
 
 class Ranking(Scene):
-    rankings = ["Orko", "Lord Zedd", "David Copperfield", "Harry Potter", "Skeletor", "Mum-ra", "Harry Houdini", "Mandrake", "Gandalf", "Merlin"]
+    rankings = [
+        "Orko",
+        "Lord Zedd",
+        "David Copperfield",
+        "Harry Potter",
+        "Skeletor",
+        "Mum-ra",
+        "Harry Houdini",
+        "Mandrake",
+        "Gandalf",
+        "Merlin",
+    ]
     stages = [10,20,40,60,80,100,120,140,200]
     def init(self, rank=None, score=None):
 
         if score is None:
-            score = random.randint(0,1000)
+            score = random.randint(0, 1000)
             if rank is None:
-                rank = 9#random.randint(0,10)
+                rank = 9  # random.randint(0,10)
         elif rank is None:
             rank = sum([1 for i in self.stages if score > i])
 
@@ -813,35 +801,37 @@ class Ranking(Scene):
         self.font3 = pygame.font.Font(FONT_MAGIC, 110)
 
         font = pygame.font.Font(FONT_MAGIC, 30)
-        self.textos = [ font.render("%2i:"%(10-i)+line, True, (255,255,255)) for (i,line) in enumerate(self.rankings) ]
+        self.textos = [
+            font.render("%2i:" % (10 - i) + line, True, (255,255,255))
+            for (i, line) in enumerate(self.rankings)]
 
         self.start_time = time.time()
         sounds.sube()
 
     def event(self, evt):
         if evt.type == KEYDOWN:
-                self.end()
+            self.end()
 
     def update(self):
         ypos = 450
-        self.game.screen.blit(self.background, (0,0))
+        self.game.screen.blit(self.background, (0, 0))
         for i, sf in enumerate(self.textos):
 
-            if int(time.time()-self.start_time) >= i:
-                if self.rank>=i:
-                    self.game.screen.blit( sf, (100, ypos) )
+            if int(time.time() - self.start_time) >= i:
+                if self.rank >= i:
+                    self.game.screen.blit(sf, (100, ypos))
                 if self.rank == i:
                     self.paint_info = True
                 if i > self.rank:
                     break
             ypos -= 35
 
-        yri = self.font.render(tr("Your ranking is:"), True, (255,248,144))
+        yri = self.font.render(tr("Your ranking is:"), True, (255, 248, 144))
 #        print "rank", self.rank
-        yr = self.font2.render(self.rankings[self.rank], True, (255,254,232))
+        yr = self.font2.render(self.rankings[self.rank], True, (255, 254, 232))
 
-        ysi = self.font.render(tr("Score"), True, (255,248,144))
-        ys = self.font3.render(str(self.score), True,  (255,254,232))
+        ysi = self.font.render(tr("Score"), True, (255, 248, 144))
+        ys = self.font3.render(str(self.score), True,  (255, 254, 232))
 
         if self.paint_info:
             if self.kaping:
@@ -950,6 +940,7 @@ class EnterHiscores(Scene):
                     self.paint()
                     sounds.pasa()
 
+
 class GameIntro(Scene):
     sections = [textwrap.wrap(x, 23) for x in (
         tr("My son, this will be a challenging day for you."),
@@ -957,14 +948,14 @@ class GameIntro(Scene):
         tr("But your old man, the Great Grossini, is not what he used to be."),
         tr("I'm suffering from Flaccid Wand, so tonite you will replace me."),
         tr("Farewell!"),
-        )]
+    )]
 
     lines_start = [5,10,17.5,23.5,26,0]
 
     START, ENTERING, READY, TALKING, PAUSE, GONE = range(6)
 
-    start_position = -20,350
-    end_position = 465,330
+    start_position = -20, 350
+    end_position = 465, 330
     start_duration = 1
     entering_duration = 5
     ready_duration = 4
@@ -972,7 +963,7 @@ class GameIntro(Scene):
     pause_duration = 1
     gone_duration = 3.5
 
-    def init(self, font, color=(0,0,0), outline_color=(0,0,0), line_step=40):
+    def init(self, font, color=(0, 0, 0), outline_color=(0, 0, 0), line_step=40):
         self.line_step = line_step
         self.section_imgs = []
         for section in self.sections:
@@ -995,7 +986,9 @@ class GameIntro(Scene):
         self.ballon_on = False
         self.alpha = True
 
-        self.nubes = [ pygame.image.load(os.path.join(ESCENARIO, "nube/nube%d.png"%(n+1))).convert_alpha() for n in range(5) ]
+        self.nubes = [
+            pygame.image.load(os.path.join(ESCENARIO, "nube/nube%d.png" % (n + 1))).convert_alpha()
+            for n in range(5)]
         self.guy = pygame.image.load(os.path.join(AUDIENCIA, "dad.gif")).convert_alpha()
         self.guy_alpha = pygame.Surface( (self.guy.get_width(), self.guy.get_height()) )
         self.guy_alpha.set_alpha(180)
@@ -1007,8 +1000,6 @@ class GameIntro(Scene):
         if evt.type == KEYDOWN:
             sounds.apagarVoces()
             self.end()
-
-
 
     def loop(self):
         if self.state == self.START:
@@ -1035,7 +1026,6 @@ class GameIntro(Scene):
 
                 self.guy_pos = nx, ny
                 self.guy_img = self.guy
-
 
         elif self.state == self.READY:
             if time.time() - self.state_start >= self.ready_duration:
@@ -1078,7 +1068,7 @@ class GameIntro(Scene):
             self.game.screen.blit(self.globo, (30, 30))
 
         if self.text:
-            delta = time.time()-self.state_start
+            delta = time.time() - self.state_start
 
             for i in range(len(self.lines_start)):
                 if self.lines_start[i] > delta:
@@ -1093,26 +1083,27 @@ class GameIntro(Scene):
 
                 lineas = len(text)
                 space = lineas * self.line_step
-                start = 210-space/2
+                start = 210 - space // 2
 
-                for i,line in enumerate(text):
-                    self.game.screen.blit(line, (
-                            220-line.get_width()/2,
-                            start + self.line_step*i - line.get_height()
-                            ))
+                for i, line in enumerate(text):
+                    x = 220 - line.get_width() // 2
+                    y = start + self.line_step * i - line.get_height()
+                    self.game.screen.blit(line, (x, y))
+
         if self.puff:
-            delta = time.time()-self.state_start
+            delta = time.time() - self.state_start
             if delta >= 1:
                 self.puff = None
             else:
-                pos = int(delta*5)
+                pos = int(delta * 5)
                 pos = min(pos, 4)
-                self.game.screen.blit(self.nubes[pos], (420,300) )
+                self.game.screen.blit(self.nubes[pos], (420, 300))
 
         if self.guy_pos:
-            self.game.screen.blit(self.guy_img, self.guy_pos )
+            self.game.screen.blit(self.guy_img, self.guy_pos)
             if self.alpha:
-                self.game.screen.blit(self.guy_alpha, self.guy_pos )
+                self.game.screen.blit(self.guy_alpha, self.guy_pos)
+
 
 class TourLevel:
     def __init__(self, country):
@@ -1132,8 +1123,8 @@ class MainMenu(Scene):
             pygame.font.Font(FONT_MAGIC, 70),
             [tr("Career"), tr("World Tour"), tr("Hiscores"), tr("Credits"), tr("Quit")],
             margin=-40,
-            normal_color=(173,148,194),
-            selected_color=(244,232,255),
+            normal_color=(173, 148, 194),
+            selected_color=(244, 232, 255),
         )
         sounds.menu()
 
@@ -1152,14 +1143,14 @@ class MainMenu(Scene):
             x, y = pygame.mouse.get_pos()
             x -= 400
             y -= 180
-            if self.menu.set_mouse(x,y):
+            if self.menu.set_mouse(x, y):
                 sounds.pasa()
                 self.paint()
         elif evt.type == MOUSEBUTTONUP:
             x, y = pygame.mouse.get_pos()
             x -= 400
             y -= 180
-            sel = self.menu.click_mouse(x,y)
+            sel = self.menu.click_mouse(x, y)
             if sel is not None:
                 sounds.enter()
                 self.do_action(sel)
@@ -1182,72 +1173,64 @@ class MainMenu(Scene):
                 sounds.menu()
 
     def do_action(self, sel):
-        if sel == 0: # history
+        if sel == 0:  # history
             self.play_history()
-        elif sel == 1: # freestyle
+        elif sel == 1:  # freestyle
             if self.tour_locked:
-                self.runScene( Locked(self.game) )
+                self.runScene(Locked(self.game))
             else:
                 self.play_world_tour()
-        elif sel == 2: # hiscores
-            self.runScene( Hiscores(self.game) )
-        elif sel == 3: # credits
-            self.runScene( Credits( self.game, self.font ) )
-        elif sel == 4: #quit
+        elif sel == 2:  # hiscores
+            self.runScene(Hiscores(self.game))
+        elif sel == 3:  # credits
+            self.runScene(Credits(self.game, self.font))
+        elif sel == 4:  # quit
             self.end()
 
     def play_history(self):
-            result = GANO
-            count = 0
-            score = 0
-            while True:
-                if count < len(niveles):
-                    nivel = niveles[count]
-                    subtitle = nivel.nombre
-                    params = nivel.params
-                    for k,v in nivel.__dict__.items():
-                        params[k] = v
-                    wardrobes = nivel.audiencia
-                    #.nombre
-                    #.audiencia
-                    #.objeto
-                    #.hechizo
-                    #.historyintro
-                    #.historygood
-                    #.historybad
-                    #.params
-                else:
+        result = GANO
+        count = 0
+        score = 0
+        while True:
+            if count < len(niveles):
+                nivel = niveles[count]
+                subtitle = nivel.nombre
+                params = nivel.params
+                for k,v in nivel.__dict__.items():
+                    params[k] = v
+                wardrobes = nivel.audiencia
+            else:
+                self.runScene(Ranking(self.game, score=score))
+                self.runScene(EnterHiscores(self.game, score))
+                self.runScene(Hiscores(self.game))
+                self.tour_locked = False
+                break
+
+            laAudiencia = audiencia.Audiencia(count, wardrobes)
+            self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia, nivel) )
+            laAudiencia.doGame()
+            l =  Level(self.game, count, MainMotor(**params), laAudiencia)
+            result = self.runScene( l )
+            newscore = int(l.motor.score)
+            score += newscore
+            if result == GANO:
+                laAudiencia.doWin()
+                self.runScene(
+                    LevelSuccess(self.game, score, newscore, laAudiencia, nivel, success=True))
+                count += 1
+            else:
+                laAudiencia.doGameOver()
+                self.runScene(
+                    LevelSuccess(
+                        self.game, score, newscore, laAudiencia, nivel, success=False))
+                cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel))
+                if not cont:
                     self.runScene(Ranking(self.game, score=score))
                     self.runScene(EnterHiscores(self.game, score))
                     self.runScene(Hiscores(self.game))
-                    self.tour_locked = False
                     break
-
-                laAudiencia = audiencia.Audiencia(count, wardrobes)
-                self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia, nivel) )
-                laAudiencia.doGame()
-                l =  Level(self.game, count, MainMotor(**params), laAudiencia)
-                result = self.runScene( l )
-                newscore = int(l.motor.score)
-                score += newscore
-                if result == GANO:
-                    laAudiencia.doWin()
-                    self.runScene(
-                        LevelSuccess(self.game, score, newscore, laAudiencia, nivel, success=True))
-                    count += 1
                 else:
-                    laAudiencia.doGameOver()
-                    self.runScene(
-                        LevelSuccess(
-                            self.game, score, newscore, laAudiencia, nivel, success=False))
-                    cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel))
-                    if not cont:
-                        self.runScene(Ranking(self.game, score=score))
-                        self.runScene(EnterHiscores(self.game, score))
-                        self.runScene(Hiscores(self.game))
-                        break
-                    else:
-                        score = 0
+                    score = 0
 
     def play_world_tour(self):
         result = GANO
@@ -1275,7 +1258,7 @@ class MainMenu(Scene):
                 self.runScene(
                     LevelSuccess(
                         self.game, score, newscore, laAudiencia, current_level, success=False))
-                cont = self.runScene(GameOver(self.game, score, laAudiencia,current_level))
+                cont = self.runScene(GameOver(self.game, score, laAudiencia, current_level))
                 if not cont:
                     self.runScene(Ranking(self.game, score=score))
                     self.runScene(EnterHiscores(self.game, score))
