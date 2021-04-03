@@ -20,9 +20,9 @@ class Estados:
 class Eventos:
     (VIRGEN, OK_DEUNA, OK_CORRG, MAL, PALOK, PALMAL, INACT5, INACT10) = range(8)
     descrip = {
-        PALOK:   "Se escribio una palabra completamente correcta",
-        PALMAL:  "Se escribio una palabra completamente mal",
-        INACT5:  "Hace 5 segundos que no se escribe nada",
+        PALOK: "Se escribio una palabra completamente correcta",
+        PALMAL: "Se escribio una palabra completamente mal",
+        INACT5: "Hace 5 segundos que no se escribe nada",
         INACT10: "Hace 10 segundos que no se escribe nada",
     }
 
@@ -220,7 +220,7 @@ class MainMotor(object):
 
         ratio_velocidad = tiempo_estimado / tiempo_transcurrido
 
-        calor_velocidad = (ratio_velocidad-self.slow) * 2.0 / (self.fast - self.slow) - 1
+        calor_velocidad = (ratio_velocidad - self.slow) * 2.0 / (self.fast - self.slow) - 1
 
         if ratio_velocidad < self.slow:
             calor_velocidad = -1.0
@@ -229,10 +229,10 @@ class MainMotor(object):
 
         # calculamos el calor por precision
 
-        if (acertados+errados) == 0:
+        if (acertados + errados) == 0:
             ratio_precision = self.bad
         else:
-            ratio_precision = acertados/(acertados+errados)
+            ratio_precision = acertados / (acertados + errados)
 
         calor_precision = (ratio_precision - self.bad) * 2.0 / (self.good - self.bad) - 1
         if ratio_precision < self.bad:
@@ -242,8 +242,8 @@ class MainMotor(object):
 
         # mezlcamos ambos
         delta_calor = (
-            calor_precision * self.preferencia_precision +
-            calor_velocidad * (1 - self.preferencia_precision)
+            calor_precision * self.preferencia_precision
+            + calor_velocidad * (1 - self.preferencia_precision)
         )
 
         # filtros pre delta
@@ -282,10 +282,10 @@ class MainMotor(object):
                 elif st == Estados.MAL:
                     errados += 1
 
-            if (acertados+errados) == 0:
+            if (acertados + errados) == 0:
                 ratio_precision = 1
             else:
-                ratio_precision = acertados/(acertados+errados)
+                ratio_precision = acertados / (acertados + errados)
             self._rate = ratio_precision
             self.dirty = False
 

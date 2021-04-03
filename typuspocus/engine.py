@@ -1,6 +1,5 @@
 import sys
 import pygame
-from pygame.locals import *
 from sounds import sounds
 
 DEBUG = 0
@@ -73,7 +72,6 @@ class Scene:
     def run(self):
         if DEBUG:
             print("Entering Scene:", str(self))
-        #self.game.screen.blit(self.background, (0, 0))
         for s in self.subscenes:
             s.paint()
         self.paint()
@@ -92,10 +90,12 @@ class Scene:
 
             try:
                 self.loop()
-                for s in self.subscenes: s.loop()
+                for s in self.subscenes:
+                    s.loop()
             except SceneExit:
                 return self.return_value
-            for s in self.subscenes: s.update()
+            for s in self.subscenes:
+                s.update()
             self.update()
             pygame.display.flip()
 

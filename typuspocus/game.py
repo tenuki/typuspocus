@@ -781,7 +781,8 @@ class Ranking(Scene):
         "Gandalf",
         "Merlin",
     ]
-    stages = [10,20,40,60,80,100,120,140,200]
+    stages = [10, 20, 40, 60, 80, 100, 120, 140, 200]
+
     def init(self, rank=None, score=None):
 
         if score is None:
@@ -791,7 +792,8 @@ class Ranking(Scene):
         elif rank is None:
             rank = sum([1 for i in self.stages if score > i])
 
-        self._background = pygame.image.load(os.path.join(ESCENARIO, "screens/ranking.png")).convert()
+        self._background = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/ranking.png")).convert()
         self.paint_info = False
         self.score = score
         self.rank = rank
@@ -802,7 +804,7 @@ class Ranking(Scene):
 
         font = pygame.font.Font(FONT_MAGIC, 30)
         self.textos = [
-            font.render("%2i:" % (10 - i) + line, True, (255,255,255))
+            font.render("%2i:" % (10 - i) + line, True, (255, 255, 255))
             for (i, line) in enumerate(self.rankings)]
 
         self.start_time = time.time()
@@ -827,11 +829,10 @@ class Ranking(Scene):
             ypos -= 35
 
         yri = self.font.render(tr("Your ranking is:"), True, (255, 248, 144))
-#        print "rank", self.rank
         yr = self.font2.render(self.rankings[self.rank], True, (255, 254, 232))
 
         ysi = self.font.render(tr("Score"), True, (255, 248, 144))
-        ys = self.font3.render(str(self.score), True,  (255, 254, 232))
+        ys = self.font3.render(str(self.score), True, (255, 254, 232))
 
         if self.paint_info:
             if self.kaping:
@@ -886,8 +887,8 @@ class Hiscores(Scene):
             if not name:
                 name = " "
 
-            sf1 = hollow.textOutline(font3, str(i), (255, 254, 232), (0, 0 ,0))
-            sf2 = hollow.textOutline(font, name,(255,254,232), (0, 0, 0))
+            sf1 = hollow.textOutline(font3, str(i), (255, 254, 232), (0, 0, 0))
+            sf2 = hollow.textOutline(font, name, (255, 254, 232), (0, 0, 0))
             sf3 = hollow.textOutline(font, str(points), (255, 254, 232), (0, 0, 0))
 
             ypos = 200 + i * 30
@@ -930,7 +931,7 @@ class EnterHiscores(Scene):
                 self.end()
 
             else:
-                letra = evt.unicode #.lower()
+                letra = evt.unicode
                 if letra.isalpha() or (letra and letra in " ,.<>:;1234567890"):
                     self.name += letra
                     self.paint()
@@ -950,7 +951,7 @@ class GameIntro(Scene):
         tr("Farewell!"),
     )]
 
-    lines_start = [5,10,17.5,23.5,26,0]
+    lines_start = [5, 10, 17.5, 23.5, 26, 0]
 
     START, ENTERING, READY, TALKING, PAUSE, GONE = range(6)
 
@@ -969,9 +970,9 @@ class GameIntro(Scene):
         for section in self.sections:
             lines = []
             for line in section:
-                img = font.render( line, True, color)
-                lines.append( img )
-            self.section_imgs.append( lines )
+                img = font.render(line, True, color)
+                lines.append(img)
+            self.section_imgs.append(lines)
 
         self.section_number = 0
         self.state = self.START
@@ -990,11 +991,13 @@ class GameIntro(Scene):
             pygame.image.load(os.path.join(ESCENARIO, "nube/nube%d.png" % (n + 1))).convert_alpha()
             for n in range(5)]
         self.guy = pygame.image.load(os.path.join(AUDIENCIA, "dad.gif")).convert_alpha()
-        self.guy_alpha = pygame.Surface( (self.guy.get_width(), self.guy.get_height()) )
+        self.guy_alpha = pygame.Surface((self.guy.get_width(), self.guy.get_height()))
         self.guy_alpha.set_alpha(180)
 
-        self.lampara = pygame.image.load(os.path.join(ESCENARIO, "screens/dad.png")).convert_alpha()
-        self.globo = pygame.image.load(os.path.join(ESCENARIO, "screens/balloon.png")).convert_alpha()
+        self.lampara = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/dad.png")).convert_alpha()
+        self.globo = pygame.image.load(
+            os.path.join(ESCENARIO, "screens/balloon.png")).convert_alpha()
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -1008,7 +1011,6 @@ class GameIntro(Scene):
                 self.state_start = time.time()
                 sounds.camina()
 
-
         if self.state == self.ENTERING:
             if time.time() - self.state_start >= self.entering_duration:
                 self.state = self.READY
@@ -1021,8 +1023,8 @@ class GameIntro(Scene):
 
                 sx, sy = self.start_position
                 ex, ey = self.end_position
-                nx = sx + (ex-sx)*p
-                ny = sy + (ey-sy)*p
+                nx = sx + (ex - sx) * p
+                ny = sy + (ey - sy) * p
 
                 self.guy_pos = nx, ny
                 self.guy_img = self.guy
@@ -1196,7 +1198,7 @@ class MainMenu(Scene):
                 nivel = niveles[count]
                 subtitle = nivel.nombre
                 params = nivel.params
-                for k,v in nivel.__dict__.items():
+                for k, v in nivel.__dict__.items():
                     params[k] = v
                 wardrobes = nivel.audiencia
             else:
@@ -1207,11 +1209,11 @@ class MainMenu(Scene):
                 break
 
             laAudiencia = audiencia.Audiencia(count, wardrobes)
-            self.runScene( LevelIntro( self.game, str(count), subtitle , laAudiencia, nivel) )
+            self.runScene(LevelIntro(self.game, str(count), subtitle, laAudiencia, nivel))
             laAudiencia.doGame()
-            l =  Level(self.game, count, MainMotor(**params), laAudiencia)
-            result = self.runScene( l )
-            newscore = int(l.motor.score)
+            level = Level(self.game, count, MainMotor(**params), laAudiencia)
+            result = self.runScene(level)
+            newscore = int(level.motor.score)
             score += newscore
             if result == GANO:
                 laAudiencia.doWin()
@@ -1223,7 +1225,7 @@ class MainMenu(Scene):
                 self.runScene(
                     LevelSuccess(
                         self.game, score, newscore, laAudiencia, nivel, success=False))
-                cont = self.runScene( GameOver( self.game, score, laAudiencia, nivel))
+                cont = self.runScene(GameOver(self.game, score, laAudiencia, nivel))
                 if not cont:
                     self.runScene(Ranking(self.game, score=score))
                     self.runScene(EnterHiscores(self.game, score))

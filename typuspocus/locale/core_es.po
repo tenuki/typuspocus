@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-13 09:29-0300\n"
+"POT-Creation-Date: 2021-03-29 15:23-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: game.py:133
 msgid "Start typing the spell!"
-msgstr "¡Comienza a tipear el hechizo!"
+msgstr "¡Comenzá a tipear el hechizo!"
 
 #: game.py:380
 #, python-format
@@ -27,11 +27,11 @@ msgstr "Puntaje: %3.1f"
 
 #: game.py:386
 msgid "[press any key]"
-msgstr "[apreta cualquier tecla]"
+msgstr "[apretá cualquier tecla]"
 
 #: game.py:477
 msgid "Level Completed"
-msgstr "Nivel Completado"
+msgstr "Nivel completado"
 
 #: game.py:478
 msgid "Points accumulated:"
@@ -39,7 +39,7 @@ msgstr "Puntos acumulados:"
 
 #: game.py:479
 msgid "New Score:"
-msgstr "Nuevo Puntaje:"
+msgstr "Nuevo puntaje:"
 
 #: game.py:497
 msgid "No"
@@ -49,52 +49,52 @@ msgstr "No"
 msgid "Yes"
 msgstr "Sí"
 
-#: game.py:820
+#: game.py:831
 msgid "Your ranking is:"
 msgstr "Tu posición es:"
 
-#: game.py:824
+#: game.py:834
 msgid "Score"
 msgstr "Puntaje"
 
-#: game.py:847
+#: game.py:857
 msgid "You must first finish your career"
-msgstr "Primero debes terminar la carrera"
+msgstr "Primero debes terminar tu carrera"
 
-#: game.py:849
+#: game.py:859
 msgid "before touring the world"
 msgstr "antes de girar por el mundo"
 
-#: game.py:937
+#: game.py:947
 msgid "My son, this will be a challenging day for you."
-msgstr "Hijo mio, este será un día clave para ti."
+msgstr "Hijo mío, este será un día clave para vos."
 
-#: game.py:938
+#: game.py:948
 msgid "You have always been the black sheep of our great family."
-msgstr "Siempre has sido la oveja negra de nuestra gran familia."
+msgstr "Siempre fuiste la oveja negra de nuestra gran familia."
 
-#: game.py:939
+#: game.py:949
 msgid "But your old man, the Great Grossini, is not what he used to be."
 msgstr "Pero tu padre, el Gran Grossini, no es lo que solía ser."
 
-#: game.py:940
+#: game.py:950
 msgid "I'm suffering from Flaccid Wand, so tonite you will replace me."
 msgstr ""
-"Estoy sufriendo de Varita Flácida, entonces esta noche tú me reemplazarás."
+"Estoy sufriendo de Varita Flácida, entonces esta noche vos me reemplazarás."
 
-#: game.py:941
+#: game.py:951
 msgid "Farewell!"
 msgstr "¡Adiós!"
 
-#: game.py:1101
+#: game.py:1112
 msgid "Touring in "
 msgstr "Recorriendo la"
 
-#: game.py:1102 game.py:1103 game.py:1115 game.py:1243
+#: game.py:1113 game.py:1114 game.py:1126 game.py:1246
 msgid "World Tour"
 msgstr "Gira Mundial"
 
-#: game.py:1104
+#: game.py:1115
 #, python-format
 msgid ""
 "You are deported from\n"
@@ -103,7 +103,7 @@ msgstr ""
 "Has sido deportado desde\n"
 "%s"
 
-#: game.py:1105
+#: game.py:1116
 #, python-format
 msgid ""
 "The people at\n"
@@ -114,23 +114,27 @@ msgstr ""
 "%s\n"
 "te ama!"
 
-#: game.py:1115
+#: game.py:1126
 msgid "Career"
 msgstr "Carrera"
 
-#: game.py:1115
+#: game.py:1126
 msgid "Hiscores"
 msgstr "Puntajes"
 
-#: game.py:1115
+#: game.py:1126
 msgid "Credits"
 msgstr "Créditos"
 
-#: game.py:1115
+#: game.py:1126
 msgid "Quit"
 msgstr "Salir"
 
-#: levels.py:58
+#: levels.py:51
+msgid "Lousy Pub"
+msgstr "Bar de cuarta"
+
+#: levels.py:56
 msgid ""
 "\n"
 "            Cast the spell as fast\n"
@@ -148,7 +152,7 @@ msgstr ""
 "            errores con 'backspace'.\n"
 "        "
 
-#: levels.py:65
+#: levels.py:63
 msgid ""
 "\n"
 "            Great!\n"
@@ -160,11 +164,11 @@ msgstr ""
 "\n"
 "            ¡Genial!\n"
 "\n"
-"            Recibiste una oferta para actuar\n"
-"            en la \"Ópera de París\".\n"
+"            Recibiste una oferta para\n"
+"            actuar en la Ópera de París.\n"
 "        "
 
-#: levels.py:71
+#: levels.py:69
 msgid ""
 "\n"
 "            You are not even worthy of\n"
@@ -174,4 +178,471 @@ msgstr ""
 "\n"
 "            No merecés ni siquiera\n"
 "            este nivel de demostración.\n"
+"        "
+
+#: levels.py:76
+msgid "Paris Opera"
+msgstr "La Ópera de París"
+
+#: levels.py:82
+msgid ""
+"\n"
+"            Disappear the Phantom's mask,\n"
+"            that will embarrass him and\n"
+"            make him leave.\n"
+"        "
+msgstr ""
+"\n"
+"            Desaparecé la máscara del\n"
+"            Fantasma, eso lo\n"
+"            avergonzará y se irá.\n"
+"        "
+
+#: levels.py:87
+#, fuzzy
+msgid ""
+"\n"
+"            Your act was great!\n"
+"\n"
+"            You are invited to perform the\n"
+"            Halftime show at the local\n"
+"            basquetball finals.\n"
+"        "
+msgstr ""
+"\n"
+"            ¡Tu acto fue maravilloso!\n"
+"\n"
+"            Recibiste una oferta para hacer\n"
+"            el show de medio tiempo en las\n"
+"            finales locales de basquetball.\n"
+"        "
+
+#: levels.py:94
+#, fuzzy
+msgid ""
+"\n"
+"            You blew it,\n"
+"            your father disinherited you.\n"
+"\n"
+"            You get a job coding ruby on rails.\n"
+"        "
+msgstr ""
+"\n"
+"            Lo arruinaste,\n"
+"            te desheredaron.\n"
+"\n"
+"            Conseguís trabajo\n"
+"            programando en ruby on rails.\n"
+"        "
+
+#: levels.py:103
+msgid "Magic Arena"
+msgstr "Estadio de los Magic"
+
+#: levels.py:110
+msgid ""
+"\n"
+"            The locals are loosing by 12,\n"
+"            you must disappear the\n"
+"            visitor's MVP lucky sneakers.\n"
+"        "
+msgstr ""
+"\n"
+"            Los locales están perdiendo por 12, tenés\n"
+"            que hacer desaparecer las zapatillas de\n"
+"            la suerte del mejor jugador visitante.\n"
+"        "
+
+#: levels.py:115
+#, fuzzy
+msgid ""
+"\n"
+"            Thanks to your help the locals win\n"
+"            and you get invited to do your trick\n"
+"            at the after party.\n"
+"        "
+msgstr ""
+"\n"
+"            Gracias a tu ayuda los locales ganan\n"
+"            y te invitan a hacer tus trucos\n"
+"            en la fiesta que se armó.\n"
+"        "
+
+#: levels.py:120
+#, fuzzy
+msgid ""
+"\n"
+"            An Angry mob of the local fans\n"
+"            chases you around the stadium.\n"
+"        "
+msgstr ""
+"\n"
+"            Una multitud enojada de fans locales\n"
+"            te persigue alrededor del estadio.\n"
+"        "
+
+#: levels.py:127
+msgid "Goth Party"
+msgstr "Fiesta gótica"
+
+#: levels.py:135
+msgid ""
+"\n"
+"            You were supposed to disappear\n"
+"            a milli vanilli cd,\n"
+"            instead you must vanish the\n"
+"            drugs to hide them\n"
+"            from the cops.\n"
+"        "
+msgstr ""
+"\n"
+"            Se suponía que tenías que desaparecer\n"
+"            un CD de Milli Vanilli,\n"
+"            pero te hacen desaparecer\n"
+"            un montón de drogas para\n"
+"            esconderlas de la policía.\n"
+"        "
+
+#: levels.py:142
+#, fuzzy
+msgid ""
+"\n"
+"            You got away clean,\n"
+"            and kept a lot of famous\n"
+"            people out of jail.\n"
+"\n"
+"            You are going to Las Vegas now!!\n"
+"        "
+msgstr ""
+"\n"
+"            Zafaste, y evitaste\n"
+"            que mucha gente famosa\n"
+"            vaya a la carcel.\n"
+"\n"
+"            ¡¡Ahora te vas a Las Vegas!!\n"
+"        "
+
+#: levels.py:149
+#, fuzzy
+msgid ""
+"\n"
+"            You go to jail charged with\n"
+"            drug possession.\n"
+"        "
+msgstr ""
+"\n"
+"            Te meten a la carcel por\n"
+"            posesión de drogas.\n"
+"        "
+
+#: levels.py:163
+msgid ""
+"\n"
+"            You get to Las Vegas\n"
+"            to perform in a Casino, but\n"
+"            the owners want to take\n"
+"            advantage of your power\n"
+"            to evade taxes.\n"
+"        "
+msgstr ""
+"\n"
+"            Llegás a Las Vegas\n"
+"            para actuar en un Casino,\n"
+"            pero los dueños quieren\n"
+"            aprovecharse de tus poderes\n"
+"            para evadir impuestos.\n"
+"        "
+
+#: levels.py:170
+#, fuzzy
+msgid ""
+"\n"
+"            The IRS wants you for beeing\n"
+"            an accesory to tax evasion.\n"
+"\n"
+"            They send you Africa where\n"
+"            they'll never find you.\n"
+"        "
+msgstr ""
+"\n"
+"            El Fisco quiere atraparte por\n"
+"            participar en evasión de impuestos.\n"
+"\n"
+"            Te mandan a África en\n"
+"            donde nunca te encontrarán.\n"
+"        "
+
+#: levels.py:177
+#, fuzzy
+msgid ""
+"\n"
+"            Your act was a total failure,\n"
+"            you got wasted and lost\n"
+"            all your money playing craps.\n"
+"        "
+msgstr ""
+"\n"
+"            Tu acto fue un fallo total,\n"
+"            te emborrachaste y perdiste\n"
+"            todo tu dinero jugando a los dados.\n"
+"        "
+
+#: levels.py:185
+msgid "Black Magic"
+msgstr "Magia negra"
+
+#: levels.py:194
+#, fuzzy
+msgid ""
+"\n"
+"            You go to live with a tribe\n"
+"            in africa, they find out\n"
+"            you are a wizard and want\n"
+"            you to heal their ill\n"
+"            sacred animal.\n"
+"        "
+msgstr ""
+"\n"
+"            Te vas a vivir con una tribu\n"
+"            en África, descubren que\n"
+"            usás La Magia y quieren\n"
+"            que cures a su animal sagrado\n"
+"            que está enfermo.\n"
+"        "
+
+#: levels.py:201
+msgid ""
+"\n"
+"            You disappeared the sacred animal.\n"
+"            The angry natives start chasing\n"
+"            you around the jungle.\n"
+"        "
+msgstr ""
+"\n"
+"            Hiciste desaparecer al animal sagrado.\n"
+"            Los nativos enojados te persiguen\n"
+"            por toda la jungla.\n"
+"        "
+
+#: levels.py:206
+#, fuzzy
+msgid ""
+"\n"
+"            The natives made a tasty\n"
+"            casserole out of you.\n"
+"        "
+msgstr ""
+"\n"
+"            Los nativos hicieron un\n"
+"            sabroso guisado con vos.\n"
+"        "
+
+#: levels.py:220
+msgid ""
+"\n"
+"            While running away from the natives,\n"
+"            a spaceship abducts\n"
+"            you. The venusians ask you to help\n"
+"            them vanish a hitchhiker.\n"
+"        "
+msgstr ""
+"\n"
+"            Mientras te escapabas de los nativos,\n"
+"            una nave espacial te abduce.\n"
+"            Los venusinos te piden ayuda para\n"
+"            desaparecer a un autoestopista.\n"
+"        "
+
+#: levels.py:226
+msgid ""
+"\n"
+"            Since you were so helpfull,\n"
+"            the venusians send you back to earth\n"
+"            in an individual spaceship.\n"
+"        "
+msgstr ""
+"\n"
+"            Ya que los ayudaste, los venusinos\n"
+"            te mandan de vuelta a la Tierra\n"
+"            en tu nave espacial individual.\n"
+"        "
+
+#: levels.py:231
+msgid ""
+"\n"
+"            Because you were unwilling to cooperate,\n"
+"            the venusians performed crazy things\n"
+"            with a light saber on your body.\n"
+"        "
+msgstr ""
+"\n"
+"            Como no quisiste cooperar, los\n"
+"            venusinos hicieron cosas locas\n"
+"            en tu cuerpo con un sable láser.\n"
+"        "
+
+#: levels.py:239
+msgid "Area 51"
+msgstr "Área 51"
+
+#: levels.py:247
+msgid ""
+"\n"
+"            Your ship was running a pirated\n"
+"            OS and crashed in new mexico.\n"
+"            The FBI captures you and asks you\n"
+"            to disappear some evidence of\n"
+"            the alien landings.\n"
+"        "
+msgstr ""
+"\n"
+"            Tu nave tenía un sistema operativo\n"
+"            pirateado y se estrelló en Nuevo México.\n"
+"            El FBI te captura y te pide\n"
+"            que hagas desaparecer la evidencia\n"
+"            de los aterrizajes extraterrestres.\n"
+"        "
+
+#: levels.py:254
+#, fuzzy
+msgid ""
+"\n"
+"            Now that the evidence exists\n"
+"            only on your memory,\n"
+"            the FBI makes sure you won't talk\n"
+"            by putting a cap in your head.\n"
+"        "
+msgstr ""
+"\n"
+"            Ahora que la evidencia sólo\n"
+"            existe en tu memoria,\n"
+"            el FBI se asegura que no hables\n"
+"            metiéndote un corchazo en la cabeza.\n"
+"        "
+
+#: levels.py:260
+msgid ""
+"\n"
+"            You couldn't do it.\n"
+"            But you'll have a lot of time\n"
+"            to practice since you are\n"
+"            never leaving area 51.\n"
+"        "
+msgstr ""
+"\n"
+"            No pudiste hacerlo.\n"
+"            Pero ahora vas a tener un montón\n"
+"            de tiempo para practicar porque\n"
+"            nunca saldrás del Área 51.\n"
+"        "
+
+#: levels.py:270
+msgid "Graveyard"
+msgstr "Cementerio"
+
+#: levels.py:277
+msgid ""
+"\n"
+"            Ok, you died, and went to hell,\n"
+"            you can escape to heaven by\n"
+"            disappearing Anubis.\n"
+"\n"
+"            All the dead gather around to watch...\n"
+"        "
+msgstr ""
+"\n"
+"            Sí, te moriste, y fuiste al infierno.\n"
+"            Podes escaparte al cielo si\n"
+"            desaparecés a Anubis.\n"
+"\n"
+"            Todos los muertos se juntan a mirar...\n"
+"        "
+
+#: levels.py:284
+msgid ""
+"\n"
+"            You did it!!!\n"
+"            Now you go to heaven, that happy\n"
+"            place we all dream about as kids,\n"
+"            that place where men and women\n"
+"            love each other.\n"
+"        "
+msgstr ""
+"\n"
+"            ¡¡¡Lo hiciste!!!\n"
+"            Ahora te vas al cielo, ese lugar\n"
+"            feliz con el que soñamos de joven,\n"
+"            ese lugar donde hombres y mujeres\n"
+"            se aman mutuamente.\n"
+"        "
+
+#: levels.py:291
+msgid ""
+"\n"
+"            You stay in hell. At least\n"
+"            you won't have problems\n"
+"            finding a lawyer if you ever\n"
+"            come to need one.\n"
+"        "
+msgstr ""
+"\n"
+"            Te quedás en el infierno.\n"
+"            Al menos no vas a tener\n"
+"            problemas para encontrar une\n"
+"            abogade en caso de necesidad.\n"
+"        "
+
+#: levels.py:300
+msgid "Hugh's Place"
+msgstr "Lo de Hugh"
+
+#: levels.py:309
+msgid ""
+"\n"
+"            Here we are, it's beautiful,\n"
+"            everything that disappears here goes\n"
+"            back to earth, so you are going to\n"
+"            revive a lovely goat now!\n"
+"        "
+msgstr ""
+"\n"
+"            Llegaste, es hermoso, y todo\n"
+"            lo que hagas desaparecer acá va de\n"
+"            regreso a la Tierra, ¡y vas a revivir\n"
+"            una hermosa cabra ahora!\n"
+"        "
+
+#: levels.py:315
+#, fuzzy
+msgid ""
+"\n"
+"            Congratulations!\n"
+"\n"
+"            You fullfilled your destiny\n"
+"            as a Magician!\n"
+"        "
+msgstr ""
+"\n"
+"            ¡Felicitaciones!\n"
+"\n"
+"            ¡Cumpliste con tu destino\n"
+"            en La Magia!\n"
+"        "
+
+#: levels.py:321
+msgid ""
+"\n"
+"            Mmm...\n"
+"\n"
+"            Too bad you couldn't do it, but hey,\n"
+"            a horde of naked angels offers\n"
+"            to console you!!\n"
+"        "
+msgstr ""
+"\n"
+"            Mmm...\n"
+"\n"
+"            Que mal que no pudiste hacerlo, hey,\n"
+"            ¡¡pero al menos una cantidad de ángeles\n"
+"            desnudes ofrecen consolarte!!\n"
 "        "
