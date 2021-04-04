@@ -4,6 +4,7 @@ import os
 import random
 import textwrap
 import time
+from functools import lru_cache
 
 import pygame
 from pygame.locals import (
@@ -21,10 +22,10 @@ from pygame.locals import (
 
 import audiencia
 import countries
-import hiscore_client
 import hollow
 from audiencia import AudienciaScene
 from engine import Game, Scene
+from hiscore import hiscore
 from i18n import tr
 from levels import niveles
 from motor import MainMotor
@@ -400,22 +401,46 @@ def test():
 
 
 class BannerScene(Scene):
-    def renderOn(self, surface, lines=[]):
+    def renderOn(self, surface, lines=[], full_message=False):
         Yellow = (255, 255, 160)
+        Darker = (200, 200, 100)
         posx = 110
         widx = 600
-        posy = 80
+        posy = 110
         widy = 385  # 30 * 9 = 270  (1 titulo, 3 en blanco, 5 del nivel) mejorar..
         introSurface = surface.subsurface(pygame.Rect(posx, posy, widx, widy))
-        fontYsize = 30
+        fontYsize = 37
 
-        deltaY = (widy - (len(lines) * fontYsize)) // 2 + 20
-        nline = 0
-        for line in lines:
-            s = self.font.render(line, True, Yellow)
+        deltaY = (widy - (len(lines) * fontYsize)) // 2 + 10
+        for nline, line in enumerate(lines):
+            if full_message:
+                color = Darker if nline else Yellow
+            else:
+                color = Yellow
+            s = self.font.render(line, True, color)
             tx, ty = s.get_size()
             introSurface.blit(s, ((widx - tx) // 2, deltaY + nline * fontYsize))
-            nline += 1
+
+
+@lru_cache
+def format_level_message(title, text):
+    """Format title and text in a multiline wrapped message."""
+    # base: the title and two empty lines
+    result_lines = [title, '']
+
+    # clean a nomral mistake in the received text
+    text = text.replace("  ", " ")
+
+    # split the text by enters, as that indicates an empty separating line
+    lines = text.split("\n")
+    lines = [line.strip() for line in lines if line.strip()]
+
+    # add each line (but wrapped), separating those with the empty line
+    for line in lines:
+        result_lines.extend(textwrap.wrap(line, 35))
+        result_lines.append("")
+
+    return result_lines
 
 
 class LevelIntro(BannerScene):
@@ -437,9 +462,8 @@ class LevelIntro(BannerScene):
         self.background.blit(Foreground, (0, 0))
         self.game.screen.blit(self.overlay, (0, 0))
         if self.level is not None:
-            self.renderOn(
-                self.game.screen,
-                [self.level.nombre, '', ''] + self.level.historyintro.split('\n'))
+            message = format_level_message(self.level.nombre, self.level.historyintro)
+            self.renderOn(self.game.screen, message, full_message=True)
 
     def event(self, evt):
         if evt.type == KEYDOWN:
@@ -470,7 +494,8 @@ class LevelSuccess(BannerScene):
         if self.status == EstadoMensaje:
             self.font = pygame.font.Font(FONT_MAGIC, 50)
             history = self.level.historygood if self.success else self.level.historybad
-            self.renderOn(self.game.screen, [self.level.nombre, '', ''] + history.split('\n'))
+            message = format_level_message(self.level.nombre, history)
+            self.renderOn(self.game.screen, message, full_message=True)
         else:
             self.font = pygame.font.Font(FONT_MONO, 30)
             self.renderOn(self.game.screen, [
@@ -869,7 +894,6 @@ class Locked(Scene):
 
 class Hiscores(Scene):
     def init(self):
-        self.client = hiscore_client.HiScoreClient()
         self._background = pygame.image.load(
             os.path.join(ESCENARIO, "screens/highscores.png")).convert()
 
@@ -877,10 +901,12 @@ class Hiscores(Scene):
         self.game.screen.blit(self.background, (0, 0))
         font = pygame.font.Font(FONT_MAGIC, 40)
         font3 = pygame.font.Font(FONT_MAGIC, 30)
-        scores = self.client.listHiScores()
+        scores = hiscore.list()
         for i in range(8):
             if i < len(scores):
-                points, when, name, ip = scores[i]
+                score = scores[i]
+                points = score['score']
+                name = score['name']
             else:
                 points, name = "--", ""
 
@@ -904,7 +930,6 @@ class Hiscores(Scene):
 
 class EnterHiscores(Scene):
     def init(self, score):
-        self.client = hiscore_client.HiScoreClient()
         self._background = pygame.image.load(
             os.path.join(ESCENARIO, "screens/highscores.png")).convert()
         self.name = ""
@@ -926,7 +951,7 @@ class EnterHiscores(Scene):
                 sounds.apagarVoces()
                 self.end()
             elif evt.key == K_RETURN:
-                self.client.addHiScore(self.score, self.name)
+                hiscore.add(self.score, self.name)
                 sounds.apagarVoces()
                 self.end()
 
@@ -1019,7 +1044,7 @@ class GameIntro(Scene):
                 self.lamp_on = True
                 self.alpha = False
             else:
-                p = ((time.time()-self.state_start)/self.entering_duration)
+                p = ((time.time() - self.state_start) / self.entering_duration)
 
                 sx, sy = self.start_position
                 ex, ey = self.end_position

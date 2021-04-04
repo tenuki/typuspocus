@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-29 15:23-0300\n"
+"POT-Creation-Date: 2021-04-03 09:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,330 +125,207 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: levels.py:51
+#: levels.py:39
 msgid "Lousy Pub"
 msgstr ""
 
-#: levels.py:56
+#: levels.py:45
 msgid ""
-"\n"
-"            Cast the spell as fast\n"
-"            and accurately as you can.\n"
-"\n"
-"            You can backspace and fix\n"
-"            your mistakes.\n"
-"        "
+"Cast the spell as fast and accurately as you can.\n"
+"You can backspace and fix your mistakes."
 msgstr ""
 
-#: levels.py:63
+#: levels.py:48
 msgid ""
-"\n"
-"            Great!\n"
-"\n"
-"            You receive an offer to perform\n"
-"            in the \"Paris Opera\".\n"
-"        "
+"Great!\n"
+"You receive an offer to perform in the Paris Opera."
 msgstr ""
 
-#: levels.py:69
-msgid ""
-"\n"
-"            You are not even worthy of\n"
-"            this demo level.\n"
-"        "
+#: levels.py:50
+msgid "You are not even worthy of this demo level."
 msgstr ""
 
-#: levels.py:76
+#: levels.py:54
 msgid "Paris Opera"
 msgstr ""
 
-#: levels.py:82
+#: levels.py:60
 msgid ""
-"\n"
-"            Disappear the Phantom's mask,\n"
-"            that will embarrass him and\n"
-"            make him leave.\n"
-"        "
+"Disappear the Phantom's mask, that will embarrass him and make him leave."
 msgstr ""
 
-#: levels.py:87
+#: levels.py:62
 msgid ""
-"\n"
-"            Your act was great!\n"
-"\n"
-"            You are invited to perform the\n"
-"            Halftime show at the local\n"
-"            basquetball finals.\n"
-"        "
+"Your act was great!\n"
+"You are invited to perform the Halftime show at the local basquetball finals."
+msgstr ""
+
+#: levels.py:65
+msgid ""
+"You blew it, your father disinherited you.\n"
+"You get a job coding ruby on rails."
+msgstr ""
+
+#: levels.py:70
+msgid "Magic Arena"
+msgstr ""
+
+#: levels.py:77
+msgid ""
+"The locals are loosing by 12, you must disappear the visitor's MVP lucky "
+"sneakers."
+msgstr ""
+
+#: levels.py:79
+msgid ""
+"Thanks to your help the locals win and you get invited to do your trick at "
+"the after party."
+msgstr ""
+
+#: levels.py:81
+msgid "An Angry mob of the local fans chases you around the stadium."
+msgstr ""
+
+#: levels.py:85
+msgid "Goth Party"
 msgstr ""
 
 #: levels.py:94
 msgid ""
-"\n"
-"            You blew it,\n"
-"            your father disinherited you.\n"
-"\n"
-"            You get a job coding ruby on rails.\n"
-"        "
+"You were supposed to disappear a Milli Vanilli CD, instead you must vanish "
+"the drugs to hide them from the cops."
 msgstr ""
 
-#: levels.py:103
-msgid "Magic Arena"
-msgstr ""
-
-#: levels.py:110
+#: levels.py:97
 msgid ""
-"\n"
-"            The locals are loosing by 12,\n"
-"            you must disappear the\n"
-"            visitor's MVP lucky sneakers.\n"
-"        "
+"You got away clean, and kept a lot of famous people out of jail.\n"
+"You are going to Las Vegas now!!"
 msgstr ""
 
-#: levels.py:115
+#: levels.py:99
+msgid "You go to jail charged with drug possession."
+msgstr ""
+
+#: levels.py:111
 msgid ""
-"\n"
-"            Thanks to your help the locals win\n"
-"            and you get invited to do your trick\n"
-"            at the after party.\n"
-"        "
+"You get to Las Vegas to perform in a Casino, but the owners want to take "
+"advantage of your power to evade taxes."
+msgstr ""
+
+#: levels.py:114
+msgid ""
+"The IRS wants you for beeing an accesory to tax evasion.\n"
+"They send you Africa where they'll never find you."
+msgstr ""
+
+#: levels.py:116
+msgid ""
+"Your act was a total failure, you got wasted and lost all your money playing "
+"craps."
 msgstr ""
 
 #: levels.py:120
-msgid ""
-"\n"
-"            An Angry mob of the local fans\n"
-"            chases you around the stadium.\n"
-"        "
+msgid "Black Magic"
 msgstr ""
 
-#: levels.py:127
-msgid "Goth Party"
+#: levels.py:130
+msgid ""
+"You go to live with a tribe in africa, they find out you are a wizard and "
+"want you to heal their ill sacred animal."
+msgstr ""
+
+#: levels.py:133
+msgid ""
+"You disappeared the sacred animal.  The angry natives start chasing you "
+"around the jungle."
 msgstr ""
 
 #: levels.py:135
-msgid ""
-"\n"
-"            You were supposed to disappear\n"
-"            a milli vanilli cd,\n"
-"            instead you must vanish the\n"
-"            drugs to hide them\n"
-"            from the cops.\n"
-"        "
+msgid "The natives made a tasty casserole out of you."
 msgstr ""
 
-#: levels.py:142
+#: levels.py:147
 msgid ""
-"\n"
-"            You got away clean,\n"
-"            and kept a lot of famous\n"
-"            people out of jail.\n"
-"\n"
-"            You are going to Las Vegas now!!\n"
-"        "
+"While running away from the natives, a spaceship abducts you. The Venusians "
+"ask you to help them vanish a hitchhiker."
 msgstr ""
 
-#: levels.py:149
+#: levels.py:150
 msgid ""
-"\n"
-"            You go to jail charged with\n"
-"            drug possession.\n"
-"        "
+"Since you were so helpful, the Venusians send you back to Earth in an "
+"individual spaceship."
 msgstr ""
 
-#: levels.py:163
+#: levels.py:153
 msgid ""
-"\n"
-"            You get to Las Vegas\n"
-"            to perform in a Casino, but\n"
-"            the owners want to take\n"
-"            advantage of your power\n"
-"            to evade taxes.\n"
-"        "
+"Because you were unwilling to cooperate, the Venusians performed crazy "
+"things with a light saber on your body."
+msgstr ""
+
+#: levels.py:158
+msgid "Area 51"
+msgstr ""
+
+#: levels.py:167
+msgid ""
+"Your ship was running a pirated OS and crashed in New Mexico. The FBI "
+"captures you and asks you to disappear some evidence of the alien landings."
 msgstr ""
 
 #: levels.py:170
 msgid ""
-"\n"
-"            The IRS wants you for beeing\n"
-"            an accesory to tax evasion.\n"
-"\n"
-"            They send you Africa where\n"
-"            they'll never find you.\n"
-"        "
+"Now that the evidence exists only on your memory, the FBI makes sure you "
+"won't talk by putting a cap in your head."
 msgstr ""
 
-#: levels.py:177
+#: levels.py:173
 msgid ""
-"\n"
-"            Your act was a total failure,\n"
-"            you got wasted and lost\n"
-"            all your money playing craps.\n"
-"        "
+"You couldn't do it.  But you'll have a lot of time to practice since you are "
+"never leaving Area 51."
 msgstr ""
 
-#: levels.py:185
-msgid "Black Magic"
-msgstr ""
-
-#: levels.py:194
-msgid ""
-"\n"
-"            You go to live with a tribe\n"
-"            in africa, they find out\n"
-"            you are a wizard and want\n"
-"            you to heal their ill\n"
-"            sacred animal.\n"
-"        "
-msgstr ""
-
-#: levels.py:201
-msgid ""
-"\n"
-"            You disappeared the sacred animal.\n"
-"            The angry natives start chasing\n"
-"            you around the jungle.\n"
-"        "
-msgstr ""
-
-#: levels.py:206
-msgid ""
-"\n"
-"            The natives made a tasty\n"
-"            casserole out of you.\n"
-"        "
-msgstr ""
-
-#: levels.py:220
-msgid ""
-"\n"
-"            While running away from the natives,\n"
-"            a spaceship abducts\n"
-"            you. The venusians ask you to help\n"
-"            them vanish a hitchhiker.\n"
-"        "
-msgstr ""
-
-#: levels.py:226
-msgid ""
-"\n"
-"            Since you were so helpfull,\n"
-"            the venusians send you back to earth\n"
-"            in an individual spaceship.\n"
-"        "
-msgstr ""
-
-#: levels.py:231
-msgid ""
-"\n"
-"            Because you were unwilling to cooperate,\n"
-"            the venusians performed crazy things\n"
-"            with a light saber on your body.\n"
-"        "
-msgstr ""
-
-#: levels.py:239
-msgid "Area 51"
-msgstr ""
-
-#: levels.py:247
-msgid ""
-"\n"
-"            Your ship was running a pirated\n"
-"            OS and crashed in new mexico.\n"
-"            The FBI captures you and asks you\n"
-"            to disappear some evidence of\n"
-"            the alien landings.\n"
-"        "
-msgstr ""
-
-#: levels.py:254
-msgid ""
-"\n"
-"            Now that the evidence exists\n"
-"            only on your memory,\n"
-"            the FBI makes sure you won't talk\n"
-"            by putting a cap in your head.\n"
-"        "
-msgstr ""
-
-#: levels.py:260
-msgid ""
-"\n"
-"            You couldn't do it.\n"
-"            But you'll have a lot of time\n"
-"            to practice since you are\n"
-"            never leaving area 51.\n"
-"        "
-msgstr ""
-
-#: levels.py:270
+#: levels.py:179
 msgid "Graveyard"
 msgstr ""
 
-#: levels.py:277
+#: levels.py:187
 msgid ""
-"\n"
-"            Ok, you died, and went to hell,\n"
-"            you can escape to heaven by\n"
-"            disappearing Anubis.\n"
-"\n"
-"            All the dead gather around to watch...\n"
-"        "
+"Ok, you died, and went to hell, you can escape to heaven by disappearing "
+"Anubis.\n"
+"All the dead gather around to watch..."
 msgstr ""
 
-#: levels.py:284
+#: levels.py:190
 msgid ""
-"\n"
-"            You did it!!!\n"
-"            Now you go to heaven, that happy\n"
-"            place we all dream about as kids,\n"
-"            that place where men and women\n"
-"            love each other.\n"
-"        "
+"You did it!!! Now you go to heaven, that happy place we all dream about as "
+"kids, that place where men and women love each other."
 msgstr ""
 
-#: levels.py:291
+#: levels.py:193
 msgid ""
-"\n"
-"            You stay in hell. At least\n"
-"            you won't have problems\n"
-"            finding a lawyer if you ever\n"
-"            come to need one.\n"
-"        "
+"You stay in hell. At least you won't have problems finding a lawyer if you "
+"ever come to need one."
 msgstr ""
 
-#: levels.py:300
+#: levels.py:198
 msgid "Hugh's Place"
 msgstr ""
 
-#: levels.py:309
+#: levels.py:208
 msgid ""
-"\n"
-"            Here we are, it's beautiful,\n"
-"            everything that disappears here goes\n"
-"            back to earth, so you are going to\n"
-"            revive a lovely goat now!\n"
-"        "
+"Here we are, it's beautiful, everything that disappears here goes back to "
+"Earth, so you are going to revive a lovely goat now!"
 msgstr ""
 
-#: levels.py:315
+#: levels.py:211
 msgid ""
-"\n"
-"            Congratulations!\n"
-"\n"
-"            You fullfilled your destiny\n"
-"            as a Magician!\n"
-"        "
+"Congratulations!\n"
+"You fullfilled your destiny as a Magician!"
 msgstr ""
 
-#: levels.py:321
+#: levels.py:214
 msgid ""
-"\n"
-"            Mmm...\n"
-"\n"
-"            Too bad you couldn't do it, but hey,\n"
-"            a horde of naked angels offers\n"
-"            to console you!!\n"
-"        "
+"Mmm...\n"
+"Too bad you couldn't do it, but hey, a horde of naked angels offers to "
+"console you!"
 msgstr ""
