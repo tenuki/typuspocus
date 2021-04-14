@@ -1,7 +1,7 @@
-import cosas
-import phrases
 import random
 import time
+
+from typuspocus import cosas, phrases
 
 DEBUG = 0
 

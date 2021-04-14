@@ -28,8 +28,8 @@ eso calculo el tiempo por letra.
 
 import os
 
-from i18n import tr
-from people import Wardrobe, all_wardrobes
+from typuspocus.i18n import tr
+from typuspocus.people import Wardrobe, all_wardrobes
 
 AUDIENCIA = os.path.join(os.path.dirname(os.path.realpath(__file__)), "audiencia")
 

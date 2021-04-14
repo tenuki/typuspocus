@@ -1,5 +1,6 @@
-import pygame
 import os
+
+import pygame
 
 base = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                     "escenario/cosas/")

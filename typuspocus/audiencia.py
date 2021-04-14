@@ -2,15 +2,12 @@ import random
 import math
 import os
 import pygame
-from pygame.locals import KEYDOWN, K_ESCAPE, K_RETURN
 import time
+from pygame.locals import KEYDOWN, K_ESCAPE, K_RETURN
 
-from engine import Scene
-import people
-import varitaje
-import motor
-import interpol
-from sounds import sounds
+from typuspocus import people, varitaje, motor, interpol
+from typuspocus.engine import Scene
+from typuspocus.sounds import sounds
 
 DEBUG = 0
 

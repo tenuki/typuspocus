@@ -1,6 +1,7 @@
-import pygame
 import os
 import random
+
+import pygame
 
 DEBUG = 0
 

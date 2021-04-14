@@ -1,6 +1,8 @@
 import sys
+
 import pygame
-from sounds import sounds
+
+from typuspocus.sounds import sounds
 
 DEBUG = 0
 

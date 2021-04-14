@@ -1,6 +1,8 @@
-import pygame
 import random
-import interpol
+
+import pygame
+
+from typuspocus import interpol
 
 boundsRect = pygame.Rect(0, 200, 700, 400)
 

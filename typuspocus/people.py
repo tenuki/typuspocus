@@ -1,10 +1,12 @@
 import os
 import re
 import time
-import pygame
 from random import Random
+
+import pygame
 from pygame.locals import KEYDOWN, K_SPACE, K_ESCAPE, K_RETURN
-from engine import Game, Scene
+
+from typuspocus.engine import Game, Scene
 
 SCREEN_SIZE = (800, 600)
 PPLSIZE = (55, 119)

@@ -20,16 +20,14 @@ from pygame.locals import (
     Rect,
 )
 
-import audiencia
-import countries
-import hollow
-from audiencia import AudienciaScene
-from engine import Game, Scene
-from hiscore import hiscore
-from i18n import tr
-from levels import niveles
-from motor import MainMotor
-from sounds import sounds
+from typuspocus import audiencia, countries, hollow
+from typuspocus.audiencia import AudienciaScene
+from typuspocus.engine import Game, Scene
+from typuspocus.hiscore import hiscore
+from typuspocus.i18n import tr
+from typuspocus.levels import niveles
+from typuspocus.motor import MainMotor
+from typuspocus.sounds import sounds
 
 DEBUG = 0
 CLOCK_TICK = pygame.USEREVENT
@@ -40,6 +38,7 @@ AUDIENCIA = os.path.join(base, "audiencia")
 
 # fonts
 FONT_MAGIC = os.path.join(ESCENARIO, 'MagicSchoolOne.ttf')
+print("=========+++ FM", FONT_MAGIC)
 FONT_SERIF = os.path.join(ESCENARIO, "papercuts-2.ttf")
 FONT_MONO = os.path.join(ESCENARIO, "AurulentSansMono-Regular.otf")
 
