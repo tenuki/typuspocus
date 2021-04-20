@@ -1,21 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-"""setup -- setuptools setup file for Typus Pocus."""
+"""Setup file for Typus Pocus."""
 
-__author__ = "Facundo Batista"
-__author_email__ = "facundo en taniquetil punto com punto ar"
-__version__ = "0.4.3"
-__date__ = "2010-03-07"
-
-import glob
 import os
 
-from distutils.core import setup
+from setuptools import setup
 
-__description__ = """
+DESCRIPTION = """
 Game about a magician that needs to cast spells typing them to go through
 his particular adventure.
 """
+
 
 def recursive(base, dirs):
     all_files = []
@@ -27,19 +22,20 @@ def recursive(base, dirs):
     lenbase = len(base) + 1
     return [x[lenbase:] for x in all_files]
 
+
 setup(
-    name = 'typuspocus',
-    version = __version__,
-    author = __author__,
-    author_email = __author_email__,
-    description = __description__,
-    url = 'https://launchpad.net/typuspocus/',
-
-    packages = ['typuspocus'],
-
-    package_data = {
-        'typuspocus': recursive('typuspocus',
-                                ['audiencia', 'escenario', 'icons',
-                                 'locale', 'music', 'sounds'])
+    name='typuspocus',
+    version='1.0',
+    author='Facundo Batista',
+    author_email='facundo@taniquetil.com.ar',
+    description=DESCRIPTION,
+    url='https://launchpad.net/typuspocus/',
+    packages=['typuspocus'],
+    entry_points={
+        'console_scripts': ["typuspocus = typuspocus.game:main"],
     },
-    )
+    package_data={
+        'typuspocus': recursive(
+            'typuspocus', ['audiencia', 'escenario', 'icons', 'locale', 'music', 'sounds'])
+    },
+)

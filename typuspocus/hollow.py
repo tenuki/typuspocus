@@ -20,7 +20,7 @@ from pygame.locals import KEYDOWN, QUIT, MOUSEBUTTONDOWN, K_s
 def textOutline(font, message, fontcolor, outlinecolor):
     borde = font.render(message, 1, outlinecolor)
     base = font.render(message, 1, fontcolor)
-    img = pygame.Surface(base.get_rect().inflate(2, 2).size, 0, base)
+    img = pygame.Surface(base.get_rect().inflate(2, 2).size, 0, base).convert_alpha()
     for x in 0, 2:
         for y in 0, 2:
             img.blit(borde, (x, y))

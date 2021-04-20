@@ -38,7 +38,6 @@ AUDIENCIA = os.path.join(base, "audiencia")
 
 # fonts
 FONT_MAGIC = os.path.join(ESCENARIO, 'MagicSchoolOne.ttf')
-print("=========+++ FM", FONT_MAGIC)
 FONT_SERIF = os.path.join(ESCENARIO, "papercuts-2.ttf")
 FONT_MONO = os.path.join(ESCENARIO, "AurulentSansMono-Regular.otf")
 
