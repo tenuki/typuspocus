@@ -1,0 +1,33 @@
+name: typuspocus
+base: core20 
+version: '1.0'
+summary: A magician that needs to type spells to go through their particular adventure.
+description: |
+    You are a magician. There's an object over the table that you have to vanish. In order 
+    to do it, you have to type a spell that appears onscreen. You better do it fast and 
+    accurately, or else the audience will get bored. Winner of the team category in PyWeek 3.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+apps:
+    typuspocus:
+        command: bin/typuspocus
+        plugs:
+            - home            # so it can acess files under the user's home
+            - audio-playback  # to play sounds
+        environment:
+            PYTHONPATH: $SNAP/usr/lib/python3/dist-packages
+            # from https://forum.snapcraft.io/t/pygame-error-mixer-not-initialized/9206
+            # LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+
+
+parts:
+    typuspocus:
+        plugin: python
+        source: .
+        requirements: 
+            - requirements.txt
+        stage-packages:
+            - libx11-6
+            - libpulse0
