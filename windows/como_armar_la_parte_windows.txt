@@ -1,0 +1,75 @@
+Procedimiento para generar el .exe
+----------------------------------
+
+Del lado de linux, sólo un paso: preparar un directorio con "el programa
+a empaquetar":
+
+    bzr export /path/a/algun/lado .
+
+Ir a ese "algun lado" y borrar a discreción un montón de cosas que a
+priori no nos interesa distribuir:
+
+    rm -r debian/
+    rm -r docs/
+    rm -r snap/
+    rm MANIFEST.in 
+    rm run 
+    rm setup.py 
+    rm steps_for_debian.txt 
+    rm typuspocus.desktop 
+
+El resto es del lado Windows. Antes que nada ver que el programa corra ok.
+Llevar el programa a empaquetar a "c:\typuspocus", e instalar el software
+necesario para que corra:
+
+Instalar Python, obviamente; bajar el instalador de acá y ejecutarlo:
+
+    https://www.python.org/downloads/release/python-394/
+
+Probar que el programa en sí ande ok en Windows:
+
+    - crear un venv con todas las dependencias:
+
+        python -m venv env
+        env\Scripts\activate.bat
+        pip install -r requirements.txt
+
+    - y finalmente probarlo:
+        
+        python -m typuspocus
+        
+Ahora que sabemos que funciona todo ok, instalar PyInstaller en el mismo virtualenv anterior:
+
+    pip install pyinstaller
+
+Luego ir a ese mismo directorio y hacer:
+
+    pyinstaller.exe typuspocus/__main__.py
+
+Nos va a dejar toda una estructura en el siguiente archivo:
+
+    __main__.spec
+
+Patchear ese archivo con el que tenemos el dir "windows".
+
+Ejecutar finalmente:
+
+    pyinstaller.exe __main__.spec
+
+Ya debería estar. Para probar, ir a la carpeta typuspocus\dist\__main__ y
+ejecutar el __main__.exe. 
+
+
+Armar el instalador
+------------------
+
+Instalar NSIS dsde acá:
+
+    http://nsis.sourceforge.net/Download
+
+Copiar en el dir de typuspocus el script 'install_script.nsi' (que
+está en el subdir de windows), y actualizar el nro de versión en este mismo archivo.
+
+Luego, desde el navegador de archivos, hacerle botón derecho,
+"Compile NSIS Script".  Eso nos debería dejar, en ese mismo directorio,
+un "Typuspocus_Setup.exe" o muy similar.
