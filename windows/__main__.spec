@@ -39,7 +39,7 @@ coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas + [
-                   ('gpl-2.txt', 'gpl-2.txt', 'DATA'),
+                   ('LICENSE.md', 'LICENSE.md', 'DATA'),
                ],
                strip=False,
                upx=True,

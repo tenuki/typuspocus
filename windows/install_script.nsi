@@ -13,10 +13,10 @@ InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 !define MUI_HEADERIMAGE
 !insertmacro MUI_PAGE_WELCOME
 !define MUI_LICENSEPAGE
-!insertmacro MUI_PAGE_LICENSE "gpl-2.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE.md"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-LicenseData "gpl-2.txt"
+LicenseData "LICENSE.md"
 DirText " "
 ShowInstDetails show
 
