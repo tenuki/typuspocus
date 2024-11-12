@@ -40,5 +40,5 @@ You are a magician. There's an object over the table that you have to vanish. In
 
 ## License
 
-This project is licensed under the GPLv2 License - see the LICENSE.md file for details.
+This project is licensed under the GPLv2 License - see the `gpl-2.txt` file for details.
 
